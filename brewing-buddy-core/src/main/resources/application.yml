@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    username: root
+    url: jdbc:mysql://localhost:3306/brewingbuddy
+    password: P@ssw0rd
+  jpa:
+    hibernate:
+      ddl-auto: none
