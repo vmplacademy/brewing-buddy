@@ -2,7 +2,7 @@ package pl.vm.academy.brewingbuddy.core.recipe.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import pl.vm.academy.brewingbuddy.core.extraIngredient.repository.entity.RecipeExtraIngredient;
+import pl.vm.academy.brewingbuddy.core.extraIngredient.model.entity.RecipeExtraIngredient;
 import pl.vm.academy.brewingbuddy.core.hop.model.entity.RecipeHop;
 import pl.vm.academy.brewingbuddy.core.malt.model.entity.RecipeMalt;
 import pl.vm.academy.brewingbuddy.core.user.model.entity.User;

@@ -1,4 +1,4 @@
-package pl.vm.academy.brewingbuddy.core.extraIngredient.repository.entity;
+package pl.vm.academy.brewingbuddy.core.extraIngredient.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
