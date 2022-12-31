@@ -1,7 +1,8 @@
-CREATE TABLE hops (id int, name varchar(255));
 
-INSERT INTO hops (id, name) VALUES (1, 'Cascade');
-INSERT INTO hops (id, name) VALUES (2, 'Citra ');
-INSERT INTO hops (id, name) VALUES (3, 'Amarillo');
-INSERT INTO hops (id, name) VALUES (4, 'Chinook');
-INSERT INTO hops (id, name) VALUES (5, 'Galaxy');
+CREATE TABLE hop (id int, name varchar(255), alfaAcid int);
+
+INSERT INTO hop (name, alfaAcid) VALUES ('Cascade', 5);
+INSERT INTO hop (name, alfaAcid) VALUES ('Citra ', 6);
+INSERT INTO hop (name, alfaAcid) VALUES ('Amarillo', 7);
+INSERT INTO hop (name, alfaAcid) VALUES ('Chinook', 8);
+INSERT INTO hop (name, alfaAcid) VALUES ('Galaxy', 9);
