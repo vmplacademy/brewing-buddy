@@ -13,20 +13,19 @@ import java.math.BigDecimal;
 @Data
 @Table(name = "recipe_hop")
 public class RecipeHop {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    private Long hopId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "RECIPE_ID", insertable = false, updatable = false)
+    private Recipe recipe;
+
     private BigDecimal amount; // Chmiel w g
     private BigDecimal boilingTime; // Czas gotowania w min
     private BigDecimal utilization; // Utylizacja chmielu w %
-
-    @ManyToOne
-    @JoinColumn(name = "HOP_ID")
-    private Hop hop;
-
-    @ManyToOne
-    @JoinColumn(name = "RECIPE_ID")
-    private Recipe recipe;
-
 }
