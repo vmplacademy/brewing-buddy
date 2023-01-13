@@ -1,4 +1,4 @@
-package pl.vm.academy.brewingbuddy.core.extraIngredient.model.entity;
+package pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

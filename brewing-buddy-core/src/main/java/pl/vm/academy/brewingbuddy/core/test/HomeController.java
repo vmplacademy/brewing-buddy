@@ -3,10 +3,8 @@ package pl.vm.academy.brewingbuddy.core.test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import pl.vm.academy.brewingbuddy.core.hop.model.entity.Hop;
-import pl.vm.academy.brewingbuddy.core.hop.repository.HopRepository;
-import pl.vm.academy.brewingbuddy.core.recipe.model.entity.Recipe;
-import pl.vm.academy.brewingbuddy.core.recipe.repository.RecipeRepository;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Hop;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.HopRepository;
 
 import java.math.BigDecimal;
 

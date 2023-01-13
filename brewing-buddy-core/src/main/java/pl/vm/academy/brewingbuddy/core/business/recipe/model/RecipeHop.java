@@ -1,8 +1,11 @@
-package pl.vm.academy.brewingbuddy.core.hop.model.entity;
+package pl.vm.academy.brewingbuddy.core.business.recipe.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import pl.vm.academy.brewingbuddy.core.recipe.model.entity.Recipe;
+import org.springframework.lang.NonNull;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Hop;
+import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 
 import java.math.BigDecimal;
 

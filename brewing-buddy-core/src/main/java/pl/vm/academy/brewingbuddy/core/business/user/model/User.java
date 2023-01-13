@@ -1,8 +1,8 @@
-package pl.vm.academy.brewingbuddy.core.user.model.entity;
+package pl.vm.academy.brewingbuddy.core.business.user.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import pl.vm.academy.brewingbuddy.core.recipe.model.entity.Recipe;
+import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 
 import java.util.Set;
 
