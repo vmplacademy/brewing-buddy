@@ -1,31 +1,50 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import org.springframework.lang.NonNull;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Hop;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
+import org.springframework.boot.convert.DurationFormat;
+import org.springframework.boot.convert.DurationUnit;
+
 
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 @Entity
-@Data
-@Table(name = "recipe_hop")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "t_recipe_hop")
 public class RecipeHop {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipe_id", insertable = false, updatable = false)
+    private Recipe recipe;
 
     @NotNull
     private Long hopId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RECIPE_ID", insertable = false, updatable = false)
-    private Recipe recipe;
+    @Id
+    @GeneratedValue
+    @UuidGenerator
+    private UUID id;
 
-    private BigDecimal amount; // Chmiel w g
-    private BigDecimal boilingTime; // Czas gotowania w min
-    private BigDecimal utilization; // Utylizacja chmielu w %
+    private BigDecimal homAmountInGrams;
+    @DurationUnit(ChronoUnit.MINUTES)
+    private Duration boilingTimeInMinutes;
+    private BigDecimal hopUtilizationInPercentage;
 }

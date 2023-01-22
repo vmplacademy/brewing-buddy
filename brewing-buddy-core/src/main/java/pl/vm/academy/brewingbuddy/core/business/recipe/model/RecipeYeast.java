@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Malt;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -24,24 +23,21 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "t_recipe_malt")
-public class RecipeMalt {
+@Table(name = "t_recipe_yeast")
+public class RecipeYeast {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
     @NotNull
-    private Long maltId;
+    private Long yeastId;
 
     @Id
     @GeneratedValue
     @UuidGenerator
     private UUID id;
 
-    private BigDecimal maltAmountInKilos;
-    private BigDecimal theoreticalExtractAmountInPercentage;
-    private BigDecimal realExtractAmountInPercentage;
-
+    private BigDecimal yeastQuantity;
 
 }

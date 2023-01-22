@@ -1,50 +1,68 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.model;
 
-import jakarta.persistence.*;
-import lombok.Data;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
+import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.BeerStyle;
 import pl.vm.academy.brewingbuddy.core.business.user.model.User;
 
 import java.math.BigDecimal;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "t_recipe")
 public class Recipe {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String recipeName;
-    private String beerStyle; // style that can be chosen from the list
-    // required parameters
-    private BigDecimal mashingEfficiency; // wydajność zacierania podana w %
-    private BigDecimal amountOfHotWort; // ilość gorącej brzeczki jaką chcesz uzyskać w [l]
-    private BigDecimal mashingFactor; // współczynnik zacierania - ile litrów wody na 1 kg słodu
-
-    // calculated parameters [water] - to be displayed
-    private BigDecimal waterRequiredForMashing; // woda użyta do zacierania w [l]
-    private BigDecimal waterRequiredForSparging; // woda potrzebna do wysładzania w [l]
-    private BigDecimal waterRequiredForWholeProcess; // ilość potrzebnej wody docałego procesu w [l]
-
-    // calculated parameters - to be displayed
-    private BigDecimal amountOfWaterBeforeBoiling; // Tyle brzeczki będzie gotowane z chmielem w [l]
-    private BigDecimal extractBeforeBoiling; // Orientacyjny % ekstraktu brzeczki przed gotowaniem
-    private BigDecimal expectedAmountOfBeer; // Orientacyjna ilość gotowego piwa
-
-    private String yeast;
-    private BigDecimal amountOfYeast;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe")
     private Set<RecipeMalt> recipeMalts;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe")
     private Set<RecipeHop> recipeHops;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe")
     private Set<RecipeExtraIngredient> recipeExtraIngredients;
 
-}
+    @OneToMany(mappedBy = "recipe")
+    private Set<RecipeYeast> recipeYeasts;
 
+    @Id
+    @GeneratedValue
+    @UuidGenerator
+    private UUID id;
+
+    private String recipeName;
+    @Enumerated(EnumType.STRING)
+    private BeerStyle beerStyle;
+    // required parameters
+    private BigDecimal mashingEfficiencyInPercentage;
+    private BigDecimal amountOfHotWort;
+    private BigDecimal mashingFactorInLitersPerKg; //
+
+    private BigDecimal waterRequiredForMashingInLiters;
+    private BigDecimal waterRequiredForSpargingInLiters;
+    private BigDecimal waterRequiredForWholeProcessInLiters;
+
+    private BigDecimal amountOfWaterBeforeBoilingInLiters;
+    private BigDecimal extractBeforeBoilingInPercentage;
+    private BigDecimal expectedAmountOfBeerInLiters;
+}
