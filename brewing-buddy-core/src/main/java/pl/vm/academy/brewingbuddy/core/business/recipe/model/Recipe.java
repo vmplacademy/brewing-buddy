@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,6 +46,9 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe")
     private Set<RecipeYeast> recipeYeasts;
 
+    @OneToOne
+    private RecipeCalculatedParameters recipeCalculatedParameters;
+
     @Id
     @GeneratedValue
     @UuidGenerator
@@ -54,15 +58,10 @@ public class Recipe {
     @Enumerated(EnumType.STRING)
     private BeerStyle beerStyle;
     // required parameters
-    private BigDecimal mashingEfficiencyInPercentage;
-    private BigDecimal amountOfHotWort;
-    private BigDecimal mashingFactorInLitersPerKg; //
-
-    private BigDecimal waterRequiredForMashingInLiters;
-    private BigDecimal waterRequiredForSpargingInLiters;
-    private BigDecimal waterRequiredForWholeProcessInLiters;
-
-    private BigDecimal amountOfWaterBeforeBoilingInLiters;
-    private BigDecimal extractBeforeBoilingInPercentage;
     private BigDecimal expectedAmountOfBeerInLiters;
+    private BigDecimal boilingProcessTime;
+    private BigDecimal waterEvaporationInPercentagePerHour;
+    private BigDecimal boilingProcessLossInPercentage;
+    private BigDecimal fermentationProcessLossInPercentage;
+
 }
