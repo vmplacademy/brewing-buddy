@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class RecipeDto {
     private String id;
+    private Boolean isPublic;
     private String recipeName;
     private BeerStyle beerStyle;
     private BigDecimal expectedAmountOfBeerInLiters;
@@ -19,5 +20,6 @@ public class RecipeDto {
     private BigDecimal waterEvaporationInPercentagePerHour;
     private BigDecimal boilingProcessLossInPercentage;
     private BigDecimal fermentationProcessLossInPercentage;
+    private CalculatedParametersDto calculatedParametersDto;
 
 }

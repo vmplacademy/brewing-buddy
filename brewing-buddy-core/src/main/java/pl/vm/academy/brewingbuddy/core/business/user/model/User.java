@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -15,8 +19,4 @@ public class User {
     private Long id;
     private String name;
     private String email;
-
-    @OneToMany(mappedBy = "user")
-    private Set<Recipe> recipes;
-
 }

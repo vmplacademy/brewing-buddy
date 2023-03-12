@@ -30,9 +30,7 @@ import java.util.UUID;
 @Table(name = "t_recipe")
 public class Recipe {
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private UUID userId;
 
     @OneToMany(mappedBy = "recipe")
     private Set<RecipeMalt> recipeMalts;
@@ -53,6 +51,7 @@ public class Recipe {
     @GeneratedValue
     @UuidGenerator
     private UUID id;
+    private Boolean isPublic;
 
     private String recipeName;
     @Enumerated(EnumType.STRING)

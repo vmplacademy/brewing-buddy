@@ -6,20 +6,24 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
 public class RecipeConverter {
     RecipeRepository recipeRepository;
+    CalculatedParametersConverter calculatedParametersConverter;
 
     @Autowired
-    RecipeConverter(RecipeRepository recipeRepository) {
+    RecipeConverter(RecipeRepository recipeRepository, CalculatedParametersConverter calculatedParametersConverter) {
         this.recipeRepository = recipeRepository;
+        this.calculatedParametersConverter = calculatedParametersConverter;
     }
 
     public RecipeDto recipeToDto (Recipe recipe) {
         RecipeDto recipeDto = new RecipeDto();
         recipeDto.setId(recipe.getId().toString());
+        recipeDto.setIsPublic(recipe.getIsPublic());
         recipeDto.setRecipeName(recipe.getRecipeName());
         recipeDto.setBeerStyle(recipe.getBeerStyle());
         recipeDto.setExpectedAmountOfBeerInLiters(recipe.getExpectedAmountOfBeerInLiters());
@@ -27,12 +31,15 @@ public class RecipeConverter {
         recipeDto.setWaterEvaporationInPercentagePerHour(recipe.getWaterEvaporationInPercentagePerHour());
         recipeDto.setBoilingProcessLossInPercentage(recipe.getBoilingProcessLossInPercentage());
         recipeDto.setFermentationProcessLossInPercentage(recipe.getFermentationProcessLossInPercentage());
+        recipeDto.setCalculatedParametersDto(calculatedParametersConverter.parametersToDto(recipe.getRecipeCalculatedParameters()));
         return recipeDto;
     }
 
     public Recipe recipeDtoToEntity (RecipeDto recipeDto) {
         Recipe recipe  = new Recipe();
-        recipe.setId(UUID.fromString(recipeDto.getId()));
+        if (recipeDto.getId() != null)
+            recipe.setId(UUID.fromString(recipeDto.getId()));
+        recipe.setIsPublic(recipeDto.getIsPublic());
         recipe.setRecipeName(recipeDto.getRecipeName());
         recipe.setBeerStyle(recipeDto.getBeerStyle());
         recipe.setExpectedAmountOfBeerInLiters(recipeDto.getExpectedAmountOfBeerInLiters());
@@ -41,5 +48,9 @@ public class RecipeConverter {
         recipe.setBoilingProcessLossInPercentage(recipeDto.getBoilingProcessLossInPercentage());
         recipe.setFermentationProcessLossInPercentage(recipeDto.getFermentationProcessLossInPercentage());
         return recipe;
+    }
+
+    public List<RecipeDto> recipeListToDtoList (List<Recipe> recipeList) {
+        return recipeList.stream().map(recipe -> recipeToDto(recipe)).toList();
     }
 }
