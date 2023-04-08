@@ -1,5 +1,6 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.converter;
 
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
@@ -10,12 +11,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
+@NoArgsConstructor
 public class RecipeConverter {
     RecipeRepository recipeRepository;
     CalculatedParametersConverter calculatedParametersConverter;
 
     @Autowired
-    RecipeConverter(RecipeRepository recipeRepository, CalculatedParametersConverter calculatedParametersConverter) {
+    public RecipeConverter(RecipeRepository recipeRepository, CalculatedParametersConverter calculatedParametersConverter) {
         this.recipeRepository = recipeRepository;
         this.calculatedParametersConverter = calculatedParametersConverter;
     }

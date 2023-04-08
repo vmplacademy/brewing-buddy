@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @NoArgsConstructor
-class RecipeService {
+public class RecipeService {
     RecipeRepository recipeRepository;
     RecipeCalculatedParametersRepository recipeCalculatedParametersRepository;
     RecipeConverter recipeConverter;
@@ -40,7 +40,13 @@ class RecipeService {
         this.recipeRepository = recipeRepository;
     }
 
-    RecipeDto createRecipe (RecipeDto recipeDto) {
+    public RecipeDto createRecipe (RecipeDto recipeDto) {
+
+        Optional recipeOp = recipeRepository.findRecipeByRecipeName(recipeDto.getRecipeName());
+        if (recipeOp.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Recipe with such name already exists!");
+        }
+
         Recipe recipe = recipeConverter.recipeDtoToEntity(recipeDto);
         RecipeCalculatedParameters calculatedParameters = new RecipeCalculatedParameters();
 
