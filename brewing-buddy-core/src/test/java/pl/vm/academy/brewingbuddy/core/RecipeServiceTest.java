@@ -18,6 +18,8 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeCalculat
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeService;
 
+import java.util.List;
+
 @RunWith(MockitoJUnitRunner.class)
 public class RecipeServiceTest {
 
@@ -58,5 +60,17 @@ public class RecipeServiceTest {
         assertThat(savedRecipe).usingRecursiveAssertion().isEqualTo(recipeDto);
         verify(recipeRepository, times(1)).save(any(Recipe.class));
         //verifyNoMoreInteractions(recipeRepository);
+    }
+
+    @Test
+    public void should_find_and_return_all_recipes() {
+        // given
+
+        // when
+        when(recipeRepository.findAllByIsPublic(true)).thenReturn(List.of(new Recipe(), new Recipe(), new Recipe()));
+        // then
+        assertThat(recipeService.getAllPublicRecipes().size() == 2);
+        verify(recipeRepository, times(1)).findAllByIsPublic(true);
+        verifyNoMoreInteractions(recipeRepository);
     }
 }

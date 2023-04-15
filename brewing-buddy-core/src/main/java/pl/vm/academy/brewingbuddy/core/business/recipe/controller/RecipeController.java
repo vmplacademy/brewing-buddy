@@ -1,5 +1,6 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,12 +20,12 @@ public class RecipeController {
     RecipeFacade recipeFacade;
 
     @PostMapping("/create-recipe")
-    public RecipeDto createRecipe(@RequestBody RecipeDto recipeDto) {
+    public RecipeDto createRecipe(@Valid @RequestBody RecipeDto recipeDto) {
         return recipeFacade.createRecipe(recipeDto);
     }
 
     @PutMapping("/update-recipe")
-    public RecipeDto updateRecipe(@RequestBody RecipeDto recipeDto) {
+    public RecipeDto updateRecipe(@Valid @RequestBody RecipeDto recipeDto) {
         return recipeFacade.updateRecipe(recipeDto);
     }
 

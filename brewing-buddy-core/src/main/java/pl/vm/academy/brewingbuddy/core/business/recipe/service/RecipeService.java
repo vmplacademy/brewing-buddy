@@ -80,7 +80,7 @@ public class RecipeService {
         return recipeConverter.recipeListToDtoList(recipeRepository.findAll());
     }
 
-    List<RecipeDto> getAllPublicRecipes() {
+    public List<RecipeDto> getAllPublicRecipes() {
         return recipeConverter.recipeListToDtoList(recipeRepository.findAllByIsPublic(true));
     }
 
