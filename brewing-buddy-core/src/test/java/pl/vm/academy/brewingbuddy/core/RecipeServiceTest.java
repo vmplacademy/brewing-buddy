@@ -1,12 +1,14 @@
 package pl.vm.academy.brewingbuddy.core;
 
 import static org.assertj.core.api.Assertions.*;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -18,9 +20,11 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeCalculat
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeService;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RecipeServiceTest {
 
     @InjectMocks
@@ -59,18 +63,41 @@ public class RecipeServiceTest {
         //then
         assertThat(savedRecipe).usingRecursiveAssertion().isEqualTo(recipeDto);
         verify(recipeRepository, times(1)).save(any(Recipe.class));
-        //verifyNoMoreInteractions(recipeRepository);
     }
+
+
 
     @Test
     public void should_find_and_return_all_recipes() {
         // given
+        Recipe recipe1 = new Recipe();
+        Recipe recipe2 = new Recipe();
+        recipe1.setRecipeName("dupa");
+        recipe2.setRecipeName("dupa2");
+        List<Recipe> recipeList = new ArrayList<>();
+        recipeList.add(recipe1);
+        recipeList.add(recipe2);
 
+        List<RecipeDto> recipeDtoList = new ArrayList<>();
+        RecipeDto recipeDto1 = new RecipeDto();
+        RecipeDto recipeDto2 = new RecipeDto();
+        recipeDto1.setRecipeName("dupa");
+        recipeDto2.setRecipeName("dupa2");
+        recipeDtoList.add(recipeDto1);
+        recipeDtoList.add(recipeDto2);
+
+        when(recipeRepository.findAllByIsPublic(true)).thenReturn(recipeList);
+        when(recipeConverter.recipeListToDtoList(recipeList)).thenReturn(recipeDtoList);
         // when
-        when(recipeRepository.findAllByIsPublic(true)).thenReturn(List.of(new Recipe(), new Recipe(), new Recipe()));
+        List<RecipeDto> returnedRecipeDtoList = recipeService.getAllPublicRecipes();
+
         // then
-        assertThat(recipeService.getAllPublicRecipes().size() == 2);
-        verify(recipeRepository, times(1)).findAllByIsPublic(true);
-        verifyNoMoreInteractions(recipeRepository);
+        assertEquals(returnedRecipeDtoList.size(), 2);
+        assertEquals(returnedRecipeDtoList.get(0).getRecipeName(), "dupa");
+
+        //assertThat(recipeService.getAllPublicRecipes().size() == 2);
+        //assertThat(recipeService.getAllPublicRecipes().get(0).getRecipeName().equals("dupa2"));
+        //verify(recipeRepository, times(1)).findAllByIsPublic(true);
+        //verifyNoMoreInteractions(recipeRepository);
     }
 }
