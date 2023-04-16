@@ -2,7 +2,6 @@ package pl.vm.academy.brewingbuddy.core;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,9 +9,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import pl.vm.academy.brewingbuddy.core.business.recipe.converter.RecipeConverter;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
@@ -23,7 +20,6 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeReposito
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -167,6 +163,4 @@ public class RecipeServiceTest {
         //then
         assertTrue(actualMessage.contains(expectedMessage));
     }
-
-
 }
