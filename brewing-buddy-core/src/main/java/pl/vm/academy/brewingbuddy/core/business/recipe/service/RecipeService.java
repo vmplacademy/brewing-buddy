@@ -84,6 +84,15 @@ public class RecipeService {
         return recipeConverter.recipeListToDtoList(recipeRepository.findAllByIsPublic(true));
     }
 
+    public RecipeDto getRecipeById(RecipeDto recipeDto) {
+        Optional recipeOp = recipeRepository.findById(UUID.fromString(recipeDto.getId()));
+        if (recipeOp.isPresent()) {
+            return recipeConverter.recipeToDto((Recipe)recipeOp.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity with such id not found in database");
+        }
+    }
+
     HttpStatus deleteRecipe (RecipeDto recipeDto) {
         Optional recipeOp = recipeRepository.findById(UUID.fromString(recipeDto.getId()));
 

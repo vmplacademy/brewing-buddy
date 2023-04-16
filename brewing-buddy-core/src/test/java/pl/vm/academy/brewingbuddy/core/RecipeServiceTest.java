@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import pl.vm.academy.brewingbuddy.core.business.recipe.converter.RecipeConverter;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
@@ -23,6 +25,8 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
 public class RecipeServiceTest {
@@ -66,6 +70,29 @@ public class RecipeServiceTest {
     }
 
 
+    @Test
+    public void should_throw_exception_when_recipe_with_such_name_already_exists () {
+        //given
+        Recipe recipeInRepo = new Recipe();
+        recipeInRepo.setRecipeName("dupa");
+
+        RecipeDto recipeToSave = new RecipeDto();
+        recipeToSave.setRecipeName("dupa");
+
+        when(recipeRepository.findRecipeByRecipeName(any(String.class))).thenReturn(Optional.of(recipeInRepo));
+
+        Exception exception = assertThrows(ResponseStatusException.class, () ->
+                recipeService.createRecipe(recipeToSave));
+
+        String expectedMessage = "Recipe with such name already exists!";
+        String actualMessage = exception.getMessage();
+        //when
+
+        //then
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+
 
     @Test
     public void should_find_and_return_all_recipes() {
@@ -95,9 +122,51 @@ public class RecipeServiceTest {
         assertEquals(returnedRecipeDtoList.size(), 2);
         assertEquals(returnedRecipeDtoList.get(0).getRecipeName(), "dupa");
 
-        //assertThat(recipeService.getAllPublicRecipes().size() == 2);
-        //assertThat(recipeService.getAllPublicRecipes().get(0).getRecipeName().equals("dupa2"));
-        //verify(recipeRepository, times(1)).findAllByIsPublic(true);
-        //verifyNoMoreInteractions(recipeRepository);
     }
+
+    @Test
+    public void should_find_and_return_one_recipe_by_its_id() {
+        //given
+        Recipe recipeInDB = new Recipe();
+        recipeInDB.setId(UUID.fromString("ec60c78e-dc5e-11ed-afa1-0242ac120002"));
+
+        RecipeDto recipeDtoToReturn = new RecipeDto();
+        recipeDtoToReturn.setId("ec60c78e-dc5e-11ed-afa1-0242ac120002");
+
+        RecipeDto recipeDtoInput = new RecipeDto();
+        recipeDtoInput.setId("ec60c78e-dc5e-11ed-afa1-0242ac120002");
+
+        when(recipeRepository.findById(any(UUID.class))).thenReturn(Optional.of(recipeInDB));
+        when(recipeConverter.recipeToDto(recipeInDB)).thenReturn(recipeDtoToReturn);
+
+        //when
+        RecipeDto returnedDto = recipeService.getRecipeById(recipeDtoInput);
+
+        //then
+        assertEquals(returnedDto.getId(), "ec60c78e-dc5e-11ed-afa1-0242ac120002");
+        assertEquals(returnedDto, recipeDtoToReturn);
+    }
+
+    @Test
+    public void should_throw_exception_when_recipe_with_such_id_is_not_in_db() {
+        //given
+
+        when(recipeRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        RecipeDto inputRecipeDto = new RecipeDto();
+        inputRecipeDto.setId("ec60c78e-dc5e-11ed-afa1-0242ac120002");
+
+        //when
+
+        Exception exception = assertThrows(ResponseStatusException.class, () ->
+                recipeService.getRecipeById(inputRecipeDto));
+
+        String expectedMessage = "entity with such id not found in database";
+        String actualMessage = exception.getMessage();
+
+        //then
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+
 }

@@ -37,4 +37,8 @@ public class RecipeFacade {
         return recipeService.deleteRecipe(recipeDto);
     }
 
+    public RecipeDto getRecipeById(RecipeDto recipeDto) {
+        return recipeService.getRecipeById(recipeDto);
+    }
+
 }
