@@ -7,6 +7,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,8 +38,8 @@ public class RecipeFacade {
         return recipeService.deleteRecipe(recipeDto);
     }
 
-    public RecipeDto getRecipeById(RecipeDto recipeDto) {
-        return recipeService.getRecipeById(recipeDto);
+    public RecipeDto getRecipeById(UUID recipeId) {
+        return recipeService.getRecipeById(recipeId);
     }
 
 }

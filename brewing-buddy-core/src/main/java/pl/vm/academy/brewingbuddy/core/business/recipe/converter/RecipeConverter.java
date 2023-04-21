@@ -24,7 +24,7 @@ public class RecipeConverter {
 
     public RecipeDto recipeToDto (Recipe recipe) {
         RecipeDto recipeDto = new RecipeDto();
-        recipeDto.setId(recipe.getId().toString());
+//        recipeDto.setId(recipe.getId().toString());
         recipeDto.setIsPublic(recipe.getIsPublic());
         recipeDto.setRecipeName(recipe.getRecipeName());
         recipeDto.setBeerStyle(recipe.getBeerStyle());

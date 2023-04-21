@@ -9,12 +9,13 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeReposito
 
 @Configuration
 public class RecipeConfiguration {
+
     @Bean
     RecipeFacade recipeFacade(RecipeRepository recipeRepository, RecipeConverter recipeConverter,
                               RecipeCalculatedParametersRepository recipeCalculatedParametersRepository,
                               CalculatedParametersConverter calculatedParametersConverter) {
 
-        RecipeService recipeService = new RecipeService(recipeRepository, recipeCalculatedParametersRepository,
+        RecipeServiceAdapter recipeService = new RecipeServiceAdapter(recipeRepository, recipeCalculatedParametersRepository,
                 recipeConverter, calculatedParametersConverter);
 
         return new RecipeFacade(recipeService);
