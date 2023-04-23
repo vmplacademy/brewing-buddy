@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
+import java.util.Set;
 
 @Entity
 @Setter
 @Getter
+@Table(name = "EMAIL_DATA")
 public class EmailData {
 
     @Id
@@ -23,4 +25,7 @@ public class EmailData {
     private String recipient;
 
     private String text;
+
+    @OneToMany(mappedBy = "emailData")
+    private Set<Attachment> attachments;
 }
