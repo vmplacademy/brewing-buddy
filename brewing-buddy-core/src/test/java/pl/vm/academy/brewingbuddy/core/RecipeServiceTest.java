@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
@@ -15,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
-import pl.vm.academy.brewingbuddy.core.business.recipe.converter.CalculatedParametersConverter;
-import pl.vm.academy.brewingbuddy.core.business.recipe.converter.RecipeConverter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.CalculatedParametersMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameters;
@@ -40,10 +39,10 @@ public class RecipeServiceTest {
     private RecipeCalculatedParametersRepository recipeCalculatedParametersRepository;
 
     @Mock
-    private RecipeConverter recipeConverter;
+    private RecipeMapper recipeMapper;
 
     @Mock
-    private CalculatedParametersConverter calculatedParametersConverter;
+    private CalculatedParametersMapper calculatedParametersMapper;
 
     private RecipeService recipeService;
 
@@ -52,8 +51,8 @@ public class RecipeServiceTest {
         recipeService = new RecipeServiceAdapter(
                 recipeRepository,
                 recipeCalculatedParametersRepository,
-                recipeConverter,
-                calculatedParametersConverter
+                recipeMapper,
+                calculatedParametersMapper
         );
     }
 
@@ -64,7 +63,7 @@ public class RecipeServiceTest {
         @Test
         public void should_save_one_recipe() {
             //given
-            RecipeConverter converter = new RecipeConverter();
+            RecipeMapper converter = new RecipeMapper();
 
             RecipeDto recipeDto = new RecipeDto();
             recipeDto.setRecipeName("F*cking good IPA");
@@ -74,14 +73,14 @@ public class RecipeServiceTest {
             when(recipeRepository.save(any(Recipe.class))).thenReturn(recipeToSave);
             when(recipeCalculatedParametersRepository.save(any(RecipeCalculatedParameters.class))).
                     thenReturn(new RecipeCalculatedParameters());
-            when(recipeConverter.recipeDtoToEntity(any(RecipeDto.class))).thenReturn(recipe);
-            when(recipeConverter.recipeToDto(any(Recipe.class))).thenReturn(recipeDto);
+            when(recipeMapper.recipeDtoToEntity(any(RecipeDto.class))).thenReturn(recipe);
+            when(recipeMapper.recipeToDto(any(Recipe.class))).thenReturn(recipeDto);
 
             //when
             RecipeDto savedRecipe = recipeService.createRecipe(new RecipeDto());
 
             //then
-            assertThat(savedRecipe).usingRecursiveAssertion().isEqualTo(recipeDto);
+            assertThat(savedRecipe).usingRecursiveComparison().isEqualTo(recipeDto);
             verify(recipeRepository, times(1)).save(any(Recipe.class));
         }
 
@@ -134,7 +133,7 @@ public class RecipeServiceTest {
             recipeDtoList.add(recipeDto2);
 
             when(recipeRepository.findAllByIsPublic(true)).thenReturn(recipeList);
-            when(recipeConverter.recipeListToDtoList(recipeList)).thenReturn(recipeDtoList);
+            when(recipeMapper.recipeListToDtoList(recipeList)).thenReturn(recipeDtoList);
             // when
             List<RecipeDto> returnedRecipeDtoList = recipeService.getAllPublicRecipes();
 
@@ -157,7 +156,7 @@ public class RecipeServiceTest {
             RecipeDto recipeDtoToReturn = createRecipeDto(recipeId);
 
             when(recipeRepository.findById(any(UUID.class))).thenReturn(Optional.of(recipeInDB));
-            when(recipeConverter.recipeToDto(recipeInDB)).thenReturn(recipeDtoToReturn);
+            when(recipeMapper.recipeToDto(recipeInDB)).thenReturn(recipeDtoToReturn);
 
             //when
             RecipeDto returnedDto = recipeService.getRecipeById(recipeId);

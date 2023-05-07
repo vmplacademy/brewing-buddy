@@ -2,8 +2,8 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.vm.academy.brewingbuddy.core.business.recipe.converter.CalculatedParametersConverter;
-import pl.vm.academy.brewingbuddy.core.business.recipe.converter.RecipeConverter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.CalculatedParametersMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeCalculatedParametersRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 
@@ -11,12 +11,12 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeReposito
 public class RecipeConfiguration {
 
     @Bean
-    RecipeFacade recipeFacade(RecipeRepository recipeRepository, RecipeConverter recipeConverter,
+    RecipeFacade recipeFacade(RecipeRepository recipeRepository, RecipeMapper recipeMapper,
                               RecipeCalculatedParametersRepository recipeCalculatedParametersRepository,
-                              CalculatedParametersConverter calculatedParametersConverter) {
+                              CalculatedParametersMapper calculatedParametersMapper) {
 
         RecipeServiceAdapter recipeService = new RecipeServiceAdapter(recipeRepository, recipeCalculatedParametersRepository,
-                recipeConverter, calculatedParametersConverter);
+                recipeMapper, calculatedParametersMapper);
 
         return new RecipeFacade(recipeService);
     }

@@ -1,6 +1,7 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,8 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CalculatedParametersDto {
     private BigDecimal mashingFactorInLitersPerKg;
     private BigDecimal waterRequiredForMashingInLiters;

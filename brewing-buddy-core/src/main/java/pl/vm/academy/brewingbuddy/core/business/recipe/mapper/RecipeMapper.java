@@ -1,4 +1,4 @@
-package pl.vm.academy.brewingbuddy.core.business.recipe.converter;
+package pl.vm.academy.brewingbuddy.core.business.recipe.mapper;
 
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,35 +12,46 @@ import java.util.UUID;
 
 @Component
 @NoArgsConstructor
-public class RecipeConverter {
+public class RecipeMapper {
     RecipeRepository recipeRepository;
-    CalculatedParametersConverter calculatedParametersConverter;
+    CalculatedParametersMapper calculatedParametersMapper;
 
     @Autowired
-    public RecipeConverter(RecipeRepository recipeRepository, CalculatedParametersConverter calculatedParametersConverter) {
+    public RecipeMapper(RecipeRepository recipeRepository, CalculatedParametersMapper calculatedParametersMapper) {
         this.recipeRepository = recipeRepository;
-        this.calculatedParametersConverter = calculatedParametersConverter;
+        this.calculatedParametersMapper = calculatedParametersMapper;
     }
 
     public RecipeDto recipeToDto (Recipe recipe) {
-        RecipeDto recipeDto = new RecipeDto();
-//        recipeDto.setId(recipe.getId().toString());
-        recipeDto.setIsPublic(recipe.getIsPublic());
-        recipeDto.setRecipeName(recipe.getRecipeName());
-        recipeDto.setBeerStyle(recipe.getBeerStyle());
-        recipeDto.setExpectedAmountOfBeerInLiters(recipe.getExpectedAmountOfBeerInLiters());
-        recipeDto.setBoilingProcessTime(recipe.getBoilingProcessTime());
-        recipeDto.setWaterEvaporationInPercentagePerHour(recipe.getWaterEvaporationInPercentagePerHour());
-        recipeDto.setBoilingProcessLossInPercentage(recipe.getBoilingProcessLossInPercentage());
-        recipeDto.setFermentationProcessLossInPercentage(recipe.getFermentationProcessLossInPercentage());
-        recipeDto.setCalculatedParametersDto(calculatedParametersConverter.parametersToDto(recipe.getRecipeCalculatedParameters()));
+
+        if (recipe == null)
+            return null;
+
+        RecipeDto recipeDto = RecipeDto.builder()
+                .isPublic(recipe.getIsPublic())
+                .recipeName(recipe.getRecipeName())
+                .beerStyle(recipe.getBeerStyle())
+                .expectedAmountOfBeerInLiters(recipe.getExpectedAmountOfBeerInLiters())
+                .boilingProcessTime(recipe.getBoilingProcessTime())
+                .waterEvaporationInPercentagePerHour(recipe.getWaterEvaporationInPercentagePerHour())
+                .boilingProcessLossInPercentage(recipe.getBoilingProcessLossInPercentage())
+                .fermentationProcessLossInPercentage(recipe.getFermentationProcessLossInPercentage())
+                .calculatedParametersDto(calculatedParametersMapper.parametersToDto(recipe.getRecipeCalculatedParameters()))
+                .build();
+
         return recipeDto;
     }
 
     public Recipe recipeDtoToEntity (RecipeDto recipeDto) {
+
+        if (recipeDto == null)
+            return null;
+
         Recipe recipe  = new Recipe();
+
         if (recipeDto.getId() != null)
             recipe.setId(UUID.fromString(recipeDto.getId()));
+
         recipe.setIsPublic(recipeDto.getIsPublic());
         recipe.setRecipeName(recipeDto.getRecipeName());
         recipe.setBeerStyle(recipeDto.getBeerStyle());
