@@ -18,5 +18,5 @@ public interface RecipeService {
 
     RecipeDto updateRecipe(RecipeDto recipeDto);
 
-    HttpStatus deleteRecipe(RecipeDto recipeDto);
+    void deleteRecipe(UUID id);
 }

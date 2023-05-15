@@ -5,8 +5,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -16,7 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.BeerStyle;
-import pl.vm.academy.brewingbuddy.core.business.user.model.User;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -45,13 +42,13 @@ public class Recipe {
     private Set<RecipeYeast> recipeYeasts;
 
     @OneToOne
-    private RecipeCalculatedParameters recipeCalculatedParameters;
+    private RecipeCalculatedParameter recipeCalculatedParameter;
 
     @Id
     @GeneratedValue
     @UuidGenerator
     private UUID id;
-    private Boolean isPublic;
+    private boolean isPublic;
 
     private String recipeName;
     @Enumerated(EnumType.STRING)

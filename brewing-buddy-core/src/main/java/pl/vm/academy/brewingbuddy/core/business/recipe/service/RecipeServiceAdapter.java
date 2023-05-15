@@ -1,12 +1,13 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.CalculatedParametersMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameters;
+import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeCalculatedParametersRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class RecipeServiceAdapter implements RecipeService {
 
     private final RecipeRepository recipeRepository;
@@ -21,94 +23,74 @@ public class RecipeServiceAdapter implements RecipeService {
     private final RecipeMapper recipeMapper;
     private final CalculatedParametersMapper calculatedParametersMapper;
 
-    public RecipeServiceAdapter(RecipeRepository recipeRepository,
-                                RecipeCalculatedParametersRepository recipeCalculatedParametersRepository,
-                                RecipeMapper recipeMapper,
-                                CalculatedParametersMapper calculatedParametersMapper) {
-        this.recipeRepository = recipeRepository;
-        this.recipeCalculatedParametersRepository = recipeCalculatedParametersRepository;
-        this.recipeMapper = recipeMapper;
-        this.calculatedParametersMapper = calculatedParametersMapper;
-    }
-
     @Override
     public RecipeDto createRecipe(RecipeDto recipeDto) {
 
-        Optional<Recipe> recipeOp = recipeRepository.findRecipeByRecipeName(recipeDto.getRecipeName());
-        if (recipeOp.isPresent()) {
+        if (recipeRepository.existsRecipeByRecipeName(recipeDto.recipeName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Recipe with such name already exists!");
         }
 
-        Recipe recipe = recipeMapper.recipeDtoToEntity(recipeDto);
-        RecipeCalculatedParameters calculatedParameters = new RecipeCalculatedParameters();
+        Recipe recipe = recipeMapper.mapRecipeDtoToEntity(recipeDto);
+        RecipeCalculatedParameter calculatedParameters = new RecipeCalculatedParameter();
 
         calculatedParameters = recipeCalculatedParametersRepository.save(calculatedParameters);
-        recipe.setRecipeCalculatedParameters(calculatedParameters);
+        recipe.setRecipeCalculatedParameter(calculatedParameters);
         recipe = recipeRepository.save(recipe);
         calculatedParameters.setRecipe(recipe);
-        recipeCalculatedParametersRepository.save(calculatedParameters);
 
-        return recipeMapper.recipeToDto(recipe);
+        return recipeMapper.mapRecipeToDto(recipe);
     }
 
     @Override
     public RecipeDto updateRecipe(RecipeDto recipeDto) {
 
-        Optional recipeOp = recipeRepository.findById(UUID.fromString(recipeDto.getId()));
+        Optional recipeOp = recipeRepository.findById(recipeDto.id());
 
-        if (recipeOp.isPresent()) {
-            RecipeCalculatedParameters recipeCalculatedParameters =
-                    recipeCalculatedParametersRepository.findByRecipe((Recipe) recipeOp.get());
-
-            Recipe recipe = recipeMapper.recipeDtoToEntity(recipeDto);
-            recipe.setRecipeCalculatedParameters(recipeCalculatedParameters);
-            recipe = recipeRepository.save(recipe);
-            return recipeMapper.recipeToDto(recipe);
-        } else {
+        if (!recipeOp.isPresent())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity with such id not found in database");
-        }
+
+        RecipeCalculatedParameter recipeCalculatedParameter =
+                recipeCalculatedParametersRepository.findByRecipe((Recipe) recipeOp.get());
+
+        Recipe recipe = recipeMapper.mapRecipeDtoToEntity(recipeDto);
+        recipe.setRecipeCalculatedParameter(recipeCalculatedParameter);
+        recipe = recipeRepository.save(recipe);
+
+        return recipeMapper.mapRecipeToDto(recipe);
     }
 
     @Override
     public List<RecipeDto> getAllRecipes() {
-        return recipeMapper.recipeListToDtoList(recipeRepository.findAll());
+        return recipeMapper.mapRecipeListToDtoList(recipeRepository.findAll());
     }
 
     @Override
     public List<RecipeDto> getAllPublicRecipes() {
-        return recipeMapper.recipeListToDtoList(recipeRepository.findAllByIsPublic(true));
+        return recipeMapper.mapRecipeListToDtoList(recipeRepository.findAllByIsPublic(true));
     }
 
     @Override
     public RecipeDto getRecipeById(UUID recipeId) {
         Optional<Recipe> recipeOp = recipeRepository.findById(recipeId);
-        if (recipeOp.isPresent()) {
-            return recipeMapper.recipeToDto((Recipe) recipeOp.get());
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity with such id not found in database");
-        }
+
+        return recipeOp.map(recipeMapper::mapRecipeToDto).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("entity with id: %s not found in database", recipeId.toString())));
     }
 
     @Override
-    public HttpStatus deleteRecipe(RecipeDto recipeDto) {
-        Optional recipeOp = recipeRepository.findById(UUID.fromString(recipeDto.getId()));
+    public void deleteRecipe(UUID id) {
+        Optional <Recipe>recipeOp = recipeRepository.findById(id);
 
-        if (recipeOp.isPresent()) {
-            Recipe recipe = (Recipe) recipeOp.get();
-            RecipeCalculatedParameters parameters = recipeCalculatedParametersRepository.findByRecipe(recipe);
+        if (!recipeOp.isPresent())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("entity with id: %s not found in database", id.toString()));
 
-            parameters.setRecipe(null);
-            recipe.setRecipeCalculatedParameters(null);
+        Recipe recipe = recipeOp.get();
+        RecipeCalculatedParameter parameters = recipeCalculatedParametersRepository.findByRecipe(recipe);
 
-            recipe = recipeRepository.save(recipe);
-            parameters = recipeCalculatedParametersRepository.save(parameters);
+        recipe = recipeRepository.save(recipe);
+        parameters = recipeCalculatedParametersRepository.save(parameters);
 
-            recipeRepository.delete(recipe);
-            recipeCalculatedParametersRepository.delete(parameters);
-
-            return HttpStatus.NO_CONTENT;
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity with such id not found in database");
-        }
+        recipeRepository.delete(recipe);
+        recipeCalculatedParametersRepository.delete(parameters);
     }
 }

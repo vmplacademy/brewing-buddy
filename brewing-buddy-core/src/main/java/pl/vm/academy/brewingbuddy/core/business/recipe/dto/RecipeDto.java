@@ -6,40 +6,38 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.BeerStyle;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class RecipeDto {
-    private String id;
-    private Boolean isPublic;
-    @NotNull
-    @NotBlank
-    private String recipeName;
-    private BeerStyle beerStyle;
-    @DecimalMin("1")
-    @DecimalMax("1000")
-    private BigDecimal expectedAmountOfBeerInLiters;
-    @DecimalMin("10")
-    @DecimalMax("100")
-    private BigDecimal boilingProcessTime;
-    @DecimalMin("1")
-    @DecimalMax("99")
-    private BigDecimal waterEvaporationInPercentagePerHour;
-    @DecimalMin("1")
-    @DecimalMax("99")
-    private BigDecimal boilingProcessLossInPercentage;
-    @DecimalMin("1")
-    @DecimalMax("99")
-    private BigDecimal fermentationProcessLossInPercentage;
-    private CalculatedParametersDto calculatedParametersDto;
+public record RecipeDto (
+        UUID id,
+        boolean isPublic,
+        @NotNull
+        @NotBlank
+        String recipeName,
+        BeerStyle beerStyle,
+        @DecimalMin("1")
+        @DecimalMax("1000")
+        BigDecimal expectedAmountOfBeerInLiters,
+        @DecimalMin("10")
+        @DecimalMax("100")
+        BigDecimal boilingProcessTime,
+        @DecimalMin("1")
+        @DecimalMax("99")
+        BigDecimal waterEvaporationInPercentagePerHour,
+        @DecimalMin("1")
+        @DecimalMax("99")
+        BigDecimal boilingProcessLossInPercentage,
+        @DecimalMin("1")
+        @DecimalMax("99")
+        BigDecimal fermentationProcessLossInPercentage,
+        CalculatedParametersDto calculatedParametersDto
+) {}
 
-}
+
+

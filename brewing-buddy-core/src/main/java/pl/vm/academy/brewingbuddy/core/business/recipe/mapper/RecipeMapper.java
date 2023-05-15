@@ -8,7 +8,6 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @NoArgsConstructor
@@ -22,13 +21,14 @@ public class RecipeMapper {
         this.calculatedParametersMapper = calculatedParametersMapper;
     }
 
-    public RecipeDto recipeToDto (Recipe recipe) {
+    public RecipeDto mapRecipeToDto(Recipe recipe) {
 
         if (recipe == null)
             return null;
 
         RecipeDto recipeDto = RecipeDto.builder()
-                .isPublic(recipe.getIsPublic())
+                .id(recipe.getId())
+                .isPublic(recipe.isPublic())
                 .recipeName(recipe.getRecipeName())
                 .beerStyle(recipe.getBeerStyle())
                 .expectedAmountOfBeerInLiters(recipe.getExpectedAmountOfBeerInLiters())
@@ -36,34 +36,34 @@ public class RecipeMapper {
                 .waterEvaporationInPercentagePerHour(recipe.getWaterEvaporationInPercentagePerHour())
                 .boilingProcessLossInPercentage(recipe.getBoilingProcessLossInPercentage())
                 .fermentationProcessLossInPercentage(recipe.getFermentationProcessLossInPercentage())
-                .calculatedParametersDto(calculatedParametersMapper.parametersToDto(recipe.getRecipeCalculatedParameters()))
+                .calculatedParametersDto(calculatedParametersMapper.mapParametersToDto(recipe.getRecipeCalculatedParameter()))
                 .build();
 
         return recipeDto;
     }
 
-    public Recipe recipeDtoToEntity (RecipeDto recipeDto) {
+    public Recipe mapRecipeDtoToEntity(RecipeDto recipeDto) {
 
         if (recipeDto == null)
             return null;
 
         Recipe recipe  = new Recipe();
 
-        if (recipeDto.getId() != null)
-            recipe.setId(UUID.fromString(recipeDto.getId()));
+        if (recipeDto.id() != null)
+            recipe.setId(recipeDto.id());
 
-        recipe.setIsPublic(recipeDto.getIsPublic());
-        recipe.setRecipeName(recipeDto.getRecipeName());
-        recipe.setBeerStyle(recipeDto.getBeerStyle());
-        recipe.setExpectedAmountOfBeerInLiters(recipeDto.getExpectedAmountOfBeerInLiters());
-        recipe.setBoilingProcessTime(recipeDto.getBoilingProcessTime());
-        recipe.setWaterEvaporationInPercentagePerHour(recipeDto.getWaterEvaporationInPercentagePerHour());
-        recipe.setBoilingProcessLossInPercentage(recipeDto.getBoilingProcessLossInPercentage());
-        recipe.setFermentationProcessLossInPercentage(recipeDto.getFermentationProcessLossInPercentage());
+        recipe.setPublic(recipeDto.isPublic());
+        recipe.setRecipeName(recipeDto.recipeName());
+        recipe.setBeerStyle(recipeDto.beerStyle());
+        recipe.setExpectedAmountOfBeerInLiters(recipeDto.expectedAmountOfBeerInLiters());
+        recipe.setBoilingProcessTime(recipeDto.boilingProcessTime());
+        recipe.setWaterEvaporationInPercentagePerHour(recipeDto.waterEvaporationInPercentagePerHour());
+        recipe.setBoilingProcessLossInPercentage(recipeDto.boilingProcessLossInPercentage());
+        recipe.setFermentationProcessLossInPercentage(recipeDto.fermentationProcessLossInPercentage());
         return recipe;
     }
 
-    public List<RecipeDto> recipeListToDtoList (List<Recipe> recipeList) {
-        return recipeList.stream().map(recipe -> recipeToDto(recipe)).toList();
+    public List<RecipeDto> mapRecipeListToDtoList(List<Recipe> recipeList) {
+        return recipeList.stream().map(recipe -> mapRecipeToDto(recipe)).toList();
     }
 }

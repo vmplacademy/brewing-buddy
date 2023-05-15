@@ -21,8 +21,8 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "t_recipe_calculated_parameters")
-public class RecipeCalculatedParameters {
+@Table(name = "t_recipe_calculated_parameter")
+public class RecipeCalculatedParameter {
 
     @Id
     @GeneratedValue
@@ -45,7 +45,4 @@ public class RecipeCalculatedParameters {
     private BigDecimal calculatedColourEBC;
     private BigDecimal calculatedExtractInPercentage;
     private BigDecimal estimatedAmountOfAlcoholAfterFermentation;
-
-
-
 }
