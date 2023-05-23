@@ -74,23 +74,15 @@ public class RecipeServiceAdapter implements RecipeService {
         Optional<Recipe> recipeOp = recipeRepository.findById(recipeId);
 
         return recipeOp.map(recipeMapper::mapRecipeToDto).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("entity with id: %s not found in database", recipeId.toString())));
+                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("entity with id: %s not found in database", recipeId)));
     }
 
     @Override
     public void deleteRecipe(UUID id) {
-        Optional <Recipe>recipeOp = recipeRepository.findById(id);
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("entity with id: %s not found in database", id)));
 
-        if (!recipeOp.isPresent())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("entity with id: %s not found in database", id.toString()));
-
-        Recipe recipe = recipeOp.get();
-        RecipeCalculatedParameter parameters = recipeCalculatedParametersRepository.findByRecipe(recipe);
-
-        recipe = recipeRepository.save(recipe);
-        parameters = recipeCalculatedParametersRepository.save(parameters);
-
+        recipeCalculatedParametersRepository.delete(recipeCalculatedParametersRepository.findByRecipe(recipe));
         recipeRepository.delete(recipe);
-        recipeCalculatedParametersRepository.delete(parameters);
     }
 }

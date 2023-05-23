@@ -11,18 +11,18 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeReposito
 class RecipeConfiguration {
 
     @Bean
-    RecipeFacade recipeFacade(RecipeRepository recipeRepository,
-                              RecipeCalculatedParametersRepository recipeCalculatedParametersRepository) {
+    RecipeFacadeAdapter recipeFacade(RecipeRepository recipeRepository,
+                                     RecipeCalculatedParametersRepository recipeCalculatedParametersRepository) {
 
         CalculatedParametersMapper calculatedParametersMapper = new CalculatedParametersMapper();
 
-        RecipeMapper recipeMapper = new RecipeMapper(recipeRepository, calculatedParametersMapper);
+        RecipeMapper recipeMapper = new RecipeMapper(calculatedParametersMapper);
 
         RecipeServiceAdapter recipeService = new RecipeServiceAdapter(recipeRepository,
                 recipeCalculatedParametersRepository,
                 recipeMapper,
                 calculatedParametersMapper);
 
-        return new RecipeFacade(recipeService);
+        return new RecipeFacadeAdapter(recipeService);
     }
 }

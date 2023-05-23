@@ -1,32 +1,21 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.mapper;
 
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
-import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 
 import java.util.List;
 
-@Component
-@NoArgsConstructor
+@AllArgsConstructor
 public class RecipeMapper {
-    RecipeRepository recipeRepository;
-    CalculatedParametersMapper calculatedParametersMapper;
-
-    @Autowired
-    public RecipeMapper(RecipeRepository recipeRepository, CalculatedParametersMapper calculatedParametersMapper) {
-        this.recipeRepository = recipeRepository;
-        this.calculatedParametersMapper = calculatedParametersMapper;
-    }
+    private final CalculatedParametersMapper calculatedParametersMapper;
 
     public RecipeDto mapRecipeToDto(Recipe recipe) {
 
         if (recipe == null)
             return null;
 
-        RecipeDto recipeDto = RecipeDto.builder()
+        return RecipeDto.builder()
                 .id(recipe.getId())
                 .isPublic(recipe.isPublic())
                 .recipeName(recipe.getRecipeName())
@@ -38,8 +27,6 @@ public class RecipeMapper {
                 .fermentationProcessLossInPercentage(recipe.getFermentationProcessLossInPercentage())
                 .calculatedParametersDto(calculatedParametersMapper.mapParametersToDto(recipe.getRecipeCalculatedParameter()))
                 .build();
-
-        return recipeDto;
     }
 
     public Recipe mapRecipeDtoToEntity(RecipeDto recipeDto) {
@@ -64,6 +51,6 @@ public class RecipeMapper {
     }
 
     public List<RecipeDto> mapRecipeListToDtoList(List<Recipe> recipeList) {
-        return recipeList.stream().map(recipe -> mapRecipeToDto(recipe)).toList();
+        return recipeList.stream().map(this::mapRecipeToDto).toList();
     }
 }

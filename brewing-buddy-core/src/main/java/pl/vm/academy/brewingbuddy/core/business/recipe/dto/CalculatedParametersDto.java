@@ -15,11 +15,8 @@ public record CalculatedParametersDto(
         BigDecimal amountOfWaterBeforeBoilingInLiters,
         BigDecimal extractBeforeBoilingInPercentage,
         BigDecimal amountOfHotWort,
-
         BigDecimal calculatedIbu,
         BigDecimal calculatedColourEBC,
         BigDecimal calculatedExtractInPercentage,
         BigDecimal estimatedAmountOfAlcoholAfterFermentation
 ) {}
-
-
