@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeFacadeAdapter;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 
@@ -48,5 +49,10 @@ public class RecipeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRecipe (@PathVariable UUID id) {
         recipeFacadeAdapter.deleteRecipe(id);
+    }
+
+    @PostMapping("/recipe-hop")
+    public RecipeHopDto addHopToRecipe(@Valid @RequestBody RecipeHopDto recipeHopDto) {
+        return recipeFacadeAdapter.addHopToRecipe(recipeHopDto);
     }
 }

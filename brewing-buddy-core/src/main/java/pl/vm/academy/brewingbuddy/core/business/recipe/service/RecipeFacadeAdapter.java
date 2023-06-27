@@ -3,7 +3,8 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
-import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +39,10 @@ public class RecipeFacadeAdapter implements RecipeFacade{
 
     public RecipeDto getRecipeById(UUID recipeId) {
         return recipeService.getRecipeById(recipeId);
+    }
+
+    public RecipeHopDto addHopToRecipe(RecipeHopDto recipeHopDto){
+        return recipeService.addHopToRecipe(recipeHopDto);
     }
 
 }

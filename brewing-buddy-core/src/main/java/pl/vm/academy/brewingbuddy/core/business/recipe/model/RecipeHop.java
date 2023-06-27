@@ -3,7 +3,6 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,7 +13,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
-import org.springframework.boot.convert.DurationFormat;
 import org.springframework.boot.convert.DurationUnit;
 
 
@@ -36,14 +34,14 @@ public class RecipeHop {
     private Recipe recipe;
 
     @NotNull
-    private Long hopId;
+    private UUID hopId;
 
     @Id
     @GeneratedValue
     @UuidGenerator
     private UUID id;
 
-    private BigDecimal homAmountInGrams;
+    private BigDecimal hopAmountInGrams;
     @DurationUnit(ChronoUnit.MINUTES)
     private Duration boilingTimeInMinutes;
     private BigDecimal hopUtilizationInPercentage;

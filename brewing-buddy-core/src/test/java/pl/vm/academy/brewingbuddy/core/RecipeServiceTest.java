@@ -19,16 +19,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.CalculatedParametersMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeHopMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeHop;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeCalculatedParametersRepository;
+import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeHopRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeService;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeServiceAdapter;
 
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +50,13 @@ public class RecipeServiceTest {
     private RecipeCalculatedParametersRepository recipeCalculatedParametersRepository;
 
     @Mock
+    private RecipeHopRepository recipeHopRepository;
+
+    @Mock
     private RecipeMapper recipeMapper;
+
+    @Mock
+    RecipeHopMapper recipeHopMapper;
 
     @Mock
     private CalculatedParametersMapper calculatedParametersMapper;
@@ -56,8 +68,10 @@ public class RecipeServiceTest {
         recipeService = new RecipeServiceAdapter(
                 recipeRepository,
                 recipeCalculatedParametersRepository,
+                recipeHopRepository,
                 recipeMapper,
-                calculatedParametersMapper
+                calculatedParametersMapper,
+                recipeHopMapper
         );
     }
 
@@ -66,9 +80,9 @@ public class RecipeServiceTest {
     class SaveRecipeTest {
 
         @Test
-        public void should_save_one_recipe() {
+        void should_save_one_recipe() {
             //given
-            RecipeMapper converter = new RecipeMapper();
+            RecipeMapper converter = new RecipeMapper(calculatedParametersMapper);
 
             RecipeDto recipeDto = RecipeDto.builder().recipeName("good IPA").build();
             Recipe recipe = new Recipe();
@@ -90,7 +104,7 @@ public class RecipeServiceTest {
 
 
         @Test
-        public void should_throw_exception_when_recipe_with_such_name_already_exists() {
+        void should_throw_exception_when_recipe_with_such_name_already_exists() {
             //given
             Recipe recipeInRepo = new Recipe();
             recipeInRepo.setRecipeName("recipe");
@@ -117,7 +131,7 @@ public class RecipeServiceTest {
     class FindAllRecipesTest {
 
         @Test
-        public void should_find_and_return_all_recipes() {
+        void should_find_and_return_all_recipes() {
             // given
             Recipe recipe1 = new Recipe();
             Recipe recipe2 = new Recipe();
@@ -139,8 +153,8 @@ public class RecipeServiceTest {
             List<RecipeDto> returnedRecipeDtoList = recipeService.getAllPublicRecipes();
 
             // then
-            assertEquals(returnedRecipeDtoList.size(), 2);
-            assertEquals(returnedRecipeDtoList.get(0).recipeName(), "recipe1");
+            assertEquals(2, returnedRecipeDtoList.size());
+            assertEquals("recipe1", returnedRecipeDtoList.get(0).recipeName());
 
         }
     }
@@ -150,7 +164,7 @@ public class RecipeServiceTest {
     class FindRecipeByIdTest {
 
         @Test
-        public void should_find_and_return_one_recipe_by_its_id() {
+        void should_find_and_return_one_recipe_by_its_id() {
             //given
             UUID recipeId = UUID.fromString("ec60c78e-dc5e-11ed-afa1-0242ac120002");
             Recipe recipeInDB = createRecipe(recipeId);
@@ -170,7 +184,7 @@ public class RecipeServiceTest {
         }
 
         @Test
-        public void should_throw_exception_when_recipe_with_such_id_is_not_in_db() {
+        void should_throw_exception_when_recipe_with_such_id_is_not_in_db() {
             //given
             UUID recipeId = UUID.fromString("ec60c78e-dc5e-11ed-afa1-0242ac120002");
             RecipeDto inputRecipeDto = createRecipeDto(recipeId);
@@ -186,6 +200,69 @@ public class RecipeServiceTest {
 
             //then
             assertTrue(actualMessage.contains(expectedMessage));
+        }
+    }
+
+    @Nested
+    @DisplayName("Test for adding Hop to recipe")
+    class AddHopToRecipe {
+        @Test
+        void should_throw_exception_when_there_is_no_recipe_with_such_id() {
+            // given
+            RecipeHopDto recipeHopDto = RecipeHopDto.builder().recipeId(UUID.fromString("6186aa41-7ec3-4f8b-a4f4-ab63e7ddc811")).build();
+            when(recipeRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+            // when
+            Exception exception = assertThrows(ResponseStatusException.class, () ->
+                    recipeService.getRecipeById(recipeHopDto.recipeId()));
+
+            String expectedMessage = String.format("entity with id: %s not found in database", recipeHopDto.recipeId().toString());
+            String actualMessage = exception.getMessage();
+
+            // then
+            assertTrue(actualMessage.contains(expectedMessage));
+        }
+
+        @Test void should_add_hop_to_recipe() {
+            // given
+            final UUID RECIPE_ID = UUID.fromString("6186aa41-7ec3-4f8b-a4f4-ab63e7ddc811");
+            final UUID RECIPE_HOP_ID = UUID.fromString("be17d3c2-41f0-4b33-a752-327b8c5709a7");
+            final UUID HOP_ID = UUID.fromString("754061d9-4f97-4a30-a94e-64ffd709055e");
+
+            RecipeHopDto recipeHopDto = RecipeHopDto.builder()
+                    .recipeId(RECIPE_ID)
+                    .hopId(HOP_ID)
+                    .hopUtilizationInPercentage(BigDecimal.valueOf(80))
+                    .hopAmountInGrams(BigDecimal.valueOf(50))
+                    .boilingTimeInMinutes(Duration.ofMinutes(10))
+                    .build();
+
+            Recipe recipeInDB = createRecipe(RECIPE_ID);
+
+            when(recipeRepository.findById(RECIPE_ID)).thenReturn(Optional.of(recipeInDB));
+
+            RecipeHop recipeHop = new RecipeHop();
+            recipeHop.setId(RECIPE_HOP_ID);
+            Recipe recipe = new Recipe();
+            recipe.setId(RECIPE_ID);
+            recipeHop.setRecipe(recipe);
+            when(recipeHopMapper.mapRecipeHopDtoToEntity(any(RecipeHopDto.class))).thenReturn(recipeHop);
+
+            when(recipeHopRepository.save(any(RecipeHop.class))).thenReturn(recipeHop);
+
+            when(recipeHopMapper.mapRecipeHopToDto(any(RecipeHop.class))).thenReturn(RecipeHopDto.builder()
+                    .hopId(HOP_ID)
+                    .recipeId(RECIPE_ID)
+                    .hopUtilizationInPercentage(BigDecimal.valueOf(80))
+                    .hopAmountInGrams(BigDecimal.valueOf(50))
+                    .boilingTimeInMinutes(Duration.ofMinutes(10))
+                    .build());
+            // when
+            RecipeHopDto savedRecipeHopDto = recipeService.addHopToRecipe(recipeHopDto);
+
+            // then
+            assertThat(savedRecipeHopDto).usingRecursiveComparison().isEqualTo(recipeHopDto);
+            verify(recipeHopRepository, times(1)).save(any(RecipeHop.class));
         }
     }
 
