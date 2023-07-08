@@ -51,6 +51,10 @@ public class RecipeMapper {
     }
 
     public List<RecipeDto> mapRecipeListToDtoList(List<Recipe> recipeList) {
+
+        if (recipeList.isEmpty())
+            return null;
+
         return recipeList.stream().map(this::mapRecipeToDto).toList();
     }
 }

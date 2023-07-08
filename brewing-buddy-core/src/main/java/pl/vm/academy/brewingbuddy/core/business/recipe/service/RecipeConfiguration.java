@@ -31,6 +31,13 @@ class RecipeConfiguration {
                 calculatedParametersMapper,
                 recipeHopMapper);
 
+        RecipeIngredientServiceAdapter recipeIngredientServiceAdapter = new RecipeIngredientServiceAdapter(
+                recipeRepository,
+                recipeHopRepository,
+                recipeMapper,
+                recipeHopMapper
+        );
+
         return new RecipeFacadeAdapter(recipeService);
     }
 }

@@ -13,6 +13,7 @@ import java.util.UUID;
 @Transactional
 public class RecipeFacadeAdapter implements RecipeFacade{
     RecipeService recipeService;
+    RecipeIngredientService recipeIngredientService;
     public RecipeFacadeAdapter(RecipeService recipeService) {
         this.recipeService = recipeService;
     }
@@ -41,8 +42,13 @@ public class RecipeFacadeAdapter implements RecipeFacade{
         return recipeService.getRecipeById(recipeId);
     }
 
-    public RecipeHopDto addHopToRecipe(RecipeHopDto recipeHopDto){
-        return recipeService.addHopToRecipe(recipeHopDto);
+    public RecipeDto addHopToRecipe(RecipeHopDto recipeHopDto){
+        return recipeIngredientService.addHopToRecipe(recipeHopDto);
+    }
+
+    @Override
+    public List<RecipeHopDto> getAllRecipeHopFromRecipe(UUID recipeId) {
+        return recipeIngredientService.getAllRecipeHopFromRecipe(recipeId);
     }
 
 }

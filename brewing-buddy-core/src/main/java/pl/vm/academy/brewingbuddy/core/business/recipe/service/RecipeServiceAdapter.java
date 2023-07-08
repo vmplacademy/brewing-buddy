@@ -3,14 +3,12 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.CalculatedParametersMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeHopMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeHop;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeCalculatedParametersRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeHopRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
@@ -91,22 +89,5 @@ public class RecipeServiceAdapter implements RecipeService {
 
         recipeCalculatedParametersRepository.delete(recipeCalculatedParametersRepository.findByRecipe(recipe));
         recipeRepository.delete(recipe);
-    }
-
-    @Override
-    public RecipeHopDto addHopToRecipe(RecipeHopDto recipeHopDto) {
-
-        Recipe recipe = recipeRepository.findById(recipeHopDto.recipeId()).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(ERROR_MESSAGE_RECIPE_ID_NOT_FOUND, recipeHopDto.recipeId())));
-
-        // TODO: check by Ingredient Facade if hop with such id exists
-
-        RecipeHop recipeHop = recipeHopMapper.mapRecipeHopDtoToEntity(recipeHopDto);
-        recipeHop.setRecipe(recipe);
-        recipeHop.setHopId(recipeHopDto.hopId());
-
-        recipeHop = recipeHopRepository.save(recipeHop);
-
-        return recipeHopMapper.mapRecipeHopToDto(recipeHop);
     }
 }

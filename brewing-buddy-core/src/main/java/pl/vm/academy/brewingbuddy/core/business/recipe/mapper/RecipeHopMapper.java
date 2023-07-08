@@ -4,6 +4,8 @@ import lombok.NoArgsConstructor;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeHop;
 
+import java.util.List;
+
 @NoArgsConstructor
 public class RecipeHopMapper {
 
@@ -37,5 +39,9 @@ public class RecipeHopMapper {
         recipeHop.setBoilingTimeInMinutes(recipeHopDto.boilingTimeInMinutes());
 
         return recipeHop;
+    }
+
+    public List<RecipeHopDto> mapRecipeHopListToDtoList (List<RecipeHop> recipeHopList) {
+        return recipeHopList.stream().map(this::mapRecipeHopToDto).toList();
     }
 }

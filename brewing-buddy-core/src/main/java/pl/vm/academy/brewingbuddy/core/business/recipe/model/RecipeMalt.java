@@ -30,7 +30,7 @@ public class RecipeMalt {
     private Recipe recipe;
 
     @NotNull
-    private Long maltId;
+    private UUID maltId;
 
     @Id
     @GeneratedValue

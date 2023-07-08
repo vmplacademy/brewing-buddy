@@ -51,8 +51,13 @@ public class RecipeController {
         recipeFacadeAdapter.deleteRecipe(id);
     }
 
-    @PostMapping("/recipe-hop")
-    public RecipeHopDto addHopToRecipe(@Valid @RequestBody RecipeHopDto recipeHopDto) {
+    @PostMapping("/hops")
+    public RecipeDto addHopToRecipe(@Valid @RequestBody RecipeHopDto recipeHopDto) {
         return recipeFacadeAdapter.addHopToRecipe(recipeHopDto);
+    }
+
+    @GetMapping("/hops/{recipeId}")
+    public List <RecipeHopDto> getAllRecipeHops (@PathVariable UUID recipeId) {
+        return recipeFacadeAdapter.getAllRecipeHopFromRecipe(recipeId);
     }
 }
