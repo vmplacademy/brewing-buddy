@@ -6,6 +6,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
 
 
 import java.util.List;
@@ -72,6 +73,11 @@ public class RecipeFacadeAdapter implements RecipeFacade{
     @Override
     public List<RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe(UUID recipeId) {
         return recipeIngredientService.getAllRecipeExtraIngredientsFromRecipe(recipeId);
+    }
+
+    @Override
+    public RecipeDto addYeastToRecipe(RecipeYeastDto recipeYeastDto) {
+        return recipeIngredientService.addYeastToRecipe(recipeYeastDto);
     }
 
 }

@@ -31,7 +31,7 @@ public class RecipeYeast {
     private Recipe recipe;
 
     @NotNull
-    private Long yeastId;
+    private UUID yeastId;
 
     @Id
     @GeneratedValue

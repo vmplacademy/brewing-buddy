@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeFacadeAdapter;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 
@@ -54,7 +55,7 @@ public class RecipeController {
     }
 
     @PostMapping("/hops")
-    public RecipeDto addHopToRecipe(@RequestBody RecipeHopDto recipeHopDto) {
+    public RecipeDto addHopToRecipe(@Valid @RequestBody RecipeHopDto recipeHopDto) {
         return recipeFacadeAdapter.addHopToRecipe(recipeHopDto);
     }
 
@@ -64,7 +65,7 @@ public class RecipeController {
     }
 
     @PostMapping("/malts")
-    public RecipeDto addMaltToRecipe (@RequestBody RecipeMaltDto recipeMaltDto) {
+    public RecipeDto addMaltToRecipe (@Valid @RequestBody RecipeMaltDto recipeMaltDto) {
         return recipeFacadeAdapter.addMaltToRecipe(recipeMaltDto);
     }
 
@@ -74,12 +75,17 @@ public class RecipeController {
     }
 
     @PostMapping("/extra-ingredients")
-    public RecipeDto addExtraIngredientToRecipe (@RequestBody RecipeExtraIngredientDto recipeExtraIngredientDto) {
+    public RecipeDto addExtraIngredientToRecipe (@Valid @RequestBody RecipeExtraIngredientDto recipeExtraIngredientDto) {
         return recipeFacadeAdapter.addRecipeExtraIngredientToRecipe(recipeExtraIngredientDto);
     }
 
     @GetMapping("/extra-ingredients/{recipeId}")
     public List<RecipeExtraIngredientDto> getAllRecipeExtraIngredients (@PathVariable UUID recipeId) {
         return recipeFacadeAdapter.getAllRecipeExtraIngredientsFromRecipe(recipeId);
+    }
+
+    @PostMapping("/yeast")
+    public RecipeDto addYeastToRecipe (@Valid @RequestBody RecipeYeastDto recipeYeastDto) {
+        return recipeFacadeAdapter.addYeastToRecipe(recipeYeastDto);
     }
 }

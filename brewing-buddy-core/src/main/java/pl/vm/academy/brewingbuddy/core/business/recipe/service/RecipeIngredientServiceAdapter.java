@@ -7,18 +7,22 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeExtraIngredientMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeHopMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMaltMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeYeastMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeExtraIngredient;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeHop;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeMalt;
+import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeYeast;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeExtraIngredientRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeHopRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeMaltRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
+import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeYeastRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,10 +33,12 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     private final RecipeHopRepository recipeHopRepository;
     private final RecipeMaltRepository recipeMaltRepository;
     private final RecipeExtraIngredientRepository recipeExtraIngredientRepository;
+    private final RecipeYeastRepository recipeYeastRepository;
     private final RecipeMapper recipeMapper;
     private final RecipeHopMapper recipeHopMapper;
     private final RecipeMaltMapper recipeMaltMapper;
     private final RecipeExtraIngredientMapper recipeExtraIngredientMapper;
+    private final RecipeYeastMapper recipeYeastMapper;
 
     private static final String ERROR_MESSAGE_RECIPE_ID_NOT_FOUND = "entity with id: %s not found in database";
 
@@ -96,6 +102,18 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
         Recipe recipe = findRecipeById(recipeId);
 
         return recipeExtraIngredientMapper.mapRecipeExtraIngredientListToDtoList(recipeExtraIngredientRepository.findAllByRecipe(recipe));
+    }
+
+    @Override
+    public RecipeDto addYeastToRecipe(RecipeYeastDto recipeYeastDto) {
+        Recipe recipe = findRecipeById(recipeYeastDto.recipeId());
+
+        RecipeYeast recipeYeast = recipeYeastMapper.mapRecipeYeastDtoToEntity(recipeYeastDto);
+        recipeYeast.setRecipe(recipe);
+
+        recipeYeastRepository.save(recipeYeast);
+
+        return recipeMapper.mapRecipeToDto(recipe);
     }
 
     private Recipe findRecipeById (UUID recipeId) {

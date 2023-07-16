@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum UnitMeasure {
     ML ("milliliters"),
+    L ("liters"),
     G ("grams");
 
     private final String unitMeasure;
