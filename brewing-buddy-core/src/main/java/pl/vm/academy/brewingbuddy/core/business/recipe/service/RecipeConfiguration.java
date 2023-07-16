@@ -3,10 +3,12 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.CalculatedParametersMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeExtraIngredientMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeHopMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMaltMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeCalculatedParametersRepository;
+import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeExtraIngredientRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeHopRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeMaltRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
@@ -18,13 +20,15 @@ class RecipeConfiguration {
     RecipeFacadeAdapter recipeFacade(RecipeRepository recipeRepository,
                                      RecipeCalculatedParametersRepository recipeCalculatedParametersRepository,
                                      RecipeHopRepository recipeHopRepository,
-                                     RecipeMaltRepository recipeMaltRepository) {
+                                     RecipeMaltRepository recipeMaltRepository,
+                                     RecipeExtraIngredientRepository recipeExtraIngredientRepository) {
 
         CalculatedParametersMapper calculatedParametersMapper = new CalculatedParametersMapper();
 
         RecipeMapper recipeMapper = new RecipeMapper(calculatedParametersMapper);
         RecipeHopMapper recipeHopMapper = new RecipeHopMapper();
         RecipeMaltMapper recipeMaltMapper = new RecipeMaltMapper();
+        RecipeExtraIngredientMapper recipeExtraIngredientMapper = new RecipeExtraIngredientMapper();
 
         RecipeServiceAdapter recipeService = new RecipeServiceAdapter(
                 recipeRepository,
@@ -34,15 +38,17 @@ class RecipeConfiguration {
                 calculatedParametersMapper,
                 recipeHopMapper);
 
-        RecipeIngredientServiceAdapter recipeIngredientServiceAdapter = new RecipeIngredientServiceAdapter(
+        RecipeIngredientServiceAdapter recipeIngredientService = new RecipeIngredientServiceAdapter(
                 recipeRepository,
                 recipeHopRepository,
                 recipeMaltRepository,
+                recipeExtraIngredientRepository,
                 recipeMapper,
                 recipeHopMapper,
-                recipeMaltMapper
+                recipeMaltMapper,
+                recipeExtraIngredientMapper
         );
 
-        return new RecipeFacadeAdapter(recipeService);
+        return new RecipeFacadeAdapter(recipeService, recipeIngredientService);
     }
 }

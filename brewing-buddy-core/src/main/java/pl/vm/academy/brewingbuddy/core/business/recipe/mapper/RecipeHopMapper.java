@@ -34,6 +34,7 @@ public class RecipeHopMapper {
         if (recipeHopDto.id() != null)
             recipeHop.setId(recipeHopDto.id());
 
+        recipeHop.setHopId(recipeHopDto.hopId());
         recipeHop.setHopAmountInGrams(recipeHopDto.hopAmountInGrams());
         recipeHop.setHopUtilizationInPercentage(recipeHopDto.hopUtilizationInPercentage());
         recipeHop.setBoilingTimeInMinutes(recipeHopDto.boilingTimeInMinutes());

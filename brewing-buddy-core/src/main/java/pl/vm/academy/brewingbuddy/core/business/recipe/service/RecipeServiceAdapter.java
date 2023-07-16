@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 public class RecipeServiceAdapter implements RecipeService {
-    private final static String ERROR_MESSAGE_RECIPE_ID_NOT_FOUND = "entity with id: %s not found in database";
+    private static final String ERROR_MESSAGE_RECIPE_ID_NOT_FOUND = "entity with id: %s not found in database";
 
     private final RecipeRepository recipeRepository;
     private final RecipeCalculatedParametersRepository recipeCalculatedParametersRepository;
@@ -89,5 +89,9 @@ public class RecipeServiceAdapter implements RecipeService {
 
         recipeCalculatedParametersRepository.delete(recipeCalculatedParametersRepository.findByRecipe(recipe));
         recipeRepository.delete(recipe);
+    }
+    private Recipe findRecipe (UUID recipeId) {
+        return recipeRepository.findById(recipeId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(ERROR_MESSAGE_RECIPE_ID_NOT_FOUND, recipeId)));
     }
 }

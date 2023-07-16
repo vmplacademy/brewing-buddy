@@ -3,7 +3,9 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 
 
 import java.util.List;
@@ -14,8 +16,9 @@ import java.util.UUID;
 public class RecipeFacadeAdapter implements RecipeFacade{
     RecipeService recipeService;
     RecipeIngredientService recipeIngredientService;
-    public RecipeFacadeAdapter(RecipeService recipeService) {
+    public RecipeFacadeAdapter(RecipeService recipeService, RecipeIngredientService recipeIngredientService) {
         this.recipeService = recipeService;
+        this.recipeIngredientService = recipeIngredientService;
     }
 
     public RecipeDto createRecipe (RecipeDto recipeDto) {
@@ -49,6 +52,26 @@ public class RecipeFacadeAdapter implements RecipeFacade{
     @Override
     public List<RecipeHopDto> getAllRecipeHopFromRecipe(UUID recipeId) {
         return recipeIngredientService.getAllRecipeHopFromRecipe(recipeId);
+    }
+
+    @Override
+    public RecipeDto addMaltToRecipe(RecipeMaltDto recipeMaltDto) {
+        return recipeIngredientService.addMaltToRecipe(recipeMaltDto);
+    }
+
+    @Override
+    public List<RecipeMaltDto> getAllRecipeMaltsFromRecipe(UUID recipeId) {
+        return recipeIngredientService.getAllRecipeMaltsFromRecipe(recipeId);
+    }
+
+    @Override
+    public RecipeDto addRecipeExtraIngredientToRecipe(RecipeExtraIngredientDto recipeExtraIngredientDto) {
+        return recipeIngredientService.addExtraIngredientToRecipe(recipeExtraIngredientDto);
+    }
+
+    @Override
+    public List<RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe(UUID recipeId) {
+        return recipeIngredientService.getAllRecipeExtraIngredientsFromRecipe(recipeId);
     }
 
 }

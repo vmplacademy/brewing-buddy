@@ -34,6 +34,7 @@ public class RecipeMaltMapper {
         if (recipeMaltDto.id() != null)
             recipeMalt.setId(recipeMaltDto.id());
 
+        recipeMalt.setMaltId(recipeMaltDto.maltId());
         recipeMalt.setMaltAmountInKilos(recipeMaltDto.maltAmountInKilos());
         recipeMalt.setTheoreticalExtractAmountInPercentage(recipeMaltDto.theoreticalExtractAmountInPercentage());
         recipeMalt.setRealExtractAmountInPercentage(recipeMaltDto.realExtractAmountInPercentage());

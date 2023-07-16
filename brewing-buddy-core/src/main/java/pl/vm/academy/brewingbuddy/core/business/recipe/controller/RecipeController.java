@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeFacadeAdapter;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
 
@@ -52,12 +54,32 @@ public class RecipeController {
     }
 
     @PostMapping("/hops")
-    public RecipeDto addHopToRecipe(@Valid @RequestBody RecipeHopDto recipeHopDto) {
+    public RecipeDto addHopToRecipe(@RequestBody RecipeHopDto recipeHopDto) {
         return recipeFacadeAdapter.addHopToRecipe(recipeHopDto);
     }
 
     @GetMapping("/hops/{recipeId}")
     public List <RecipeHopDto> getAllRecipeHops (@PathVariable UUID recipeId) {
         return recipeFacadeAdapter.getAllRecipeHopFromRecipe(recipeId);
+    }
+
+    @PostMapping("/malts")
+    public RecipeDto addMaltToRecipe (@RequestBody RecipeMaltDto recipeMaltDto) {
+        return recipeFacadeAdapter.addMaltToRecipe(recipeMaltDto);
+    }
+
+    @GetMapping("/malts/{recipeId}")
+    public List <RecipeMaltDto> getAllRecipeMalts (@PathVariable UUID recipeId) {
+        return recipeFacadeAdapter.getAllRecipeMaltsFromRecipe(recipeId);
+    }
+
+    @PostMapping("/extra-ingredients")
+    public RecipeDto addExtraIngredientToRecipe (@RequestBody RecipeExtraIngredientDto recipeExtraIngredientDto) {
+        return recipeFacadeAdapter.addRecipeExtraIngredientToRecipe(recipeExtraIngredientDto);
+    }
+
+    @GetMapping("/extra-ingredients/{recipeId}")
+    public List<RecipeExtraIngredientDto> getAllRecipeExtraIngredients (@PathVariable UUID recipeId) {
+        return recipeFacadeAdapter.getAllRecipeExtraIngredientsFromRecipe(recipeId);
     }
 }
