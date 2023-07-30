@@ -43,4 +43,18 @@ public class RecipeMalt {
     private BigDecimal extractionRateInPercentage;
 
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof RecipeMalt))
+            return  false;
+
+        return id != null && id.equals(((RecipeMalt) obj).getId());
+    }
 }

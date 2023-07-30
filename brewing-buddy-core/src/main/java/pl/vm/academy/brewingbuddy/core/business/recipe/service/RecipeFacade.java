@@ -1,37 +1,40 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 
-import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface RecipeFacade {
 
     /**
-     * @param recipeDto
+     * @param recipeSimpleDto
      * @return RecipeDto
      */
-    public RecipeDto createRecipe (RecipeDto recipeDto);
+    public RecipeDetailedDto createRecipe (RecipeSimpleDto recipeSimpleDto);
 
     /**
-     * @param recipeDto
+     * @param recipeSimpleDto
      * @return RecipeDto
      */
-    public RecipeDto updateRecipe (RecipeDto recipeDto) ;
+    public RecipeCalculatedParametersDto updateRecipe (RecipeSimpleDto recipeSimpleDto) ;
 
     /**
      * @return List<RecipeDto>
      */
-    public List<RecipeDto> getAllRecipes();
+    public List<RecipeDetailedDto> getAllRecipes();
 
     /**
      * @return List<RecipeDto>
      */
-    public List<RecipeDto> getAllPublicRecipes ();
+    public List<RecipeDetailedDto> getAllPublicRecipes ();
 
     /**
      * @param recipeId
@@ -42,15 +45,15 @@ public interface RecipeFacade {
      * @return Recipe
      * @param recipeId
      */
-    RecipeDto getRecipeById(UUID recipeId);
+    RecipeDetailedDto getRecipeById(UUID recipeId);
 
-    RecipeDto addHopToRecipe (RecipeHopDto recipeHopDto);
+    RecipeDetailedDto addHopToRecipe (RecipeHopDto recipeHopDto);
 
-    List <RecipeHopDto> getAllRecipeHopFromRecipe (UUID recipeId);
-    RecipeDto addMaltToRecipe (RecipeMaltDto recipeMaltDto);
-    List <RecipeMaltDto> getAllRecipeMaltsFromRecipe (UUID recipeId);
-    RecipeDto addRecipeExtraIngredientToRecipe (RecipeExtraIngredientDto recipeExtraIngredientDto);
-    List<RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe(UUID recipeId);
-    RecipeDto addYeastToRecipe (RecipeYeastDto recipeYeastDto);
+    Set<RecipeHopDto> getAllRecipeHopFromRecipe (UUID recipeId);
+    RecipeDetailedDto addMaltToRecipe (RecipeMaltDto recipeMaltDto);
+    Set <RecipeMaltDto> getAllRecipeMaltsFromRecipe (UUID recipeId);
+    RecipeDetailedDto addRecipeExtraIngredientToRecipe (RecipeExtraIngredientDto recipeExtraIngredientDto);
+    Set<RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe(UUID recipeId);
+    RecipeDetailedDto addYeastToRecipe (RecipeYeastDto recipeYeastDto);
 
 }

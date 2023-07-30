@@ -4,17 +4,14 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-
-import lombok.NoArgsConstructor;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.BeerStyle;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Builder
-public record RecipeDto (
+public record RecipeSimpleDto(
         UUID id,
         boolean isPublic,
         @NotNull
@@ -36,8 +33,5 @@ public record RecipeDto (
         @DecimalMin("1")
         @DecimalMax("99")
         BigDecimal fermentationProcessLossInPercentage,
-        CalculatedParametersDto calculatedParametersDto
+        RecipeCalculatedParametersDto recipeCalculatedParametersDto
 ) {}
-
-
-

@@ -45,4 +45,19 @@ public class RecipeHop {
     @DurationUnit(ChronoUnit.MINUTES)
     private Duration boilingTimeInMinutes;
     private BigDecimal hopUtilizationInPercentage;
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof RecipeHop))
+            return  false;
+
+        return id != null && id.equals(((RecipeHop) obj).getId());
+    }
 }

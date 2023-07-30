@@ -1,22 +1,34 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.mapper;
 
 import lombok.AllArgsConstructor;
-import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
+import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 
 import java.util.List;
 
 @AllArgsConstructor
 public class RecipeMapper {
-    private final CalculatedParametersMapper calculatedParametersMapper;
+    private final RecipeCalculatedParametersMapper recipeCalculatedParametersMapper;
+    private final RecipeHopMapper recipeHopMapper;
+    private final RecipeMaltMapper recipeMaltMapper;
+    private final RecipeExtraIngredientMapper recipeExtraIngredientMapper;
+    private final RecipeYeastMapper recipeYeastMapper;
+    private final RecipeRepository recipeRepository;
 
-    public RecipeDto mapRecipeToDto(Recipe recipe) {
+    public RecipeDetailedDto mapRecipeToDetailedDto(Recipe recipe) {
 
         if (recipe == null)
             return null;
 
-        return RecipeDto.builder()
+        return RecipeDetailedDto.builder()
                 .id(recipe.getId())
+                .userId(recipe.getUserId())
+                .recipeHopDtoSet(recipeHopMapper.mapRecipeHopSetToDtoSet(recipe.getRecipeHops()))
+                .recipeMaltDtoSet(recipeMaltMapper.mapRecipeMaltSetToDtoSet(recipe.getRecipeMalts()))
+                .recipeExtraIngredientDtoSet(recipeExtraIngredientMapper.mapRecipeExtraIngredientSetToDtoSet(recipe.getRecipeExtraIngredients()))
+                .recipeYeastDto(recipeYeastMapper.mapRecipeYeastToDto(recipe.getRecipeYeast()))
                 .isPublic(recipe.isPublic())
                 .recipeName(recipe.getRecipeName())
                 .beerStyle(recipe.getBeerStyle())
@@ -25,36 +37,34 @@ public class RecipeMapper {
                 .waterEvaporationInPercentagePerHour(recipe.getWaterEvaporationInPercentagePerHour())
                 .boilingProcessLossInPercentage(recipe.getBoilingProcessLossInPercentage())
                 .fermentationProcessLossInPercentage(recipe.getFermentationProcessLossInPercentage())
-                .calculatedParametersDto(calculatedParametersMapper.mapParametersToDto(recipe.getRecipeCalculatedParameter()))
+                .recipeCalculatedParametersDto(recipeCalculatedParametersMapper.mapParametersToDto(recipe.getRecipeCalculatedParameter()))
                 .build();
     }
 
-    public Recipe mapRecipeDtoToEntity(RecipeDto recipeDto) {
+    public Recipe mapRecipeSimpleDtoToEntity(RecipeSimpleDto recipeSimpleDto, Recipe recipe) {
 
-        if (recipeDto == null)
+        if (recipeSimpleDto == null)
             return null;
 
-        Recipe recipe  = new Recipe();
+        if (recipe == null)
+            recipe = new Recipe();
 
-        if (recipeDto.id() != null)
-            recipe.setId(recipeDto.id());
-
-        recipe.setPublic(recipeDto.isPublic());
-        recipe.setRecipeName(recipeDto.recipeName());
-        recipe.setBeerStyle(recipeDto.beerStyle());
-        recipe.setExpectedAmountOfBeerInLiters(recipeDto.expectedAmountOfBeerInLiters());
-        recipe.setBoilingProcessTime(recipeDto.boilingProcessTime());
-        recipe.setWaterEvaporationInPercentagePerHour(recipeDto.waterEvaporationInPercentagePerHour());
-        recipe.setBoilingProcessLossInPercentage(recipeDto.boilingProcessLossInPercentage());
-        recipe.setFermentationProcessLossInPercentage(recipeDto.fermentationProcessLossInPercentage());
+        recipe.setPublic(recipeSimpleDto.isPublic());
+        recipe.setRecipeName(recipeSimpleDto.recipeName());
+        recipe.setBeerStyle(recipeSimpleDto.beerStyle());
+        recipe.setExpectedAmountOfBeerInLiters(recipeSimpleDto.expectedAmountOfBeerInLiters());
+        recipe.setBoilingProcessTime(recipeSimpleDto.boilingProcessTime());
+        recipe.setWaterEvaporationInPercentagePerHour(recipeSimpleDto.waterEvaporationInPercentagePerHour());
+        recipe.setBoilingProcessLossInPercentage(recipeSimpleDto.boilingProcessLossInPercentage());
+        recipe.setFermentationProcessLossInPercentage(recipeSimpleDto.fermentationProcessLossInPercentage());
         return recipe;
     }
 
-    public List<RecipeDto> mapRecipeListToDtoList(List<Recipe> recipeList) {
+    public List<RecipeDetailedDto> mapRecipeListToDtoList(List<Recipe> recipeList) {
 
         if (recipeList.isEmpty())
             return null;
 
-        return recipeList.stream().map(this::mapRecipeToDto).toList();
+        return recipeList.stream().map(this::mapRecipeToDetailedDto).toList();
     }
 }

@@ -4,7 +4,8 @@ import lombok.NoArgsConstructor;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeMalt;
 
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public class RecipeMaltMapper {
@@ -43,7 +44,10 @@ public class RecipeMaltMapper {
         return recipeMalt;
     }
 
-    public List<RecipeMaltDto> mapRecipeMaltListToDtoList (List<RecipeMalt> recipeMaltList) {
-        return recipeMaltList.stream().map(this::mapRecipeMaltToDto).toList();
+    public Set<RecipeMaltDto> mapRecipeMaltSetToDtoSet(Set<RecipeMalt> recipeMaltSet) {
+        if (recipeMaltSet == null)
+            return null;
+        else
+            return recipeMaltSet.stream().map(this::mapRecipeMaltToDto).collect(Collectors.toSet());
     }
 }

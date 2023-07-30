@@ -3,7 +3,7 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
@@ -24,7 +24,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeMaltRepo
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeYeastRepository;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -43,77 +43,77 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     private static final String ERROR_MESSAGE_RECIPE_ID_NOT_FOUND = "entity with id: %s not found in database";
 
     @Override
-    public RecipeDto addHopToRecipe(RecipeHopDto recipeHopDto) {
+    public RecipeDetailedDto addHopToRecipe(RecipeHopDto recipeHopDto) {
 
         Recipe recipe = findRecipeById(recipeHopDto.recipeId());
 
         RecipeHop recipeHop = recipeHopMapper.mapRecipeHopDtoToEntity(recipeHopDto);
-        recipeHop.setRecipe(recipe);
+        recipe.addRecipeHop(recipeHop);
 
-        recipeHopRepository.save(recipeHop);
+        recipeRepository.save(recipe);
 
-        return recipeMapper.mapRecipeToDto(recipe);
+        return recipeMapper.mapRecipeToDetailedDto(recipe);
     }
 
     @Override
-    public List<RecipeHopDto> getAllRecipeHopFromRecipe(UUID recipeId) {
+    public Set<RecipeHopDto> getAllRecipeHopFromRecipe(UUID recipeId) {
 
         Recipe recipe = findRecipeById(recipeId);
 
-        return recipeHopMapper.mapRecipeHopListToDtoList(recipeHopRepository.findAllByRecipe(recipe));
+        return recipeHopMapper.mapRecipeHopSetToDtoSet(recipeHopRepository.findAllByRecipe(recipe));
     }
 
     @Override
-    public RecipeDto addMaltToRecipe(RecipeMaltDto recipeMaltDto) {
+    public RecipeDetailedDto addMaltToRecipe(RecipeMaltDto recipeMaltDto) {
 
         Recipe recipe = findRecipeById(recipeMaltDto.recipeId());
 
         RecipeMalt recipeMalt = recipeMaltMapper.mapRecipeMaltDtoToEntity(recipeMaltDto);
-        recipeMalt.setRecipe(recipe);
+        recipe.addRecipeMalt(recipeMalt);
 
-        recipeMaltRepository.save(recipeMalt);
+        recipeRepository.save(recipe);
 
-        return recipeMapper.mapRecipeToDto(recipe);
+        return recipeMapper.mapRecipeToDetailedDto(recipe);
     }
 
     @Override
-    public List<RecipeMaltDto> getAllRecipeMaltsFromRecipe(UUID recipeId) {
+    public Set<RecipeMaltDto> getAllRecipeMaltsFromRecipe(UUID recipeId) {
 
         Recipe recipe = findRecipeById(recipeId);
 
-        return recipeMaltMapper.mapRecipeMaltListToDtoList(recipeMaltRepository.findAllByRecipe(recipe));
+        return recipeMaltMapper.mapRecipeMaltSetToDtoSet(recipeMaltRepository.findAllByRecipe(recipe));
     }
 
     @Override
-    public RecipeDto addExtraIngredientToRecipe(RecipeExtraIngredientDto recipeExtraIngredientDto) {
+    public RecipeDetailedDto addExtraIngredientToRecipe(RecipeExtraIngredientDto recipeExtraIngredientDto) {
 
         Recipe recipe = findRecipeById(recipeExtraIngredientDto.recipeId());
 
         RecipeExtraIngredient recipeExtraIngredient = recipeExtraIngredientMapper.mapRecipeExtraIngredientDtoToEntity(recipeExtraIngredientDto);
-        recipeExtraIngredient.setRecipe(recipe);
+        recipe.addRecipeExtraIngredient(recipeExtraIngredient);
 
-        recipeExtraIngredientRepository.save(recipeExtraIngredient);
+        recipeRepository.save(recipe);
 
-        return recipeMapper.mapRecipeToDto(recipe);
+        return recipeMapper.mapRecipeToDetailedDto(recipe);
     }
 
     @Override
-    public List<RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe(UUID recipeId) {
+    public Set<RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe(UUID recipeId) {
         Recipe recipe = findRecipeById(recipeId);
 
-        return recipeExtraIngredientMapper.mapRecipeExtraIngredientListToDtoList(recipeExtraIngredientRepository.findAllByRecipe(recipe));
+        return recipeExtraIngredientMapper.mapRecipeExtraIngredientSetToDtoSet(recipeExtraIngredientRepository.findAllByRecipe(recipe));
     }
 
     @Override
-    public RecipeDto addYeastToRecipe(RecipeYeastDto recipeYeastDto) {
+    public RecipeDetailedDto addYeastToRecipe(RecipeYeastDto recipeYeastDto) {
         Recipe recipe = findRecipeById(recipeYeastDto.recipeId());
 
         RecipeYeast recipeYeast = recipeYeastMapper.mapRecipeYeastDtoToEntity(recipeYeastDto);
-        recipeYeast.setRecipe(recipe);
+        recipe.setRecipeYeast(recipeYeast);
 
-        recipeYeastRepository.save(recipeYeast);
+        recipeRepository.save(recipe);
 
-        return recipeMapper.mapRecipeToDto(recipe);
+        return recipeMapper.mapRecipeToDetailedDto(recipe);
     }
 
     private Recipe findRecipeById (UUID recipeId) {

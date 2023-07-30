@@ -2,14 +2,17 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
 
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -22,19 +25,19 @@ public class RecipeFacadeAdapter implements RecipeFacade{
         this.recipeIngredientService = recipeIngredientService;
     }
 
-    public RecipeDto createRecipe (RecipeDto recipeDto) {
-        return recipeService.createRecipe(recipeDto);
+    public RecipeDetailedDto createRecipe (RecipeSimpleDto recipeSimpleDto) {
+        return recipeService.createRecipe(recipeSimpleDto);
     }
 
-    public RecipeDto updateRecipe (RecipeDto recipeDto) {
-        return recipeService.updateRecipe(recipeDto);
+    public RecipeCalculatedParametersDto updateRecipe (RecipeSimpleDto recipeSimpleDto) {
+        return recipeService.updateRecipe(recipeSimpleDto);
     }
 
-    public List<RecipeDto> getAllRecipes() {
+    public List<RecipeDetailedDto> getAllRecipes() {
         return recipeService.getAllRecipes();
     }
 
-    public List<RecipeDto> getAllPublicRecipes () {
+    public List<RecipeDetailedDto> getAllPublicRecipes () {
         return recipeService.getAllPublicRecipes();
     }
 
@@ -42,41 +45,41 @@ public class RecipeFacadeAdapter implements RecipeFacade{
         recipeService.deleteRecipe(recipeId);
     }
 
-    public RecipeDto getRecipeById(UUID recipeId) {
+    public RecipeDetailedDto getRecipeById(UUID recipeId) {
         return recipeService.getRecipeById(recipeId);
     }
 
-    public RecipeDto addHopToRecipe(RecipeHopDto recipeHopDto){
+    public RecipeDetailedDto addHopToRecipe(RecipeHopDto recipeHopDto){
         return recipeIngredientService.addHopToRecipe(recipeHopDto);
     }
 
     @Override
-    public List<RecipeHopDto> getAllRecipeHopFromRecipe(UUID recipeId) {
+    public Set<RecipeHopDto> getAllRecipeHopFromRecipe(UUID recipeId) {
         return recipeIngredientService.getAllRecipeHopFromRecipe(recipeId);
     }
 
     @Override
-    public RecipeDto addMaltToRecipe(RecipeMaltDto recipeMaltDto) {
+    public RecipeDetailedDto addMaltToRecipe(RecipeMaltDto recipeMaltDto) {
         return recipeIngredientService.addMaltToRecipe(recipeMaltDto);
     }
 
     @Override
-    public List<RecipeMaltDto> getAllRecipeMaltsFromRecipe(UUID recipeId) {
+    public Set<RecipeMaltDto> getAllRecipeMaltsFromRecipe(UUID recipeId) {
         return recipeIngredientService.getAllRecipeMaltsFromRecipe(recipeId);
     }
 
     @Override
-    public RecipeDto addRecipeExtraIngredientToRecipe(RecipeExtraIngredientDto recipeExtraIngredientDto) {
+    public RecipeDetailedDto addRecipeExtraIngredientToRecipe(RecipeExtraIngredientDto recipeExtraIngredientDto) {
         return recipeIngredientService.addExtraIngredientToRecipe(recipeExtraIngredientDto);
     }
 
     @Override
-    public List<RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe(UUID recipeId) {
+    public Set<RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe(UUID recipeId) {
         return recipeIngredientService.getAllRecipeExtraIngredientsFromRecipe(recipeId);
     }
 
     @Override
-    public RecipeDto addYeastToRecipe(RecipeYeastDto recipeYeastDto) {
+    public RecipeDetailedDto addYeastToRecipe(RecipeYeastDto recipeYeastDto) {
         return recipeIngredientService.addYeastToRecipe(recipeYeastDto);
     }
 

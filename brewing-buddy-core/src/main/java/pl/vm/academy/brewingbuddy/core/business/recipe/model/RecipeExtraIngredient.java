@@ -49,4 +49,19 @@ public class RecipeExtraIngredient {
     private BigDecimal addingTimeDurationFromStartOfSelectedPhase;
     @Enumerated(EnumType.STRING)
     private TimeUnit addingTimeUnit;
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof RecipeExtraIngredient))
+            return  false;
+
+        return id != null && id.equals(((RecipeExtraIngredient) obj).getId());
+    }
 }

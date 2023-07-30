@@ -4,9 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeExtraIngredient;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface RecipeExtraIngredientRepository extends JpaRepository<RecipeExtraIngredient, UUID> {
-    List <RecipeExtraIngredient> findAllByRecipe (Recipe recipe);
+    Set<RecipeExtraIngredient> findAllByRecipe (Recipe recipe);
 }
