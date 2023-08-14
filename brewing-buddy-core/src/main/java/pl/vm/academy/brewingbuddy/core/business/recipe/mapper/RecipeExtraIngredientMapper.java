@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeExtraIngredient;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -48,7 +49,7 @@ public class RecipeExtraIngredientMapper {
 
     public Set<RecipeExtraIngredientDto> mapRecipeExtraIngredientSetToDtoSet (Set<RecipeExtraIngredient> recipeExtraIngredientSet) {
         if (recipeExtraIngredientSet == null)
-            return null;
+            return Collections.emptySet();
         else
             return recipeExtraIngredientSet.stream().map(this::mapRecipeExtraIngredientToDto).collect(Collectors.toSet());
     }

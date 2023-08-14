@@ -15,7 +15,6 @@ public class RecipeMapper {
     private final RecipeMaltMapper recipeMaltMapper;
     private final RecipeExtraIngredientMapper recipeExtraIngredientMapper;
     private final RecipeYeastMapper recipeYeastMapper;
-    private final RecipeRepository recipeRepository;
 
     public RecipeDetailedDto mapRecipeToDetailedDto(Recipe recipe) {
 

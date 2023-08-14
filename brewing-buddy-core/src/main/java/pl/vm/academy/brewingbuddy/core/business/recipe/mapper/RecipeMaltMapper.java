@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeMalt;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,9 +20,6 @@ public class RecipeMaltMapper {
                 .recipeId(recipeMalt.getRecipe().getId())
                 .maltId(recipeMalt.getMaltId())
                 .maltAmountInKilos(recipeMalt.getMaltAmountInKilos())
-                .theoreticalExtractAmountInPercentage(recipeMalt.getTheoreticalExtractAmountInPercentage())
-                .realExtractAmountInPercentage(recipeMalt.getRealExtractAmountInPercentage())
-                .extractionRateInPercentage(recipeMalt.getExtractionRateInPercentage())
                 .build();
     }
 
@@ -37,16 +35,13 @@ public class RecipeMaltMapper {
 
         recipeMalt.setMaltId(recipeMaltDto.maltId());
         recipeMalt.setMaltAmountInKilos(recipeMaltDto.maltAmountInKilos());
-        recipeMalt.setTheoreticalExtractAmountInPercentage(recipeMaltDto.theoreticalExtractAmountInPercentage());
-        recipeMalt.setRealExtractAmountInPercentage(recipeMaltDto.realExtractAmountInPercentage());
-        recipeMalt.setExtractionRateInPercentage(recipeMaltDto.extractionRateInPercentage());
 
         return recipeMalt;
     }
 
     public Set<RecipeMaltDto> mapRecipeMaltSetToDtoSet(Set<RecipeMalt> recipeMaltSet) {
         if (recipeMaltSet == null)
-            return null;
+            return Collections.emptySet();
         else
             return recipeMaltSet.stream().map(this::mapRecipeMaltToDto).collect(Collectors.toSet());
     }

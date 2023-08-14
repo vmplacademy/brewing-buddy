@@ -32,7 +32,7 @@ class RecipeConfiguration {
         RecipeExtraIngredientMapper recipeExtraIngredientMapper = new RecipeExtraIngredientMapper();
         RecipeYeastMapper recipeYeastMapper = new RecipeYeastMapper();
         RecipeMapper recipeMapper = new RecipeMapper(recipeCalculatedParametersMapper, recipeHopMapper, recipeMaltMapper,
-                recipeExtraIngredientMapper, recipeYeastMapper, recipeRepository);
+                recipeExtraIngredientMapper, recipeYeastMapper);
 
         RecipeServiceAdapter recipeService = new RecipeServiceAdapter(
                 recipeRepository,

@@ -50,7 +50,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
         RecipeHop recipeHop = recipeHopMapper.mapRecipeHopDtoToEntity(recipeHopDto);
         recipe.addRecipeHop(recipeHop);
 
-        recipeRepository.save(recipe);
+        recipe = recipeRepository.save(recipe);
 
         return recipeMapper.mapRecipeToDetailedDto(recipe);
     }
@@ -71,7 +71,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
         RecipeMalt recipeMalt = recipeMaltMapper.mapRecipeMaltDtoToEntity(recipeMaltDto);
         recipe.addRecipeMalt(recipeMalt);
 
-        recipeRepository.save(recipe);
+        recipe = recipeRepository.save(recipe);
 
         return recipeMapper.mapRecipeToDetailedDto(recipe);
     }
@@ -92,7 +92,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
         RecipeExtraIngredient recipeExtraIngredient = recipeExtraIngredientMapper.mapRecipeExtraIngredientDtoToEntity(recipeExtraIngredientDto);
         recipe.addRecipeExtraIngredient(recipeExtraIngredient);
 
-        recipeRepository.save(recipe);
+        recipe = recipeRepository.save(recipe);
 
         return recipeMapper.mapRecipeToDetailedDto(recipe);
     }
@@ -111,7 +111,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
         RecipeYeast recipeYeast = recipeYeastMapper.mapRecipeYeastDtoToEntity(recipeYeastDto);
         recipe.setRecipeYeast(recipeYeast);
 
-        recipeRepository.save(recipe);
+        recipe = recipeRepository.save(recipe);
 
         return recipeMapper.mapRecipeToDetailedDto(recipe);
     }

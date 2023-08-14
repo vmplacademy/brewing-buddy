@@ -16,8 +16,5 @@ public record RecipeMaltDto(
         @NotNull
         @NotBlank
         UUID maltId,
-        BigDecimal maltAmountInKilos,
-        BigDecimal theoreticalExtractAmountInPercentage,
-        BigDecimal realExtractAmountInPercentage,
-        BigDecimal extractionRateInPercentage
+        BigDecimal maltAmountInKilos
 ) {}

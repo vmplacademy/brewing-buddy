@@ -87,7 +87,7 @@ public class RecipeServiceTest {
         void should_save_one_recipe() {
             //given
             RecipeMapper converter = new RecipeMapper(recipeCalculatedParametersMapper, recipeHopMapper,
-                    recipeMaltMapper, recipeExtraIngredientMapper, recipeYeastMapper, recipeRepository);
+                    recipeMaltMapper, recipeExtraIngredientMapper, recipeYeastMapper);
 
             RecipeSimpleDto recipeSimpleDto = RecipeSimpleDto.builder().recipeName("good IPA").build();
             RecipeDetailedDto recipeDetailedDto = RecipeDetailedDto.builder().recipeName("good IPA").build();

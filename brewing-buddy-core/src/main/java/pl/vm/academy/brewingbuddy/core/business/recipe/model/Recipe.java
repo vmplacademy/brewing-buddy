@@ -73,6 +73,11 @@ public class Recipe {
     @OneToOne(mappedBy = "recipe", orphanRemoval = true)
     private RecipeYeast recipeYeast;
 
+    public void setRecipeYeast (RecipeYeast recipeYeastInput) {
+        recipeYeast = recipeYeastInput;
+        recipeYeast.setRecipe(this);
+    }
+
     @OneToOne
     private RecipeCalculatedParameter recipeCalculatedParameter;
 

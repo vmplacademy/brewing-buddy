@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeHop;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,10 +44,10 @@ public class RecipeHopMapper {
         return recipeHop;
     }
 
-    public Set<RecipeHopDto> mapRecipeHopSetToDtoSet(Set<RecipeHop> recipeHopList) {
-        if (recipeHopList == null)
-            return null;
+    public Set<RecipeHopDto> mapRecipeHopSetToDtoSet(Set<RecipeHop> recipeHopSet) {
+        if (recipeHopSet == null)
+            return Collections.emptySet();
         else
-            return recipeHopList.stream().map(this::mapRecipeHopToDto).collect(Collectors.toSet());
+            return recipeHopSet.stream().map(this::mapRecipeHopToDto).collect(Collectors.toSet());
     }
 }
