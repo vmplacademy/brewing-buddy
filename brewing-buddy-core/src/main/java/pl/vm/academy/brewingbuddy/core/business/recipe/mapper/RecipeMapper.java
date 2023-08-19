@@ -6,6 +6,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -62,7 +63,7 @@ public class RecipeMapper {
     public List<RecipeDetailedDto> mapRecipeListToDtoList(List<Recipe> recipeList) {
 
         if (recipeList.isEmpty())
-            return null;
+            return new ArrayList<>();
 
         return recipeList.stream().map(this::mapRecipeToDetailedDto).toList();
     }

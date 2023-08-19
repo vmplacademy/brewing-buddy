@@ -37,7 +37,7 @@ public class RecipeExtraIngredientMapper {
         if (recipeExtraIngredientDto.id() != null)
             recipeExtraIngredient.setId(recipeExtraIngredientDto.id());
 
-        recipeExtraIngredient.setExtraIngredientId(recipeExtraIngredient.getExtraIngredientId());
+        recipeExtraIngredient.setExtraIngredientId(recipeExtraIngredientDto.extraIngredientId());
         recipeExtraIngredient.setAmount(recipeExtraIngredientDto.amount());
         recipeExtraIngredient.setUnitMeasure(recipeExtraIngredientDto.unitMeasure());
         recipeExtraIngredient.setAddingPhase(recipeExtraIngredientDto.addingPhase());

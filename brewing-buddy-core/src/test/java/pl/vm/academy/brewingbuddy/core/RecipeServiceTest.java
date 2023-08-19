@@ -228,48 +228,6 @@ public class RecipeServiceTest {
             // then
             assertTrue(actualMessage.contains(expectedMessage));
         }
-
-/*        @Test void should_add_hop_to_recipe() {
-            // given
-            final UUID RECIPE_ID = UUID.fromString("6186aa41-7ec3-4f8b-a4f4-ab63e7ddc811");
-            final UUID RECIPE_HOP_ID = UUID.fromString("be17d3c2-41f0-4b33-a752-327b8c5709a7");
-            final UUID HOP_ID = UUID.fromString("754061d9-4f97-4a30-a94e-64ffd709055e");
-
-            RecipeHopDto recipeHopDto = RecipeHopDto.builder()
-                    .recipeId(RECIPE_ID)
-                    .hopId(HOP_ID)
-                    .hopUtilizationInPercentage(BigDecimal.valueOf(80))
-                    .hopAmountInGrams(BigDecimal.valueOf(50))
-                    .boilingTimeInMinutes(Duration.ofMinutes(10))
-                    .build();
-
-            Recipe recipeInDB = createRecipe(RECIPE_ID);
-
-            when(recipeRepository.findById(RECIPE_ID)).thenReturn(Optional.of(recipeInDB));
-
-            RecipeHop recipeHop = new RecipeHop();
-            recipeHop.setId(RECIPE_HOP_ID);
-            Recipe recipe = new Recipe();
-            recipe.setId(RECIPE_ID);
-            recipeHop.setRecipe(recipe);
-            when(recipeHopMapper.mapRecipeHopDtoToEntity(any(RecipeHopDto.class))).thenReturn(recipeHop);
-
-            when(recipeHopRepository.save(any(RecipeHop.class))).thenReturn(recipeHop);
-
-            when(recipeHopMapper.mapRecipeHopToDto(any(RecipeHop.class))).thenReturn(RecipeHopDto.builder()
-                    .hopId(HOP_ID)
-                    .recipeId(RECIPE_ID)
-                    .hopUtilizationInPercentage(BigDecimal.valueOf(80))
-                    .hopAmountInGrams(BigDecimal.valueOf(50))
-                    .boilingTimeInMinutes(Duration.ofMinutes(10))
-                    .build());
-            // when
-            RecipeDetailedDto savedRecipeDetailedDto = recipeIngredientService.addHopToRecipe(recipeHopDto);
-
-            // then
-            //assertThat(savedRecipeDto).usingRecursiveComparison().isEqualTo(recipeDto);
-            verify(recipeHopRepository, times(1)).save(any(RecipeHop.class));
-        } */
     }
 
     private RecipeDetailedDto createRecipeDto(UUID id) {

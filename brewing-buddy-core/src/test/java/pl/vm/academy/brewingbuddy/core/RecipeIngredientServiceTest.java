@@ -118,7 +118,7 @@ public class RecipeIngredientServiceTest {
 
             // then
             assertThat(recipeDetailedDto.recipeMaltDtoSet().size()).isEqualTo(1);
-            assertThat(recipeDetailedDto.recipeMaltDtoSet().contains(recipeMaltDto));
+            assertThat(recipeDetailedDto.recipeMaltDtoSet()).contains(recipeMaltDto);
             verify(recipeRepository, times(1)).save(any(Recipe.class));
         }
 
@@ -176,7 +176,7 @@ public class RecipeIngredientServiceTest {
 
             // then
             assertThat(recipeDetailedDto.recipeHopDtoSet().size()).isEqualTo(1);
-            assertThat(recipeDetailedDto.recipeHopDtoSet().contains(recipeHopDto));
+            assertThat(recipeDetailedDto.recipeHopDtoSet()).contains(recipeHopDto);
             verify(recipeRepository, times(1)).save(any(Recipe.class));
         }
 
@@ -216,7 +216,6 @@ public class RecipeIngredientServiceTest {
             RecipeExtraIngredientDto recipeExtraIngredientDto = RecipeExtraIngredientDto.builder()
                     .recipeId(UUID.fromString("b1c06205-7ea9-456c-82ac-e9cca2881dac"))
                     .extraIngredientId(UUID.fromString("d4f336b0-f4a7-41f1-8b08-14ed81c4eff8"))
-                    .amount(BigDecimal.valueOf(50))
                     .build();
 
             Recipe recipeFoundInDbWithAddedExtraIngredient = new Recipe();
@@ -234,7 +233,7 @@ public class RecipeIngredientServiceTest {
 
             // then
             assertThat(recipeDetailedDto.recipeExtraIngredientDtoSet().size()).isEqualTo(1);
-            assertThat(recipeDetailedDto.recipeExtraIngredientDtoSet().contains(recipeExtraIngredientDto));
+            assertThat(recipeDetailedDto.recipeExtraIngredientDtoSet()).contains(recipeExtraIngredientDto);
             verify(recipeRepository, times(1)).save(any(Recipe.class));
         }
 
