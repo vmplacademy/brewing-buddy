@@ -7,7 +7,7 @@
         <groupId>pl.vm.academy</groupId>
         <artifactId>brewing-buddy</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+       <!-- <relativePath/> lookup parent from repository -->
     </parent>
 
     <artifactId>brewing-buddy-core</artifactId>
