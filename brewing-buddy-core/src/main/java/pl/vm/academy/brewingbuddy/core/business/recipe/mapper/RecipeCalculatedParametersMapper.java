@@ -9,7 +9,6 @@ public class RecipeCalculatedParametersMapper {
     public RecipeCalculatedParametersDto mapParametersToDto(RecipeCalculatedParameter recipeCalculatedParameter) {
 
         return RecipeCalculatedParametersDto.builder()
-                .mashingFactorInLitersPerKg(recipeCalculatedParameter.getMashingFactorInLitersPerKg())
                 .waterRequiredForMashingInLiters(recipeCalculatedParameter.getWaterRequiredForMashingInLiters())
                 .waterRequiredForSpargingInLiters(recipeCalculatedParameter.getWaterRequiredForSpargingInLiters())
                 .amountOfWaterBeforeBoilingInLiters(recipeCalculatedParameter.getWaterRequiredForWholeProcessInLiters())
@@ -20,6 +19,7 @@ public class RecipeCalculatedParametersMapper {
                 .calculatedColourEBC(recipeCalculatedParameter.getCalculatedColourEBC())
                 .calculatedExtractInPercentage(recipeCalculatedParameter.getCalculatedExtractInPercentage())
                 .estimatedAmountOfAlcoholAfterFermentation(recipeCalculatedParameter.getEstimatedAmountOfAlcoholAfterFermentation())
+                .overallAmountOfMaltInKg(recipeCalculatedParameter.getOverallAmountOfMaltInKg())
                 .build();
     }
 }

@@ -33,5 +33,6 @@ public record RecipeSimpleDto(
         @DecimalMin("1")
         @DecimalMax("99")
         BigDecimal fermentationProcessLossInPercentage,
+        BigDecimal mashingFactorInLitersPerKg,
         RecipeCalculatedParametersDto recipeCalculatedParametersDto
 ) {}

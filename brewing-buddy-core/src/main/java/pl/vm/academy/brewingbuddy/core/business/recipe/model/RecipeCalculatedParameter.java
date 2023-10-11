@@ -33,7 +33,6 @@ public class RecipeCalculatedParameter {
     @MapsId
     private Recipe recipe;
 
-    private BigDecimal mashingFactorInLitersPerKg;
     private BigDecimal waterRequiredForMashingInLiters;
     private BigDecimal waterRequiredForSpargingInLiters;
     private BigDecimal waterRequiredForWholeProcessInLiters;
@@ -45,4 +44,6 @@ public class RecipeCalculatedParameter {
     private BigDecimal calculatedColourEBC;
     private BigDecimal calculatedExtractInPercentage;
     private BigDecimal estimatedAmountOfAlcoholAfterFermentation;
+
+    private BigDecimal overallAmountOfMaltInKg;
 }

@@ -38,10 +38,6 @@ public class RecipeMalt {
     private UUID id;
 
     private BigDecimal maltAmountInKilos;
-    private BigDecimal theoreticalExtractAmountInPercentage;
-    private BigDecimal realExtractAmountInPercentage;
-    private BigDecimal extractionRateInPercentage;
-
 
     @Override
     public int hashCode() {

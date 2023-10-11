@@ -92,5 +92,6 @@ public class Recipe {
     private BigDecimal waterEvaporationInPercentagePerHour;
     private BigDecimal boilingProcessLossInPercentage;
     private BigDecimal fermentationProcessLossInPercentage;
+    private BigDecimal mashingFactorInLitersPerKg;
 
 }
