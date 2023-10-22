@@ -15,45 +15,79 @@ import java.util.UUID;
 public interface RecipeFacade {
 
     /**
-     * @param recipeSimpleDto
-     * @return RecipeDto
+     * Returns Dto of created Recipe
+     *
+     * @param recipeSimpleDto  Recipe simple dto
+     * @return RecipeDetailedDto
      */
     public RecipeDetailedDto createRecipe (RecipeSimpleDto recipeSimpleDto);
 
     /**
-     * @param recipeSimpleDto
-     * @return RecipeDto
+     * Returns Dto of calculated parameters of changed recipe
+     *
+     * @param recipeSimpleDto Recipe simple dto
+     * @return RecipeCalculatedParametersDto
      */
     public RecipeCalculatedParametersDto updateRecipe (RecipeSimpleDto recipeSimpleDto) ;
 
     /**
-     * @return List<RecipeDto>
+     * Returns list of all Recipes
+     *
+     * @return List<RecipeDetailedDto>
      */
     public List<RecipeDetailedDto> getAllRecipes();
 
     /**
-     * @return List<RecipeDto>
+     * Returns list of all public Recipes
+     *
+     * @return List<RecipeDetailedDto>
      */
     public List<RecipeDetailedDto> getAllPublicRecipes ();
 
     /**
-     * @param recipeId
+     * Deletes Recipe with given id
+     *
+     * @param recipeId id of recipe
      */
     public void deleteRecipe(UUID recipeId);
 
     /**
-     * @return Recipe
-     * @param recipeId
+     * Returns Dto of Recipe with given id
+     *
+     * @param recipeId id of recipe
+     * @return RecipeDetailedDto
      */
     RecipeDetailedDto getRecipeById(UUID recipeId);
-
+    /**
+     * Adds given hop to Recipe and returns Recipe Dto
+     *
+     * @param recipeHopDto  Dto with recipe id and hop
+     * @return RecipeDetailedDto
+     */
     RecipeDetailedDto addHopToRecipe (RecipeHopDto recipeHopDto);
-
     Set<RecipeHopDto> getAllRecipeHopFromRecipe (UUID recipeId);
+    /**
+     * Adds given malt to Recipe and returns Recipe Dto
+     *
+     * @param recipeMaltDto  Dto with recipe id and malt
+     * @return RecipeDetailedDto
+     */
     RecipeDetailedDto addMaltToRecipe (RecipeMaltDto recipeMaltDto);
     Set <RecipeMaltDto> getAllRecipeMaltsFromRecipe (UUID recipeId);
+    /**
+     * Adds given extra ingredient to Recipe and returns Recipe Dto
+     *
+     * @param recipeExtraIngredientDto  Dto with recipe id and extra ingredient
+     * @return RecipeDetailedDto
+     */
     RecipeDetailedDto addRecipeExtraIngredientToRecipe (RecipeExtraIngredientDto recipeExtraIngredientDto);
     Set<RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe(UUID recipeId);
+    /**
+     * Adds given yeast to Recipe and returns Recipe Dto
+     *
+     * @param recipeYeastDto  Dto with recipe id and yeast
+     * @return RecipeDetailedDto
+     */
     RecipeDetailedDto addYeastToRecipe (RecipeYeastDto recipeYeastDto);
 
 }

@@ -25,17 +25,17 @@ import java.util.UUID;
 @Table(name = "t_recipe_malt")
 public class RecipeMalt {
 
+    @Id
+    @GeneratedValue
+    @UuidGenerator
+    private UUID id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
     @NotNull
     private UUID maltId;
-
-    @Id
-    @GeneratedValue
-    @UuidGenerator
-    private UUID id;
 
     private BigDecimal maltAmountInKilos;
 

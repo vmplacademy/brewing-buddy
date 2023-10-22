@@ -1,8 +1,6 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
@@ -45,7 +43,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     @Override
     public RecipeDetailedDto addHopToRecipe(RecipeHopDto recipeHopDto) {
 
-        Recipe recipe = findRecipeById(recipeHopDto.recipeId());
+        Recipe recipe = findRecipeById(recipeHopDto.recipeId(), recipeRepository);
 
         RecipeHop recipeHop = recipeHopMapper.mapRecipeHopDtoToEntity(recipeHopDto);
         recipe.addRecipeHop(recipeHop);
@@ -58,7 +56,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     @Override
     public Set<RecipeHopDto> getAllRecipeHopFromRecipe(UUID recipeId) {
 
-        Recipe recipe = findRecipeById(recipeId);
+        Recipe recipe = findRecipeById(recipeId, recipeRepository);
 
         return recipeHopMapper.mapRecipeHopSetToDtoSet(recipeHopRepository.findAllByRecipe(recipe));
     }
@@ -66,7 +64,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     @Override
     public RecipeDetailedDto addMaltToRecipe(RecipeMaltDto recipeMaltDto) {
 
-        Recipe recipe = findRecipeById(recipeMaltDto.recipeId());
+        Recipe recipe = findRecipeById(recipeMaltDto.recipeId(), recipeRepository);
 
         RecipeMalt recipeMalt = recipeMaltMapper.mapRecipeMaltDtoToEntity(recipeMaltDto);
         recipe.addRecipeMalt(recipeMalt);
@@ -79,7 +77,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     @Override
     public Set<RecipeMaltDto> getAllRecipeMaltsFromRecipe(UUID recipeId) {
 
-        Recipe recipe = findRecipeById(recipeId);
+        Recipe recipe = findRecipeById(recipeId, recipeRepository);
 
         return recipeMaltMapper.mapRecipeMaltSetToDtoSet(recipeMaltRepository.findAllByRecipe(recipe));
     }
@@ -87,7 +85,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     @Override
     public RecipeDetailedDto addExtraIngredientToRecipe(RecipeExtraIngredientDto recipeExtraIngredientDto) {
 
-        Recipe recipe = findRecipeById(recipeExtraIngredientDto.recipeId());
+        Recipe recipe = findRecipeById(recipeExtraIngredientDto.recipeId(), recipeRepository);
 
         RecipeExtraIngredient recipeExtraIngredient = recipeExtraIngredientMapper.mapRecipeExtraIngredientDtoToEntity(recipeExtraIngredientDto);
         recipe.addRecipeExtraIngredient(recipeExtraIngredient);
@@ -99,14 +97,14 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
 
     @Override
     public Set<RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe(UUID recipeId) {
-        Recipe recipe = findRecipeById(recipeId);
+        Recipe recipe = findRecipeById(recipeId, recipeRepository);
 
         return recipeExtraIngredientMapper.mapRecipeExtraIngredientSetToDtoSet(recipeExtraIngredientRepository.findAllByRecipe(recipe));
     }
 
     @Override
     public RecipeDetailedDto addYeastToRecipe(RecipeYeastDto recipeYeastDto) {
-        Recipe recipe = findRecipeById(recipeYeastDto.recipeId());
+        Recipe recipe = findRecipeById(recipeYeastDto.recipeId(), recipeRepository);
 
         RecipeYeast recipeYeast = recipeYeastMapper.mapRecipeYeastDtoToEntity(recipeYeastDto);
         recipe.setRecipeYeast(recipeYeast);
@@ -116,9 +114,9 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
         return recipeMapper.mapRecipeToDetailedDto(recipe);
     }
 
-    private Recipe findRecipeById (UUID recipeId) {
+    static Recipe findRecipeById (UUID recipeId, RecipeRepository recipeRepository) {
         return recipeRepository.findById(recipeId).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(ERROR_MESSAGE_RECIPE_ID_NOT_FOUND, recipeId)));
+                new IllegalStateException(String.format(ERROR_MESSAGE_RECIPE_ID_NOT_FOUND, recipeId)));
     }
 
 }

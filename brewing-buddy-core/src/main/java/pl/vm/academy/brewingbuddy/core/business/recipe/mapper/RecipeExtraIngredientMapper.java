@@ -16,6 +16,9 @@ public class RecipeExtraIngredientMapper {
         if (recipeExtraIngredient == null)
             return null;
 
+        if (recipeExtraIngredient.getRecipe() == null)
+            return null;
+
         return RecipeExtraIngredientDto
                 .builder()
                 .id(recipeExtraIngredient.getId())
@@ -23,7 +26,7 @@ public class RecipeExtraIngredientMapper {
                 .recipeId(recipeExtraIngredient.getRecipe().getId())
                 .unitMeasure(recipeExtraIngredient.getUnitMeasure())
                 .addingPhase(recipeExtraIngredient.getAddingPhase())
-                .addingTimeDurationFromStartOfSelectedPhase(recipeExtraIngredient.getAddingTimeDurationFromStartOfSelectedPhase())
+                .addingTime(recipeExtraIngredient.getAddingTime())
                 .addingTimeUnit(recipeExtraIngredient.getAddingTimeUnit())
                 .build();
     }
@@ -41,7 +44,7 @@ public class RecipeExtraIngredientMapper {
         recipeExtraIngredient.setAmount(recipeExtraIngredientDto.amount());
         recipeExtraIngredient.setUnitMeasure(recipeExtraIngredientDto.unitMeasure());
         recipeExtraIngredient.setAddingPhase(recipeExtraIngredientDto.addingPhase());
-        recipeExtraIngredient.setAddingTimeDurationFromStartOfSelectedPhase(recipeExtraIngredientDto.addingTimeDurationFromStartOfSelectedPhase());
+        recipeExtraIngredient.setAddingTime(recipeExtraIngredientDto.addingTime());
         recipeExtraIngredient.setAddingTimeUnit(recipeExtraIngredientDto.addingTimeUnit());
 
         return recipeExtraIngredient;
@@ -51,6 +54,8 @@ public class RecipeExtraIngredientMapper {
         if (recipeExtraIngredientSet == null)
             return Collections.emptySet();
         else
-            return recipeExtraIngredientSet.stream().map(this::mapRecipeExtraIngredientToDto).collect(Collectors.toSet());
+            return recipeExtraIngredientSet.stream()
+                    .map(this::mapRecipeExtraIngredientToDto)
+                    .collect(Collectors.toSet());
     }
 }

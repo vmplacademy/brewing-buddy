@@ -26,7 +26,6 @@ public class RecipeCalculatedParameter {
 
     @Id
     @GeneratedValue
-    @UuidGenerator
     private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY)
