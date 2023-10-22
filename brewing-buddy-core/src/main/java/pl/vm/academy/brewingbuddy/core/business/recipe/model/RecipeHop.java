@@ -29,17 +29,17 @@ import java.util.UUID;
 @Table(name = "t_recipe_hop")
 public class RecipeHop {
 
+    @Id
+    @GeneratedValue
+    @UuidGenerator
+    private UUID id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", insertable = false, updatable = false)
     private Recipe recipe;
 
     @NotNull
     private UUID hopId;
-
-    @Id
-    @GeneratedValue
-    @UuidGenerator
-    private UUID id;
 
     private BigDecimal hopAmountInGrams;
     @DurationUnit(ChronoUnit.MINUTES)

@@ -31,58 +31,19 @@ public class Recipe {
     @GeneratedValue
     @UuidGenerator
     private UUID id;
-
     private UUID userId;
-
-    @OneToMany(mappedBy = "recipe", orphanRemoval = true)
+    @OneToMany(mappedBy = "recipe")
     private Set<RecipeMalt> recipeMalts;
-
-    public void addRecipeMalt (RecipeMalt recipeMalt) {
-        recipeMalts.add(recipeMalt);
-        recipeMalt.setRecipe(this);
-    }
-    public void removeRecipeMalt (RecipeMalt recipeMalt) {
-        recipeMalts.remove(recipeMalt);
-        recipeMalt.setRecipe(null);
-    }
-
     @OneToMany(mappedBy = "recipe", orphanRemoval = true)
     private Set<RecipeHop> recipeHops;
-
-    public void addRecipeHop (RecipeHop recipeHop) {
-        recipeHops.add(recipeHop);
-        recipeHop.setRecipe(this);
-    }
-    public void deleteRecipeHop (RecipeHop recipeHop) {
-        recipeHops.remove(recipeHop);
-        recipeHop.setRecipe(null);
-    }
-
     @OneToMany(mappedBy = "recipe", orphanRemoval = true)
     private Set<RecipeExtraIngredient> recipeExtraIngredients;
-
-    public void addRecipeExtraIngredient (RecipeExtraIngredient recipeExtraIngredient) {
-        recipeExtraIngredients.add(recipeExtraIngredient);
-        recipeExtraIngredient.setRecipe(this);
-    }
-    public void deleteRecipeExtraIngredient (RecipeExtraIngredient recipeExtraIngredient) {
-        recipeExtraIngredients.remove(recipeExtraIngredient);
-        recipeExtraIngredient.setRecipe(null);
-    }
-
     @OneToOne(mappedBy = "recipe", orphanRemoval = true)
     private RecipeYeast recipeYeast;
-
-    public void setRecipeYeast (RecipeYeast recipeYeastInput) {
-        recipeYeast = recipeYeastInput;
-        recipeYeast.setRecipe(this);
-    }
-
     @OneToOne
     private RecipeCalculatedParameter recipeCalculatedParameter;
 
     private boolean isPublic;
-
     private String recipeName;
     @Enumerated(EnumType.STRING)
     private BeerStyle beerStyle;
@@ -93,4 +54,37 @@ public class Recipe {
     private BigDecimal boilingProcessLossInPercentage;
     private BigDecimal fermentationProcessLossInPercentage;
 
+    public void addRecipeMalt (RecipeMalt recipeMalt) {
+        recipeMalts.add(recipeMalt);
+        recipeMalt.setRecipe(this);
+    }
+
+    public void removeRecipeMalt (RecipeMalt recipeMalt) {
+        recipeMalts.remove(recipeMalt);
+        recipeMalt.setRecipe(null);
+    }
+
+    public void addRecipeHop (RecipeHop recipeHop) {
+        recipeHops.add(recipeHop);
+        recipeHop.setRecipe(this);
+    }
+
+    public void deleteRecipeHop (RecipeHop recipeHop) {
+        recipeHops.remove(recipeHop);
+        recipeHop.setRecipe(null);
+    }
+
+    public void addRecipeExtraIngredient (RecipeExtraIngredient recipeExtraIngredient) {
+        recipeExtraIngredients.add(recipeExtraIngredient);
+        recipeExtraIngredient.setRecipe(this);
+    }
+    public void deleteRecipeExtraIngredient (RecipeExtraIngredient recipeExtraIngredient) {
+        recipeExtraIngredients.remove(recipeExtraIngredient);
+        recipeExtraIngredient.setRecipe(null);
+    }
+
+    public void setRecipeYeast (RecipeYeast recipeYeastInput) {
+        recipeYeast = recipeYeastInput;
+        recipeYeast.setRecipe(this);
+    }
 }

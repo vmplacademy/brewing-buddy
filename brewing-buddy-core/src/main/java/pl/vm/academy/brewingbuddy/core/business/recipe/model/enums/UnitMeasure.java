@@ -10,5 +10,5 @@ public enum UnitMeasure {
     L ("liters"),
     G ("grams");
 
-    private final String unitMeasure;
+    private final String measureUnit;
 }

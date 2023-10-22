@@ -18,7 +18,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeFacadeAdapter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeFacade;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 
 import java.util.List;
@@ -29,66 +29,66 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/recipes")
 public class RecipeController {
-   private final RecipeFacadeAdapter recipeFacadeAdapter;
+   private final RecipeFacade recipeFacade;
 
     @PostMapping
     public RecipeDetailedDto createRecipe(@Valid @RequestBody RecipeSimpleDto recipeSimpleDto) {
-        return recipeFacadeAdapter.createRecipe(recipeSimpleDto);
+        return recipeFacade.createRecipe(recipeSimpleDto);
     }
 
     @PutMapping
     public RecipeCalculatedParametersDto updateRecipe(@Valid @RequestBody RecipeSimpleDto recipeSimpleDto) {
-        return recipeFacadeAdapter.updateRecipe(recipeSimpleDto);
+        return recipeFacade.updateRecipe(recipeSimpleDto);
     }
 
     @GetMapping
     public List<RecipeDetailedDto> getAllRecipes() {
-        return recipeFacadeAdapter.getAllRecipes();
+        return recipeFacade.getAllRecipes();
     }
 
     @GetMapping("/{id}")
     public RecipeDetailedDto getRecipeById(@PathVariable UUID id) {
-        return recipeFacadeAdapter.getRecipeById(id);
+        return recipeFacade.getRecipeById(id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRecipe (@PathVariable UUID id) {
-        recipeFacadeAdapter.deleteRecipe(id);
+        recipeFacade.deleteRecipe(id);
     }
 
     @PostMapping("/hops")
     public RecipeDetailedDto addHopToRecipe(@Valid @RequestBody RecipeHopDto recipeHopDto) {
-        return recipeFacadeAdapter.addHopToRecipe(recipeHopDto);
+        return recipeFacade.addHopToRecipe(recipeHopDto);
     }
 
-    @GetMapping("/hops/{recipeId}")
+    @GetMapping("/{recipeId}/hops")
     public Set <RecipeHopDto> getAllRecipeHops (@PathVariable UUID recipeId) {
-        return recipeFacadeAdapter.getAllRecipeHopFromRecipe(recipeId);
+        return recipeFacade.getAllRecipeHopFromRecipe(recipeId);
     }
 
     @PostMapping("/malts")
     public RecipeDetailedDto addMaltToRecipe (@Valid @RequestBody RecipeMaltDto recipeMaltDto) {
-        return recipeFacadeAdapter.addMaltToRecipe(recipeMaltDto);
+        return recipeFacade.addMaltToRecipe(recipeMaltDto);
     }
 
-    @GetMapping("/malts/{recipeId}")
+    @GetMapping("/{recipeId}/malts")
     public Set <RecipeMaltDto> getAllRecipeMalts (@PathVariable UUID recipeId) {
-        return recipeFacadeAdapter.getAllRecipeMaltsFromRecipe(recipeId);
+        return recipeFacade.getAllRecipeMaltsFromRecipe(recipeId);
     }
 
     @PostMapping("/extra-ingredients")
     public RecipeDetailedDto addExtraIngredientToRecipe (@Valid @RequestBody RecipeExtraIngredientDto recipeExtraIngredientDto) {
-        return recipeFacadeAdapter.addRecipeExtraIngredientToRecipe(recipeExtraIngredientDto);
+        return recipeFacade.addRecipeExtraIngredientToRecipe(recipeExtraIngredientDto);
     }
 
-    @GetMapping("/extra-ingredients/{recipeId}")
+    @GetMapping("/{recipeId}/extra-ingredients")
     public Set<RecipeExtraIngredientDto> getAllRecipeExtraIngredients (@PathVariable UUID recipeId) {
-        return recipeFacadeAdapter.getAllRecipeExtraIngredientsFromRecipe(recipeId);
+        return recipeFacade.getAllRecipeExtraIngredientsFromRecipe(recipeId);
     }
 
     @PostMapping("/yeast")
     public RecipeDetailedDto addYeastToRecipe (@Valid @RequestBody RecipeYeastDto recipeYeastDto) {
-        return recipeFacadeAdapter.addYeastToRecipe(recipeYeastDto);
+        return recipeFacade.addYeastToRecipe(recipeYeastDto);
     }
 }

@@ -19,6 +19,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.AddingPhase;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.UnitMeasure;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -46,7 +47,7 @@ public class RecipeExtraIngredient {
     private UnitMeasure unitMeasure;
     @Enumerated(EnumType.STRING)
     private AddingPhase addingPhase;
-    private BigDecimal addingTimeDurationFromStartOfSelectedPhase;
+    private Duration addingTime;
     @Enumerated(EnumType.STRING)
     private TimeUnit addingTimeUnit;
 

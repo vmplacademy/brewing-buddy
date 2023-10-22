@@ -30,7 +30,7 @@ public class RecipeServiceAdapter implements RecipeService {
     public RecipeDetailedDto createRecipe(RecipeSimpleDto recipeSimpleDto) {
 
         if (recipeRepository.existsRecipeByRecipeName(recipeSimpleDto.recipeName())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Recipe with such name already exists!");
+            throw new IllegalStateException("Recipe with such name already exists!");
         }
 
         Recipe recipe = recipeMapper.mapRecipeSimpleDtoToEntity(recipeSimpleDto, null);
@@ -47,12 +47,7 @@ public class RecipeServiceAdapter implements RecipeService {
     @Override
     public RecipeCalculatedParametersDto updateRecipe(RecipeSimpleDto recipeSimpleDto) {
 
-        Optional<Recipe> recipeOp = recipeRepository.findById(recipeSimpleDto.id());
-
-        if (recipeOp.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity with such id not found in database");
-
-        Recipe recipe = recipeMapper.mapRecipeSimpleDtoToEntity(recipeSimpleDto, recipeOp.get());
+        Recipe recipe = RecipeIngredientServiceAdapter.findRecipeById(recipeSimpleDto.id(), recipeRepository);
         recipe = recipeRepository.save(recipe);
 
         return recipeCalculatedParametersMapper.mapParametersToDto(recipeCalculatedParametersRepository.findByRecipe(recipe));
@@ -70,22 +65,13 @@ public class RecipeServiceAdapter implements RecipeService {
 
     @Override
     public RecipeDetailedDto getRecipeById(UUID recipeId) {
-        Optional<Recipe> recipeOp = recipeRepository.findById(recipeId);
-
-        return recipeOp.map(recipeMapper::mapRecipeToDetailedDto).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(ERROR_MESSAGE_RECIPE_ID_NOT_FOUND, recipeId)));
+        return recipeMapper.mapRecipeToDetailedDto(RecipeIngredientServiceAdapter.findRecipeById(recipeId, recipeRepository));
     }
 
     @Override
     public void deleteRecipe(UUID id) {
-        Recipe recipe = recipeRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(ERROR_MESSAGE_RECIPE_ID_NOT_FOUND, id)));
-
+        Recipe recipe = RecipeIngredientServiceAdapter.findRecipeById(id, recipeRepository);
         recipeCalculatedParametersRepository.delete(recipeCalculatedParametersRepository.findByRecipe(recipe));
         recipeRepository.delete(recipe);
-    }
-    private Recipe findRecipe (UUID recipeId) {
-        return recipeRepository.findById(recipeId).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(ERROR_MESSAGE_RECIPE_ID_NOT_FOUND, recipeId)));
     }
 }

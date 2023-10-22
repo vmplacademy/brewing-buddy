@@ -33,9 +33,6 @@ public class RecipeHopMapper {
 
         RecipeHop recipeHop = new RecipeHop();
 
-        if (recipeHopDto.id() != null)
-            recipeHop.setId(recipeHopDto.id());
-
         recipeHop.setHopId(recipeHopDto.hopId());
         recipeHop.setHopAmountInGrams(recipeHopDto.hopAmountInGrams());
         recipeHop.setHopUtilizationInPercentage(recipeHopDto.hopUtilizationInPercentage());

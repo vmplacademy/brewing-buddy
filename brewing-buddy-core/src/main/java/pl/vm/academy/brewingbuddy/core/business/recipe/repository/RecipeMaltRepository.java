@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface RecipeMaltRepository extends JpaRepository<RecipeMalt, UUID> {
+
     Set<RecipeMalt> findAllByRecipe(Recipe recipe);
-
-
+    Set<RecipeMalt> findAllByRecipeId(Recipe recipe);
 }

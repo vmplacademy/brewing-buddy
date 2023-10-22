@@ -11,9 +11,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
     List<Recipe> findAllByUserId (UUID userId);
     List<Recipe> findAllByIsPublic (Boolean isPublic);
 
-    Optional<Recipe> findRecipeByRecipeName (String recipeName);
+    Optional<Recipe> findByRecipeName(String recipeName);
 
     boolean existsRecipeByRecipeName (String recipeName);
 
-    boolean existsRecipeById (UUID id);
 }

@@ -12,7 +12,6 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
-import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCalculatedParametersMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeExtraIngredientMapper;
@@ -117,8 +116,8 @@ public class RecipeIngredientServiceTest {
             RecipeDetailedDto recipeDetailedDto = recipeIngredientService.addMaltToRecipe(recipeMaltDto);
 
             // then
-            assertThat(recipeDetailedDto.recipeMaltDtoSet().size()).isEqualTo(1);
-            assertThat(recipeDetailedDto.recipeMaltDtoSet()).contains(recipeMaltDto);
+            assertThat(recipeDetailedDto.recipeMalts().size()).isEqualTo(1);
+            assertThat(recipeDetailedDto.recipeMalts()).contains(recipeMaltDto);
             verify(recipeRepository, times(1)).save(any(Recipe.class));
         }
 
@@ -175,8 +174,8 @@ public class RecipeIngredientServiceTest {
             RecipeDetailedDto recipeDetailedDto = recipeIngredientService.addHopToRecipe(recipeHopDto);
 
             // then
-            assertThat(recipeDetailedDto.recipeHopDtoSet().size()).isEqualTo(1);
-            assertThat(recipeDetailedDto.recipeHopDtoSet()).contains(recipeHopDto);
+            assertThat(recipeDetailedDto.recipeHops().size()).isEqualTo(1);
+            assertThat(recipeDetailedDto.recipeHops()).contains(recipeHopDto);
             verify(recipeRepository, times(1)).save(any(Recipe.class));
         }
 
@@ -232,8 +231,8 @@ public class RecipeIngredientServiceTest {
             RecipeDetailedDto recipeDetailedDto = recipeIngredientService.addExtraIngredientToRecipe(recipeExtraIngredientDto);
 
             // then
-            assertThat(recipeDetailedDto.recipeExtraIngredientDtoSet().size()).isEqualTo(1);
-            assertThat(recipeDetailedDto.recipeExtraIngredientDtoSet()).contains(recipeExtraIngredientDto);
+            assertThat(recipeDetailedDto.recipeExtraIngredients().size()).isEqualTo(1);
+            assertThat(recipeDetailedDto.recipeExtraIngredients()).contains(recipeExtraIngredientDto);
             verify(recipeRepository, times(1)).save(any(Recipe.class));
         }
 
