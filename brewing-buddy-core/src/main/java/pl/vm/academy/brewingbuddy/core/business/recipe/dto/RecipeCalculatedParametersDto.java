@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 
 @Builder
 public record RecipeCalculatedParametersDto(
-        BigDecimal mashingFactorInLitersPerKg,
         BigDecimal waterRequiredForMashingInLiters,
         BigDecimal waterRequiredForSpargingInLiters,
         BigDecimal waterRequiredForWholeProcessInLiters,
@@ -18,5 +17,6 @@ public record RecipeCalculatedParametersDto(
         BigDecimal calculatedIbu,
         BigDecimal calculatedColourEBC,
         BigDecimal calculatedExtractInPercentage,
-        BigDecimal estimatedAmountOfAlcoholAfterFermentation
+        BigDecimal estimatedAmountOfAlcoholAfterFermentation,
+        BigDecimal overallAmountOfMaltInKg
 ) {}

@@ -37,6 +37,7 @@ public class RecipeMapper {
                 .waterEvaporationInPercentagePerHour(recipe.getWaterEvaporationInPercentagePerHour())
                 .boilingProcessLossInPercentage(recipe.getBoilingProcessLossInPercentage())
                 .fermentationProcessLossInPercentage(recipe.getFermentationProcessLossInPercentage())
+                .mashingFactorInLitersPerKg(recipe.getMashingFactorInLitersPerKg())
                 .recipeCalculatedParametersDto(recipeCalculatedParametersMapper.mapParametersToDto(recipe.getRecipeCalculatedParameter()))
                 .build();
     }
@@ -57,6 +58,7 @@ public class RecipeMapper {
         recipe.setWaterEvaporationInPercentagePerHour(recipeSimpleDto.waterEvaporationInPercentagePerHour());
         recipe.setBoilingProcessLossInPercentage(recipeSimpleDto.boilingProcessLossInPercentage());
         recipe.setFermentationProcessLossInPercentage(recipeSimpleDto.fermentationProcessLossInPercentage());
+        recipe.setMashingFactorInLitersPerKg(recipeSimpleDto.mashingFactorInLitersPerKg());
         return recipe;
     }
 

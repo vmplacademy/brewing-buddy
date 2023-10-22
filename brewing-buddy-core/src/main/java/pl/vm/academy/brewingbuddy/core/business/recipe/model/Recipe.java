@@ -53,6 +53,7 @@ public class Recipe {
     private BigDecimal waterEvaporationInPercentagePerHour;
     private BigDecimal boilingProcessLossInPercentage;
     private BigDecimal fermentationProcessLossInPercentage;
+    private BigDecimal mashingFactorInLitersPerKg;
 
     public void addRecipeMalt (RecipeMalt recipeMalt) {
         recipeMalts.add(recipeMalt);

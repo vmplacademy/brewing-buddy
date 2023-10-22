@@ -24,6 +24,7 @@ public record RecipeDetailedDto(
         BigDecimal waterEvaporationInPercentagePerHour,
         BigDecimal boilingProcessLossInPercentage,
         BigDecimal fermentationProcessLossInPercentage,
+        BigDecimal mashingFactorInLitersPerKg,
         RecipeCalculatedParametersDto recipeCalculatedParametersDto
 ) {}
 
