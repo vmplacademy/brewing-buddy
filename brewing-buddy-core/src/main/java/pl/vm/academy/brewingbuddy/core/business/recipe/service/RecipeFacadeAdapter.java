@@ -2,6 +2,7 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeBasicDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
@@ -10,9 +11,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
 
-
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -33,11 +32,11 @@ public class RecipeFacadeAdapter implements RecipeFacade{
         return recipeService.updateRecipe(recipeSimpleDto);
     }
 
-    public List<RecipeDetailedDto> getAllRecipes() {
+    public List<RecipeBasicDto> getAllRecipes() {
         return recipeService.getAllRecipes();
     }
 
-    public List<RecipeDetailedDto> getAllPublicRecipes () {
+    public List<RecipeBasicDto> getAllPublicRecipes () {
         return recipeService.getAllPublicRecipes();
     }
 
@@ -54,18 +53,8 @@ public class RecipeFacadeAdapter implements RecipeFacade{
     }
 
     @Override
-    public Set<RecipeHopDto> getAllRecipeHopFromRecipe(UUID recipeId) {
-        return recipeIngredientService.getAllRecipeHopFromRecipe(recipeId);
-    }
-
-    @Override
     public RecipeDetailedDto addMaltToRecipe(RecipeMaltDto recipeMaltDto) {
         return recipeIngredientService.addMaltToRecipe(recipeMaltDto);
-    }
-
-    @Override
-    public Set<RecipeMaltDto> getAllRecipeMaltsFromRecipe(UUID recipeId) {
-        return recipeIngredientService.getAllRecipeMaltsFromRecipe(recipeId);
     }
 
     @Override
@@ -74,13 +63,7 @@ public class RecipeFacadeAdapter implements RecipeFacade{
     }
 
     @Override
-    public Set<RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe(UUID recipeId) {
-        return recipeIngredientService.getAllRecipeExtraIngredientsFromRecipe(recipeId);
-    }
-
-    @Override
     public RecipeDetailedDto addYeastToRecipe(RecipeYeastDto recipeYeastDto) {
         return recipeIngredientService.addYeastToRecipe(recipeYeastDto);
     }
-
 }

@@ -1,5 +1,6 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeBasicDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
@@ -9,7 +10,6 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public interface RecipeFacade {
@@ -35,14 +35,14 @@ public interface RecipeFacade {
      *
      * @return List<RecipeDetailedDto>
      */
-    public List<RecipeDetailedDto> getAllRecipes();
+    public List<RecipeBasicDto> getAllRecipes();
 
     /**
      * Returns list of all public Recipes
      *
      * @return List<RecipeDetailedDto>
      */
-    public List<RecipeDetailedDto> getAllPublicRecipes ();
+    public List<RecipeBasicDto> getAllPublicRecipes ();
 
     /**
      * Deletes Recipe with given id
@@ -65,7 +65,6 @@ public interface RecipeFacade {
      * @return RecipeDetailedDto
      */
     RecipeDetailedDto addHopToRecipe (RecipeHopDto recipeHopDto);
-    Set<RecipeHopDto> getAllRecipeHopFromRecipe (UUID recipeId);
     /**
      * Adds given malt to Recipe and returns Recipe Dto
      *
@@ -73,7 +72,7 @@ public interface RecipeFacade {
      * @return RecipeDetailedDto
      */
     RecipeDetailedDto addMaltToRecipe (RecipeMaltDto recipeMaltDto);
-    Set <RecipeMaltDto> getAllRecipeMaltsFromRecipe (UUID recipeId);
+
     /**
      * Adds given extra ingredient to Recipe and returns Recipe Dto
      *
@@ -81,7 +80,7 @@ public interface RecipeFacade {
      * @return RecipeDetailedDto
      */
     RecipeDetailedDto addRecipeExtraIngredientToRecipe (RecipeExtraIngredientDto recipeExtraIngredientDto);
-    Set<RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe(UUID recipeId);
+
     /**
      * Adds given yeast to Recipe and returns Recipe Dto
      *

@@ -5,7 +5,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParam
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
 
 @Component
-public class RecipeCalculatedParametersMapper {
+public record RecipeCalculatedParametersMapper() {
     public RecipeCalculatedParametersDto mapParametersToDto(RecipeCalculatedParameter recipeCalculatedParameter) {
 
         return RecipeCalculatedParametersDto.builder()

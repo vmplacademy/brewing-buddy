@@ -1,6 +1,5 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.mapper;
 
-import lombok.NoArgsConstructor;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeMalt;
 
@@ -8,8 +7,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor
-public class RecipeMaltMapper {
+public record RecipeMaltMapper() {
     public RecipeMaltDto mapRecipeMaltToDto(RecipeMalt recipeMalt) {
 
         if (recipeMalt == null)

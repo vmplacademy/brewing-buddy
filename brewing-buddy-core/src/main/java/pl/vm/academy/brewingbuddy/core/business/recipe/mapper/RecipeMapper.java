@@ -1,21 +1,18 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.mapper;
 
-import lombok.AllArgsConstructor;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeBasicDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
-import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
-public class RecipeMapper {
-    private final RecipeCalculatedParametersMapper recipeCalculatedParametersMapper;
-    private final RecipeHopMapper recipeHopMapper;
-    private final RecipeMaltMapper recipeMaltMapper;
-    private final RecipeExtraIngredientMapper recipeExtraIngredientMapper;
-    private final RecipeYeastMapper recipeYeastMapper;
+public record RecipeMapper (RecipeCalculatedParametersMapper recipeCalculatedParametersMapper,
+                            RecipeHopMapper recipeHopMapper,
+                            RecipeMaltMapper recipeMaltMapper,
+                            RecipeExtraIngredientMapper recipeExtraIngredientMapper,
+                            RecipeYeastMapper recipeYeastMapper) {
 
     public RecipeDetailedDto mapRecipeToDetailedDto(Recipe recipe) {
 
@@ -62,11 +59,25 @@ public class RecipeMapper {
         return recipe;
     }
 
-    public List<RecipeDetailedDto> mapRecipeListToDtoList(List<Recipe> recipeList) {
+    public RecipeBasicDto mapRecipeToBasicDto(Recipe recipe) {
+
+        if (recipe == null)
+            return null;
+
+        return RecipeBasicDto.builder()
+                .id(recipe.getId())
+                .userId(recipe.getUserId())
+                .recipeName(recipe.getRecipeName())
+                .beerStyle(recipe.getBeerStyle())
+                .isPublic(recipe.isPublic())
+                .build();
+    }
+
+    public List<RecipeBasicDto> mapRecipeListToBasicDtoList(List<Recipe> recipeList) {
 
         if (recipeList.isEmpty())
             return new ArrayList<>();
 
-        return recipeList.stream().map(this::mapRecipeToDetailedDto).toList();
+        return recipeList.stream().map(this::mapRecipeToBasicDto).toList();
     }
 }

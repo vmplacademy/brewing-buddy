@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeBasicDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
@@ -22,7 +23,6 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeFacade;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -42,7 +42,7 @@ public class RecipeController {
     }
 
     @GetMapping
-    public List<RecipeDetailedDto> getAllRecipes() {
+    public List<RecipeBasicDto> getAllRecipes() {
         return recipeFacade.getAllRecipes();
     }
 
@@ -62,29 +62,14 @@ public class RecipeController {
         return recipeFacade.addHopToRecipe(recipeHopDto);
     }
 
-    @GetMapping("/{recipeId}/hops")
-    public Set <RecipeHopDto> getAllRecipeHops (@PathVariable UUID recipeId) {
-        return recipeFacade.getAllRecipeHopFromRecipe(recipeId);
-    }
-
     @PostMapping("/malts")
     public RecipeDetailedDto addMaltToRecipe (@Valid @RequestBody RecipeMaltDto recipeMaltDto) {
         return recipeFacade.addMaltToRecipe(recipeMaltDto);
     }
 
-    @GetMapping("/{recipeId}/malts")
-    public Set <RecipeMaltDto> getAllRecipeMalts (@PathVariable UUID recipeId) {
-        return recipeFacade.getAllRecipeMaltsFromRecipe(recipeId);
-    }
-
     @PostMapping("/extra-ingredients")
     public RecipeDetailedDto addExtraIngredientToRecipe (@Valid @RequestBody RecipeExtraIngredientDto recipeExtraIngredientDto) {
         return recipeFacade.addRecipeExtraIngredientToRecipe(recipeExtraIngredientDto);
-    }
-
-    @GetMapping("/{recipeId}/extra-ingredients")
-    public Set<RecipeExtraIngredientDto> getAllRecipeExtraIngredients (@PathVariable UUID recipeId) {
-        return recipeFacade.getAllRecipeExtraIngredientsFromRecipe(recipeId);
     }
 
     @PostMapping("/yeast")

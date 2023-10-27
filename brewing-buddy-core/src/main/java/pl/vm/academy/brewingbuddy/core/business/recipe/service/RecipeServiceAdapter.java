@@ -1,8 +1,7 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeBasicDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCalculatedParametersMapper;
@@ -14,7 +13,6 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeCalculat
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -54,13 +52,13 @@ public class RecipeServiceAdapter implements RecipeService {
     }
 
     @Override
-    public List<RecipeDetailedDto> getAllRecipes() {
-        return recipeMapper.mapRecipeListToDtoList(recipeRepository.findAll());
+    public List<RecipeBasicDto> getAllRecipes() {
+        return recipeMapper.mapRecipeListToBasicDtoList(recipeRepository.findAll());
     }
 
     @Override
-    public List<RecipeDetailedDto> getAllPublicRecipes() {
-        return recipeMapper.mapRecipeListToDtoList(recipeRepository.findAllByIsPublic(true));
+    public List<RecipeBasicDto> getAllPublicRecipes() {
+        return recipeMapper.mapRecipeListToBasicDtoList(recipeRepository.findAllByIsPublic(true));
     }
 
     @Override

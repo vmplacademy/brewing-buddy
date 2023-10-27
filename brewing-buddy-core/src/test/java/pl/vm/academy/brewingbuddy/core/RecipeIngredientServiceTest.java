@@ -14,6 +14,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCalculatedParametersMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCommonMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeExtraIngredientMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeHopMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMaltMapper;
@@ -69,6 +70,9 @@ public class RecipeIngredientServiceTest {
             recipeExtraIngredientMapper,
             recipeYeastMapper);
 
+    private RecipeCommonMapper recipeCommonMapper = new RecipeCommonMapper(recipeMapper, recipeHopMapper,
+            recipeMaltMapper, recipeExtraIngredientMapper, recipeYeastMapper, recipeCalculatedParametersMapper);
+
     private RecipeIngredientService recipeIngredientService;
 
     @BeforeEach
@@ -79,11 +83,7 @@ public class RecipeIngredientServiceTest {
                 recipeMaltRepository,
                 recipeExtraIngredientRepository,
                 recipeYeastRepository,
-                recipeMapper,
-                recipeHopMapper,
-                recipeMaltMapper,
-                recipeExtraIngredientMapper,
-                recipeYeastMapper);
+                recipeCommonMapper);
     }
 
     @Nested
