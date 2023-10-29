@@ -134,7 +134,7 @@ public class RecipeIngredientServiceTest {
             when(recipeRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
             // when
-            Exception exception = assertThrows(ResponseStatusException.class, () ->
+            Exception exception = assertThrows(IllegalStateException.class, () ->
                     recipeIngredientService.addMaltToRecipe(recipeMaltDto));
 
             String expectedMessage = String.format("entity with id: %s not found in database", recipeMaltDto.recipeId().toString());
@@ -191,7 +191,7 @@ public class RecipeIngredientServiceTest {
             when(recipeRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
             // when
-            Exception exception = assertThrows(ResponseStatusException.class, () ->
+            Exception exception = assertThrows(IllegalStateException.class, () ->
                     recipeIngredientService.addHopToRecipe(recipeHopDto));
 
             String expectedMessage = String.format("entity with id: %s not found in database", recipeHopDto.recipeId().toString());
@@ -248,7 +248,7 @@ public class RecipeIngredientServiceTest {
             when(recipeRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
             // when
-            Exception exception = assertThrows(ResponseStatusException.class, () ->
+            Exception exception = assertThrows(IllegalStateException.class, () ->
                     recipeIngredientService.addExtraIngredientToRecipe(recipeExtraIngredientDto));
 
             String expectedMessage = String.format("entity with id: %s not found in database", recipeExtraIngredientDto.recipeId().toString());
@@ -303,7 +303,7 @@ public class RecipeIngredientServiceTest {
             when(recipeRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
             // when
-            Exception exception = assertThrows(ResponseStatusException.class, () ->
+            Exception exception = assertThrows(IllegalStateException.class, () ->
                     recipeIngredientService.addYeastToRecipe(recipeYeastDto));
 
             String expectedMessage = String.format("entity with id: %s not found in database", recipeYeastDto.recipeId().toString());

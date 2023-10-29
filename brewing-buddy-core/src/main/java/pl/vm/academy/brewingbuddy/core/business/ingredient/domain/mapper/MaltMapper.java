@@ -3,7 +3,12 @@ package pl.vm.academy.brewingbuddy.core.business.ingredient.domain.mapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.dto.MaltDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Malt;
 
-public class MaltMapper {
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public record MaltMapper() {
     public MaltDto mapMaltToDto (Malt malt) {
 
         if (malt == null)
@@ -32,5 +37,13 @@ public class MaltMapper {
         malt.setMeanColorInEbcScale(maltDto.meanColorInEbcScale());
 
         return malt;
+    }
+
+    public Set<MaltDto> mapMaltsToDtos(List<Malt> malts) {
+        if (malts.isEmpty()) {
+            return new HashSet<>();
+        }
+
+        return malts.stream().map(this::mapMaltToDto).collect(Collectors.toSet());
     }
 }

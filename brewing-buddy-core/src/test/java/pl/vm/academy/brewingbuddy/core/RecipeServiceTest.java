@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeBasicDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCalculatedParametersMapper;
@@ -147,16 +148,16 @@ public class RecipeServiceTest {
             recipeList.add(recipe1);
             recipeList.add(recipe2);
 
-            List<RecipeDetailedDto> recipeDetailedDtoList = new ArrayList<>();
-            RecipeDetailedDto recipeDetailedDto1 = RecipeDetailedDto.builder().recipeName("recipe1").build();
-            RecipeDetailedDto recipeDetailedDto2 = RecipeDetailedDto.builder().recipeName("recipe2").build();
-            recipeDetailedDtoList.add(recipeDetailedDto1);
-            recipeDetailedDtoList.add(recipeDetailedDto2);
+            List<RecipeBasicDto> recipeBasicDtos = new ArrayList<>();
+            RecipeBasicDto recipeBasicDto1 = RecipeBasicDto.builder().recipeName("recipe1").build();
+            RecipeBasicDto recipeBasicDto2 = RecipeBasicDto.builder().recipeName("recipe2").build();
+            recipeBasicDtos.add(recipeBasicDto1);
+            recipeBasicDtos.add(recipeBasicDto2);
 
             when(recipeRepository.findAllByIsPublic(true)).thenReturn(recipeList);
-            when(recipeMapper.mapRecipeListToDtoList(recipeList)).thenReturn(recipeDetailedDtoList);
+            when(recipeMapper.mapRecipeListToBasicDtoList(recipeList)).thenReturn(recipeBasicDtos);
             // when
-            List<RecipeDetailedDto> returnedRecipeDetailedDtoList = recipeService.getAllPublicRecipes();
+            List<RecipeBasicDto> returnedRecipeDetailedDtoList = recipeService.getAllPublicRecipes();
 
             // then
             assertEquals(2, returnedRecipeDetailedDtoList.size());
