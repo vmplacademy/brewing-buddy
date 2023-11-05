@@ -6,9 +6,6 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
 
-import java.util.Set;
-import java.util.UUID;
-
 public interface RecipeIngredientService {
 
     /**
@@ -20,13 +17,6 @@ public interface RecipeIngredientService {
 
     /**
      *
-     * @param recipeId
-     * @return Set<RecipeHopDto>
-     */
-    Set<RecipeHopDto> getAllRecipeHopFromRecipe (UUID recipeId);
-
-    /**
-     *
      * @param recipeMaltDto
      * @return RecipeDetailedDto
      */
@@ -34,24 +24,10 @@ public interface RecipeIngredientService {
 
     /**
      *
-     * @param recipeId
-     * @return Set <RecipeMaltDto>
-     */
-    Set <RecipeMaltDto> getAllRecipeMaltsFromRecipe (UUID recipeId);
-
-    /**
-     *
      * @param recipeExtraIngredientDto
      * @return RecipeDetailedDto
      */
     RecipeDetailedDto addExtraIngredientToRecipe (RecipeExtraIngredientDto recipeExtraIngredientDto);
-
-    /**
-     *
-     * @param recipeId
-     * @return Set <RecipeExtraIngredientDto>
-     */
-    Set <RecipeExtraIngredientDto> getAllRecipeExtraIngredientsFromRecipe (UUID recipeId);
 
     /**
      *

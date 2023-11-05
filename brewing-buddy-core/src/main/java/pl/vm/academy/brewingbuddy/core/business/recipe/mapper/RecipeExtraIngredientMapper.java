@@ -1,6 +1,5 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.mapper;
 
-import lombok.NoArgsConstructor;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeExtraIngredient;
 
@@ -8,8 +7,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor
-public class RecipeExtraIngredientMapper {
+public record RecipeExtraIngredientMapper() {
 
     public RecipeExtraIngredientDto mapRecipeExtraIngredientToDto (RecipeExtraIngredient recipeExtraIngredient) {
 

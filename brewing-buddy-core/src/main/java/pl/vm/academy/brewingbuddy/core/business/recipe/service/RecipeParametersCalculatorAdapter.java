@@ -26,7 +26,7 @@ public class RecipeParametersCalculatorAdapter implements RecipeParametersCalcul
     private void calculateOverallAmountOfMaltInKg (Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
         BigDecimal overallAmountOfMalt = BigDecimal.valueOf(0);
 
-        for (RecipeMaltDto recipeMaltDto : recipeDetailedDto.recipeMaltDtoSet()) {
+        for (RecipeMaltDto recipeMaltDto : recipeDetailedDto.recipeMalts()) {
             overallAmountOfMalt.add(recipeMaltDto.maltAmountInKilos());
         }
         recipe.getRecipeCalculatedParameter().setOverallAmountOfMaltInKg(overallAmountOfMalt);

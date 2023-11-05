@@ -1,11 +1,9 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.mapper;
 
-import lombok.NoArgsConstructor;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeYeast;
 
-@NoArgsConstructor
-public class RecipeYeastMapper {
+public record RecipeYeastMapper() {
     public RecipeYeastDto mapRecipeYeastToDto (RecipeYeast recipeYeast) {
 
         if (recipeYeast == null)

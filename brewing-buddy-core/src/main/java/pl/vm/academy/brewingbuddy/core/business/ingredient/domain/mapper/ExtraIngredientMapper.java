@@ -3,7 +3,12 @@ package pl.vm.academy.brewingbuddy.core.business.ingredient.domain.mapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.dto.ExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.ExtraIngredient;
 
-public class ExtraIngredientMapper {
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public record ExtraIngredientMapper() {
     public ExtraIngredientDto mapExtraIngredientToDto (ExtraIngredient extraIngredient) {
 
         if (extraIngredient == null)
@@ -30,5 +35,14 @@ public class ExtraIngredientMapper {
         extraIngredient.setExtraIngredientType(extraIngredientDto.extraIngredientType());
 
         return extraIngredient;
+    }
+
+    public Set<ExtraIngredientDto> mapExtraIngredientsToDtos (List<ExtraIngredient> extraIngredients) {
+
+        if (extraIngredients.isEmpty()) {
+            return new HashSet<>();
+        }
+
+        return extraIngredients.stream().map(this::mapExtraIngredientToDto).collect(Collectors.toSet());
     }
 }

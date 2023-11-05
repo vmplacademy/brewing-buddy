@@ -3,7 +3,12 @@ package pl.vm.academy.brewingbuddy.core.business.ingredient.domain.mapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.dto.YeastDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Yeast;
 
-public class YeastMapper {
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public record YeastMapper() {
     public YeastDto mapYeastToDto (Yeast yeast) {
 
         if (yeast == null)
@@ -32,5 +37,14 @@ public class YeastMapper {
         yeast.setDescription(yeastDto.description());
 
         return yeast;
+    }
+
+    public Set<YeastDto> mapYeastsToDtos (List<Yeast> yeasts) {
+
+        if (yeasts.isEmpty()) {
+            return new HashSet<>();
+        }
+
+        return yeasts.stream().map(this::mapYeastToDto).collect(Collectors.toSet());
     }
 }

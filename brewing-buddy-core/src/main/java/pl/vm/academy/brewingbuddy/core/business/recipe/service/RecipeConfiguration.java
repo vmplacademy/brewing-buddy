@@ -3,6 +3,7 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCalculatedParametersMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCommonMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeExtraIngredientMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeHopMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMaltMapper;
@@ -33,6 +34,8 @@ class RecipeConfiguration {
         RecipeYeastMapper recipeYeastMapper = new RecipeYeastMapper();
         RecipeMapper recipeMapper = new RecipeMapper(recipeCalculatedParametersMapper, recipeHopMapper, recipeMaltMapper,
                 recipeExtraIngredientMapper, recipeYeastMapper);
+        RecipeCommonMapper recipeCommonMapper = new RecipeCommonMapper(recipeMapper, recipeHopMapper, recipeMaltMapper,
+                recipeExtraIngredientMapper, recipeYeastMapper, recipeCalculatedParametersMapper);
 
         RecipeServiceAdapter recipeService = new RecipeServiceAdapter(
                 recipeRepository,
@@ -46,11 +49,8 @@ class RecipeConfiguration {
                 recipeMaltRepository,
                 recipeExtraIngredientRepository,
                 recipeYeastRepository,
-                recipeMapper,
-                recipeHopMapper,
-                recipeMaltMapper,
-                recipeExtraIngredientMapper,
-                recipeYeastMapper
+                recipeCommonMapper
+
         );
 
         return new RecipeFacadeAdapter(recipeService, recipeIngredientService);

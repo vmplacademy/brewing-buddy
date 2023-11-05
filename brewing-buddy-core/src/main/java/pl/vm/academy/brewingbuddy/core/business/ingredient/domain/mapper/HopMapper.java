@@ -4,7 +4,12 @@ package pl.vm.academy.brewingbuddy.core.business.ingredient.domain.mapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.dto.HopDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Hop;
 
-public class HopMapper {
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public record HopMapper() {
     public HopDto mapHopToDto (Hop hop) {
 
         if (hop == null)
@@ -31,5 +36,14 @@ public class HopMapper {
         hop.setAlfaAcidInPercentage(hopDto.alfaAcidInPercentage());
 
         return hop;
+    }
+
+    public Set<HopDto> mapHopsToDtos (List<Hop> hops) {
+
+        if (hops.isEmpty()) {
+            return new HashSet<>();
+        }
+
+        return hops.stream().map(this::mapHopToDto).collect(Collectors.toSet());
     }
 }
