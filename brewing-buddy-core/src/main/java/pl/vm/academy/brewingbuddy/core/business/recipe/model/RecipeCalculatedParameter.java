@@ -2,7 +2,6 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
@@ -11,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -25,7 +23,6 @@ import java.util.UUID;
 public class RecipeCalculatedParameter {
 
     @Id
-    @GeneratedValue
     private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.AddingPhase;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.UnitMeasure;
+import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.MeasureUnit;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -21,7 +21,7 @@ public record RecipeExtraIngredientDto(
         @NotBlank
         UUID extraIngredientId,
         BigDecimal amount,
-        UnitMeasure unitMeasure,
+        MeasureUnit measureUnit,
         AddingPhase addingPhase,
         Duration addingTime,
         TimeUnit addingTimeUnit

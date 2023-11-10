@@ -16,6 +16,7 @@ import org.hibernate.annotations.UuidGenerator;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.BeerStyle;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,11 +35,11 @@ public class Recipe {
     private UUID userId;
     @OneToMany(mappedBy = "recipe")
     private Set<RecipeMalt> recipeMalts;
-    @OneToMany(mappedBy = "recipe", orphanRemoval = true)
+    @OneToMany(mappedBy = "recipe")
     private Set<RecipeHop> recipeHops;
-    @OneToMany(mappedBy = "recipe", orphanRemoval = true)
+    @OneToMany(mappedBy = "recipe")
     private Set<RecipeExtraIngredient> recipeExtraIngredients;
-    @OneToOne(mappedBy = "recipe", orphanRemoval = true)
+    @OneToOne(mappedBy = "recipe")
     private RecipeYeast recipeYeast;
     @OneToOne
     private RecipeCalculatedParameter recipeCalculatedParameter;
@@ -49,7 +50,7 @@ public class Recipe {
     private BeerStyle beerStyle;
     // required parameters
     private BigDecimal expectedAmountOfBeerInLiters;
-    private BigDecimal boilingProcessTime;
+    private Duration boilingProcessTime;
     private BigDecimal waterEvaporationInPercentagePerHour;
     private BigDecimal boilingProcessLossInPercentage;
     private BigDecimal fermentationProcessLossInPercentage;

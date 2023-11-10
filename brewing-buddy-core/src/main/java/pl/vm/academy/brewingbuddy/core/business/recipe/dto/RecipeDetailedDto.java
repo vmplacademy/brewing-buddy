@@ -5,6 +5,7 @@ import lombok.Builder;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.BeerStyle;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ public record RecipeDetailedDto(
         String recipeName,
         BeerStyle beerStyle,
         BigDecimal expectedAmountOfBeerInLiters,
-        BigDecimal boilingProcessTime,
+        Duration boilingProcessTime,
         BigDecimal waterEvaporationInPercentagePerHour,
         BigDecimal boilingProcessLossInPercentage,
         BigDecimal fermentationProcessLossInPercentage,

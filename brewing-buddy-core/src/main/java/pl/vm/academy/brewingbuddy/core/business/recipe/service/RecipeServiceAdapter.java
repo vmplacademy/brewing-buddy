@@ -45,7 +45,7 @@ public class RecipeServiceAdapter implements RecipeService {
     @Override
     public RecipeCalculatedParametersDto updateRecipe(RecipeSimpleDto recipeSimpleDto) {
 
-        Recipe recipe = RecipeIngredientServiceAdapter.findRecipeById(recipeSimpleDto.id(), recipeRepository);
+        Recipe recipe = findRecipeById(recipeSimpleDto.id(), recipeRepository);
         recipe = recipeRepository.save(recipe);
 
         return recipeCalculatedParametersMapper.mapParametersToDto(recipeCalculatedParametersRepository.findByRecipe(recipe));
@@ -63,13 +63,18 @@ public class RecipeServiceAdapter implements RecipeService {
 
     @Override
     public RecipeDetailedDto getRecipeById(UUID recipeId) {
-        return recipeMapper.mapRecipeToDetailedDto(RecipeIngredientServiceAdapter.findRecipeById(recipeId, recipeRepository));
+        return recipeMapper.mapRecipeToDetailedDto(findRecipeById(recipeId, recipeRepository));
     }
 
     @Override
     public void deleteRecipe(UUID id) {
-        Recipe recipe = RecipeIngredientServiceAdapter.findRecipeById(id, recipeRepository);
+        Recipe recipe = findRecipeById(id, recipeRepository);
         recipeCalculatedParametersRepository.delete(recipeCalculatedParametersRepository.findByRecipe(recipe));
         recipeRepository.delete(recipe);
+    }
+
+    static Recipe findRecipeById (UUID recipeId, RecipeRepository recipeRepository) {
+        return recipeRepository.findById(recipeId).orElseThrow(() ->
+                new IllegalStateException(String.format(ERROR_MESSAGE_RECIPE_ID_NOT_FOUND, recipeId)));
     }
 }

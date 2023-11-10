@@ -1,5 +1,6 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.mapper;
 
+import org.springframework.util.CollectionUtils;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeBasicDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
@@ -16,8 +17,9 @@ public record RecipeMapper (RecipeCalculatedParametersMapper recipeCalculatedPar
 
     public RecipeDetailedDto mapRecipeToDetailedDto(Recipe recipe) {
 
-        if (recipe == null)
+        if (recipe == null) {
             return null;
+        }
 
         return RecipeDetailedDto.builder()
                 .id(recipe.getId())
@@ -41,11 +43,13 @@ public record RecipeMapper (RecipeCalculatedParametersMapper recipeCalculatedPar
 
     public Recipe mapRecipeSimpleDtoToEntity(RecipeSimpleDto recipeSimpleDto, Recipe recipe) {
 
-        if (recipeSimpleDto == null)
+        if (recipeSimpleDto == null) {
             return null;
+        }
 
-        if (recipe == null)
+        if (recipe == null) {
             recipe = new Recipe();
+        }
 
         recipe.setPublic(recipeSimpleDto.isPublic());
         recipe.setRecipeName(recipeSimpleDto.recipeName());
@@ -61,8 +65,9 @@ public record RecipeMapper (RecipeCalculatedParametersMapper recipeCalculatedPar
 
     public RecipeBasicDto mapRecipeToBasicDto(Recipe recipe) {
 
-        if (recipe == null)
+        if (recipe == null) {
             return null;
+        }
 
         return RecipeBasicDto.builder()
                 .id(recipe.getId())
@@ -75,9 +80,12 @@ public record RecipeMapper (RecipeCalculatedParametersMapper recipeCalculatedPar
 
     public List<RecipeBasicDto> mapRecipeListToBasicDtoList(List<Recipe> recipeList) {
 
-        if (recipeList.isEmpty())
+        if (CollectionUtils.isEmpty(recipeList)) {
             return new ArrayList<>();
+        }
 
-        return recipeList.stream().map(this::mapRecipeToBasicDto).toList();
+        return recipeList.stream()
+                .map(this::mapRecipeToBasicDto)
+                .toList();
     }
 }

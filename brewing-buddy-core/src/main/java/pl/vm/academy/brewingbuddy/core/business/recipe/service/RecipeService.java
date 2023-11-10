@@ -21,5 +21,4 @@ public interface RecipeService {
     RecipeCalculatedParametersDto updateRecipe(RecipeSimpleDto recipeSimpleDto);
 
     void deleteRecipe(UUID id);
-
 }

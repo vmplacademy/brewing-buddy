@@ -6,8 +6,9 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeYeast;
 public record RecipeYeastMapper() {
     public RecipeYeastDto mapRecipeYeastToDto (RecipeYeast recipeYeast) {
 
-        if (recipeYeast == null)
+        if (recipeYeast == null) {
             return null;
+        }
 
         return RecipeYeastDto.builder()
                 .id(recipeYeast.getId())
@@ -19,13 +20,15 @@ public record RecipeYeastMapper() {
 
     public RecipeYeast mapRecipeYeastDtoToEntity(RecipeYeastDto recipeYeastDto) {
 
-        if (recipeYeastDto == null)
+        if (recipeYeastDto == null) {
             return null;
+        }
 
         RecipeYeast recipeYeast = new RecipeYeast();
 
-        if (recipeYeastDto.id() != null)
+        if (recipeYeastDto.id() != null) {
             recipeYeast.setId(recipeYeastDto.id());
+        }
 
         recipeYeast.setYeastId(recipeYeastDto.yeastId());
         recipeYeast.setYeastQuantity(recipeYeastDto.yeastQuantity());

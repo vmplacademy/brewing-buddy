@@ -18,8 +18,6 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeMaltRepo
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeYeastRepository;
 
-import java.util.UUID;
-
 @RequiredArgsConstructor
 public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     private final RecipeRepository recipeRepository;
@@ -29,12 +27,11 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     private final RecipeYeastRepository recipeYeastRepository;
     private final RecipeCommonMapper recipeCommonMapper;
 
-    private static final String ERROR_MESSAGE_RECIPE_ID_NOT_FOUND = "entity with id: %s not found in database";
 
     @Override
     public RecipeDetailedDto addHopToRecipe(RecipeHopDto recipeHopDto) {
 
-        Recipe recipe = findRecipeById(recipeHopDto.recipeId(), recipeRepository);
+        Recipe recipe = RecipeServiceAdapter.findRecipeById(recipeHopDto.recipeId(), recipeRepository);
 
         RecipeHop recipeHop = recipeCommonMapper.recipeHopMapper().mapRecipeHopDtoToEntity(recipeHopDto);
         recipe.addRecipeHop(recipeHop);
@@ -47,7 +44,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     @Override
     public RecipeDetailedDto addMaltToRecipe(RecipeMaltDto recipeMaltDto) {
 
-        Recipe recipe = findRecipeById(recipeMaltDto.recipeId(), recipeRepository);
+        Recipe recipe = RecipeServiceAdapter.findRecipeById(recipeMaltDto.recipeId(), recipeRepository);
 
         RecipeMalt recipeMalt = recipeCommonMapper.recipeMaltMapper().mapRecipeMaltDtoToEntity(recipeMaltDto);
         recipe.addRecipeMalt(recipeMalt);
@@ -60,7 +57,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     @Override
     public RecipeDetailedDto addExtraIngredientToRecipe(RecipeExtraIngredientDto recipeExtraIngredientDto) {
 
-        Recipe recipe = findRecipeById(recipeExtraIngredientDto.recipeId(), recipeRepository);
+        Recipe recipe = RecipeServiceAdapter.findRecipeById(recipeExtraIngredientDto.recipeId(), recipeRepository);
 
         RecipeExtraIngredient recipeExtraIngredient = recipeCommonMapper.recipeExtraIngredientMapper()
                 .mapRecipeExtraIngredientDtoToEntity(recipeExtraIngredientDto);
@@ -73,7 +70,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
 
     @Override
     public RecipeDetailedDto addYeastToRecipe(RecipeYeastDto recipeYeastDto) {
-        Recipe recipe = findRecipeById(recipeYeastDto.recipeId(), recipeRepository);
+        Recipe recipe = RecipeServiceAdapter.findRecipeById(recipeYeastDto.recipeId(), recipeRepository);
 
         RecipeYeast recipeYeast = recipeCommonMapper.recipeYeastMapper().mapRecipeYeastDtoToEntity(recipeYeastDto);
         recipe.setRecipeYeast(recipeYeast);
@@ -82,10 +79,4 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
 
         return recipeCommonMapper.recipeMapper().mapRecipeToDetailedDto(recipe);
     }
-
-    static Recipe findRecipeById (UUID recipeId, RecipeRepository recipeRepository) {
-        return recipeRepository.findById(recipeId).orElseThrow(() ->
-                new IllegalStateException(String.format(ERROR_MESSAGE_RECIPE_ID_NOT_FOUND, recipeId)));
-    }
-
 }

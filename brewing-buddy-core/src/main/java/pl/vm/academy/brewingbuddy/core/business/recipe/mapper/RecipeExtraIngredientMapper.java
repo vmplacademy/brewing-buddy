@@ -11,18 +11,20 @@ public record RecipeExtraIngredientMapper() {
 
     public RecipeExtraIngredientDto mapRecipeExtraIngredientToDto (RecipeExtraIngredient recipeExtraIngredient) {
 
-        if (recipeExtraIngredient == null)
+        if (recipeExtraIngredient == null) {
             return null;
+        }
 
-        if (recipeExtraIngredient.getRecipe() == null)
+        if (recipeExtraIngredient.getRecipe() == null) {
             return null;
+        }
 
         return RecipeExtraIngredientDto
                 .builder()
                 .id(recipeExtraIngredient.getId())
                 .extraIngredientId(recipeExtraIngredient.getExtraIngredientId())
                 .recipeId(recipeExtraIngredient.getRecipe().getId())
-                .unitMeasure(recipeExtraIngredient.getUnitMeasure())
+                .measureUnit(recipeExtraIngredient.getMeasureUnit())
                 .addingPhase(recipeExtraIngredient.getAddingPhase())
                 .addingTime(recipeExtraIngredient.getAddingTime())
                 .addingTimeUnit(recipeExtraIngredient.getAddingTimeUnit())
@@ -30,17 +32,19 @@ public record RecipeExtraIngredientMapper() {
     }
 
     public RecipeExtraIngredient mapRecipeExtraIngredientDtoToEntity (RecipeExtraIngredientDto recipeExtraIngredientDto) {
-        if (recipeExtraIngredientDto == null)
+        if (recipeExtraIngredientDto == null) {
             return null;
+        }
 
         RecipeExtraIngredient recipeExtraIngredient = new RecipeExtraIngredient();
 
-        if (recipeExtraIngredientDto.id() != null)
+        if (recipeExtraIngredientDto.id() != null) {
             recipeExtraIngredient.setId(recipeExtraIngredientDto.id());
+        }
 
         recipeExtraIngredient.setExtraIngredientId(recipeExtraIngredientDto.extraIngredientId());
         recipeExtraIngredient.setAmount(recipeExtraIngredientDto.amount());
-        recipeExtraIngredient.setUnitMeasure(recipeExtraIngredientDto.unitMeasure());
+        recipeExtraIngredient.setMeasureUnit(recipeExtraIngredientDto.measureUnit());
         recipeExtraIngredient.setAddingPhase(recipeExtraIngredientDto.addingPhase());
         recipeExtraIngredient.setAddingTime(recipeExtraIngredientDto.addingTime());
         recipeExtraIngredient.setAddingTimeUnit(recipeExtraIngredientDto.addingTimeUnit());
@@ -49,11 +53,12 @@ public record RecipeExtraIngredientMapper() {
     }
 
     public Set<RecipeExtraIngredientDto> mapRecipeExtraIngredientSetToDtoSet (Set<RecipeExtraIngredient> recipeExtraIngredientSet) {
-        if (recipeExtraIngredientSet == null)
+        if (recipeExtraIngredientSet == null) {
             return Collections.emptySet();
-        else
+        } else {
             return recipeExtraIngredientSet.stream()
                     .map(this::mapRecipeExtraIngredientToDto)
                     .collect(Collectors.toSet());
+        }
     }
 }

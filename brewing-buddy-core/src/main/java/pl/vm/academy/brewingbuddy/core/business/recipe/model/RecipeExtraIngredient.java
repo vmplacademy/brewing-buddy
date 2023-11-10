@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.AddingPhase;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.UnitMeasure;
+import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.MeasureUnit;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -44,7 +44,7 @@ public class RecipeExtraIngredient {
     private UUID id;
 
     private BigDecimal amount;
-    private UnitMeasure unitMeasure;
+    private MeasureUnit measureUnit;
     @Enumerated(EnumType.STRING)
     private AddingPhase addingPhase;
     private Duration addingTime;
