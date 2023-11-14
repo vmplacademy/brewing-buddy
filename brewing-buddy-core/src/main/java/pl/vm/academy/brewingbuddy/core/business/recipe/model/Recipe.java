@@ -50,6 +50,7 @@ public class Recipe {
     private BeerStyle beerStyle;
     // required parameters
     private BigDecimal expectedAmountOfBeerInLiters;
+    private BigDecimal mashingPerformanceInPercentage;
     private Duration boilingProcessTime;
     private BigDecimal waterEvaporationInPercentagePerHour;
     private BigDecimal boilingProcessLossInPercentage;

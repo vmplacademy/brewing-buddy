@@ -32,6 +32,7 @@ public record RecipeMapper (RecipeCalculatedParametersMapper recipeCalculatedPar
                 .recipeName(recipe.getRecipeName())
                 .beerStyle(recipe.getBeerStyle())
                 .expectedAmountOfBeerInLiters(recipe.getExpectedAmountOfBeerInLiters())
+                .mashingPerformanceInPercentage(recipe.getMashingPerformanceInPercentage())
                 .boilingProcessTime(recipe.getBoilingProcessTime())
                 .waterEvaporationInPercentagePerHour(recipe.getWaterEvaporationInPercentagePerHour())
                 .boilingProcessLossInPercentage(recipe.getBoilingProcessLossInPercentage())
@@ -55,6 +56,7 @@ public record RecipeMapper (RecipeCalculatedParametersMapper recipeCalculatedPar
         recipe.setRecipeName(recipeSimpleDto.recipeName());
         recipe.setBeerStyle(recipeSimpleDto.beerStyle());
         recipe.setExpectedAmountOfBeerInLiters(recipeSimpleDto.expectedAmountOfBeerInLiters());
+        recipe.setMashingPerformanceInPercentage(recipeSimpleDto.mashingPerformanceInPercentage());
         recipe.setBoilingProcessTime(recipeSimpleDto.boilingProcessTime());
         recipe.setWaterEvaporationInPercentagePerHour(recipeSimpleDto.waterEvaporationInPercentagePerHour());
         recipe.setBoilingProcessLossInPercentage(recipeSimpleDto.boilingProcessLossInPercentage());

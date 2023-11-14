@@ -21,6 +21,7 @@ public record RecipeDetailedDto(
         String recipeName,
         BeerStyle beerStyle,
         BigDecimal expectedAmountOfBeerInLiters,
+        BigDecimal mashingPerformanceInPercentage,
         Duration boilingProcessTime,
         BigDecimal waterEvaporationInPercentagePerHour,
         BigDecimal boilingProcessLossInPercentage,

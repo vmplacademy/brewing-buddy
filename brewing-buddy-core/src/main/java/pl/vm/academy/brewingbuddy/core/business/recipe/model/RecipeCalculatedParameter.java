@@ -42,4 +42,9 @@ public class RecipeCalculatedParameter {
     private BigDecimal estimatedAmountOfAlcoholAfterFermentation;
 
     private BigDecimal overallAmountOfMaltInKg;
+
+    // additional parameters for calc
+    private BigDecimal theoreticalExtractInGrams;
+    private BigDecimal realExtractInGrams;
+    private BigDecimal wortWeightInGrams;
 }

@@ -25,6 +25,10 @@ public record RecipeSimpleDto(
         @DecimalMax("1000")
         BigDecimal expectedAmountOfBeerInLiters,
 
+        @DecimalMin("1")
+        @DecimalMax("99")
+        BigDecimal mashingPerformanceInPercentage,
+
         @DurationMin(minutes = 1)
         @DurationMax(minutes = 1000)
         Duration boilingProcessTime,
