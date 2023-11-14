@@ -11,8 +11,9 @@ public record RecipeHopMapper() {
 
     public RecipeHopDto mapRecipeHopToDto(RecipeHop recipeHop) {
 
-        if (recipeHop == null)
+        if (recipeHop == null) {
             return null;
+        }
 
         return RecipeHopDto.builder()
                 .id(recipeHop.getId())
@@ -26,8 +27,9 @@ public record RecipeHopMapper() {
 
     public RecipeHop mapRecipeHopDtoToEntity (RecipeHopDto recipeHopDto) {
 
-        if (recipeHopDto == null)
+        if (recipeHopDto == null) {
             return null;
+        }
 
         RecipeHop recipeHop = new RecipeHop();
 
@@ -40,9 +42,12 @@ public record RecipeHopMapper() {
     }
 
     public Set<RecipeHopDto> mapRecipeHopSetToDtoSet(Set<RecipeHop> recipeHopSet) {
-        if (recipeHopSet == null)
+        if (recipeHopSet == null) {
             return Collections.emptySet();
-        else
-            return recipeHopSet.stream().map(this::mapRecipeHopToDto).collect(Collectors.toSet());
+        } else {
+            return recipeHopSet.stream()
+                    .map(this::mapRecipeHopToDto)
+                    .collect(Collectors.toSet());
+        }
     }
 }

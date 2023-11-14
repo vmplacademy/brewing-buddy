@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum UnitMeasure {
+public enum MeasureUnit {
     ML ("milliliters"),
     L ("liters"),
     G ("grams");

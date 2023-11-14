@@ -25,17 +25,17 @@ import java.util.UUID;
 @Table(name = "t_recipe_yeast")
 public class RecipeYeast {
 
+    @Id
+    @GeneratedValue
+    @UuidGenerator
+    private UUID id;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
     @NotNull
     private UUID yeastId;
-
-    @Id
-    @GeneratedValue
-    @UuidGenerator
-    private UUID id;
 
     private BigDecimal yeastQuantity;
 

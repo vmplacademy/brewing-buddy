@@ -10,8 +10,9 @@ import java.util.stream.Collectors;
 public record RecipeMaltMapper() {
     public RecipeMaltDto mapRecipeMaltToDto(RecipeMalt recipeMalt) {
 
-        if (recipeMalt == null)
+        if (recipeMalt == null) {
             return null;
+        }
 
         return RecipeMaltDto.builder()
                 .id(recipeMalt.getId())
@@ -23,13 +24,15 @@ public record RecipeMaltMapper() {
 
     public RecipeMalt mapRecipeMaltDtoToEntity (RecipeMaltDto recipeMaltDto) {
 
-        if (recipeMaltDto == null)
+        if (recipeMaltDto == null) {
             return null;
+        }
 
         RecipeMalt recipeMalt = new RecipeMalt();
 
-        if (recipeMaltDto.id() != null)
+        if (recipeMaltDto.id() != null) {
             recipeMalt.setId(recipeMaltDto.id());
+        }
 
         recipeMalt.setMaltId(recipeMaltDto.maltId());
         recipeMalt.setMaltAmountInKilos(recipeMaltDto.maltAmountInKilos());
@@ -38,9 +41,12 @@ public record RecipeMaltMapper() {
     }
 
     public Set<RecipeMaltDto> mapRecipeMaltSetToDtoSet(Set<RecipeMalt> recipeMaltSet) {
-        if (recipeMaltSet == null)
+        if (recipeMaltSet == null) {
             return Collections.emptySet();
-        else
-            return recipeMaltSet.stream().map(this::mapRecipeMaltToDto).collect(Collectors.toSet());
+        } else {
+            return recipeMaltSet.stream()
+                    .map(this::mapRecipeMaltToDto)
+                    .collect(Collectors.toSet());
+        }
     }
 }
