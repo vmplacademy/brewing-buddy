@@ -8,7 +8,4 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface RecipeExtraIngredientRepository extends JpaRepository<RecipeExtraIngredient, UUID> {
-
-    Set<RecipeExtraIngredient> findAllByRecipe (Recipe recipe);
-    Set<RecipeExtraIngredient> findAllByRecipeId (Recipe recipe);
 }

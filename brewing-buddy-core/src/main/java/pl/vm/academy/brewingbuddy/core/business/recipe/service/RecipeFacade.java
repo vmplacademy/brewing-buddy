@@ -20,7 +20,7 @@ public interface RecipeFacade {
      * @param recipeSimpleDto  Recipe simple dto
      * @return RecipeDetailedDto
      */
-    public RecipeDetailedDto createRecipe (RecipeSimpleDto recipeSimpleDto);
+    RecipeDetailedDto createRecipe (RecipeSimpleDto recipeSimpleDto);
 
     /**
      * Returns Dto of calculated parameters of changed recipe
@@ -28,28 +28,28 @@ public interface RecipeFacade {
      * @param recipeSimpleDto Recipe simple dto
      * @return RecipeCalculatedParametersDto
      */
-    public RecipeCalculatedParametersDto updateRecipe (RecipeSimpleDto recipeSimpleDto) ;
+    RecipeCalculatedParametersDto updateRecipe (RecipeSimpleDto recipeSimpleDto) ;
 
     /**
      * Returns list of all Recipes
      *
      * @return List<RecipeDetailedDto>
      */
-    public List<RecipeBasicDto> getAllRecipes();
+    List<RecipeBasicDto> getAllRecipes();
 
     /**
      * Returns list of all public Recipes
      *
      * @return List<RecipeDetailedDto>
      */
-    public List<RecipeBasicDto> getAllPublicRecipes ();
+    List<RecipeBasicDto> getAllPublicRecipes ();
 
     /**
      * Deletes Recipe with given id
      *
      * @param recipeId id of recipe
      */
-    public void deleteRecipe(UUID recipeId);
+    void deleteRecipe(UUID recipeId);
 
     /**
      * Returns Dto of Recipe with given id
@@ -88,5 +88,4 @@ public interface RecipeFacade {
      * @return RecipeDetailedDto
      */
     RecipeDetailedDto addYeastToRecipe (RecipeYeastDto recipeYeastDto);
-
 }

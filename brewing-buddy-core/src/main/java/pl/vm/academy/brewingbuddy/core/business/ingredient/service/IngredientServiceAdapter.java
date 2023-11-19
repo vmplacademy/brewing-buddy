@@ -71,25 +71,23 @@ public class IngredientServiceAdapter implements IngredientService{
         return ingredientCommonMapper.yeastMapper().mapYeastsToDtos(yeastRepository.findAll());
     }
 
-    Malt findMaltById (UUID id) {
+    private Malt findMaltById (UUID id) {
         return maltRepository.findById(id).orElseThrow(() ->
                 new IllegalStateException(String.format(ERROR_MESSAGE_MALT_ID_NOT_FOUND, id)));
     }
 
-    Hop findHopById (UUID id) {
+    private Hop findHopById (UUID id) {
         return hopRepository.findById(id).orElseThrow(() ->
                 new IllegalStateException(String.format(ERROR_MESSAGE_HOP_ID_NOT_FOUND, id)));
     }
 
-    ExtraIngredient findExtraIngredientById (UUID id) {
+    private ExtraIngredient findExtraIngredientById (UUID id) {
         return extraIngredientRepository.findById(id).orElseThrow(() ->
                 new IllegalStateException(String.format(ERROR_MESSAGE_EXTRA_INGREDIENT_ID_NOT_FOUND, id)));
     }
 
-    Yeast findYeastById (UUID id) {
+    private Yeast findYeastById (UUID id) {
         return yeastRepository.findById(id).orElseThrow(() ->
                 new IllegalStateException(String.format(ERROR_MESSAGE_YEAST_ID_NOT_FOUND, id)));
     }
-
-
 }
