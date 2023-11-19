@@ -5,7 +5,4 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 
 public interface RecipeParametersCalculator {
     RecipeCalculatedParametersDto calculateParameters (RecipeDetailedDto recipeDetailedDto);
-
-
-
 }

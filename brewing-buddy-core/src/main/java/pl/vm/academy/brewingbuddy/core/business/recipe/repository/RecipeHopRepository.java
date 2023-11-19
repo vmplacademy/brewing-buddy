@@ -9,7 +9,4 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface RecipeHopRepository extends JpaRepository<RecipeHop, UUID> {
-
-    Set<RecipeHop> findAllByRecipe(Recipe recipe);
-    Set<RecipeHop> findAllByRecipeId(Recipe recipe);
 }

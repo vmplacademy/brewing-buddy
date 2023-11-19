@@ -8,11 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
-    List<Recipe> findAllByUserId (UUID userId);
     List<Recipe> findAllByIsPublic (Boolean isPublic);
 
-    Optional<Recipe> findByRecipeName(String recipeName);
-
     boolean existsRecipeByRecipeName (String recipeName);
-
 }

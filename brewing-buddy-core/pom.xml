@@ -17,6 +17,7 @@
         <java.version>17</java.version>
         <swagger.version>2.9.2</swagger.version>
         <springfox.version>3.0.0</springfox.version>
+        <mockito.version>5.2.0</mockito.version>
     </properties>
 
     <dependencies>
@@ -52,7 +53,6 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
 

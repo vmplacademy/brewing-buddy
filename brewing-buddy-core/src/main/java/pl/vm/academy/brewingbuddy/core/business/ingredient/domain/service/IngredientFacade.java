@@ -13,14 +13,19 @@ import java.util.UUID;
 
 public interface IngredientFacade {
 
-    public MaltDto getMaltById(UUID maltId);
-    public Set<MaltDto> getAllMalts();
-    public HopDto getHopById(UUID hopId);
-    public Set<HopDto> getAllHops();
-    public ExtraIngredientDto getExtraIngredientById(UUID extraIngredientId);
-    public Set<ExtraIngredientDto> getAllExtraIngredients();
-    public YeastDto getYeastById(UUID yeastId);
-    public Set<YeastDto> getAllYeasts();
+    MaltDto getMaltById(UUID maltId);
 
+    Set<MaltDto> getAllMalts();
 
+    HopDto getHopById(UUID hopId);
+
+    Set<HopDto> getAllHops();
+
+    ExtraIngredientDto getExtraIngredientById(UUID extraIngredientId);
+
+    Set<ExtraIngredientDto> getAllExtraIngredients();
+
+    YeastDto getYeastById(UUID yeastId);
+
+    Set<YeastDto> getAllYeasts();
 }
