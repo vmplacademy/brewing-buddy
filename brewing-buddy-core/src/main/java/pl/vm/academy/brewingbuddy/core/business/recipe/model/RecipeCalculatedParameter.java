@@ -2,16 +2,14 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -25,15 +23,12 @@ import java.util.UUID;
 public class RecipeCalculatedParameter {
 
     @Id
-    @GeneratedValue
-    @UuidGenerator
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipe_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     private Recipe recipe;
 
-    private BigDecimal mashingFactorInLitersPerKg;
     private BigDecimal waterRequiredForMashingInLiters;
     private BigDecimal waterRequiredForSpargingInLiters;
     private BigDecimal waterRequiredForWholeProcessInLiters;
@@ -45,4 +40,6 @@ public class RecipeCalculatedParameter {
     private BigDecimal calculatedColourEBC;
     private BigDecimal calculatedExtractInPercentage;
     private BigDecimal estimatedAmountOfAlcoholAfterFermentation;
+
+    private BigDecimal overallAmountOfMaltInKg;
 }

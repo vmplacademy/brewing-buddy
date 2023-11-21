@@ -3,7 +3,6 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,7 +13,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
-import org.springframework.boot.convert.DurationFormat;
 import org.springframework.boot.convert.DurationUnit;
 
 
@@ -31,20 +29,35 @@ import java.util.UUID;
 @Table(name = "t_recipe_hop")
 public class RecipeHop {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipe_id", insertable = false, updatable = false)
-    private Recipe recipe;
-
-    @NotNull
-    private Long hopId;
-
     @Id
     @GeneratedValue
     @UuidGenerator
     private UUID id;
 
-    private BigDecimal homAmountInGrams;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipe_id", insertable = false, updatable = false)
+    private Recipe recipe;
+
+    @NotNull
+    private UUID hopId;
+
+    private BigDecimal hopAmountInGrams;
     @DurationUnit(ChronoUnit.MINUTES)
     private Duration boilingTimeInMinutes;
     private BigDecimal hopUtilizationInPercentage;
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof RecipeHop))
+            return  false;
+
+        return id != null && id.equals(((RecipeHop) obj).getId());
+    }
 }

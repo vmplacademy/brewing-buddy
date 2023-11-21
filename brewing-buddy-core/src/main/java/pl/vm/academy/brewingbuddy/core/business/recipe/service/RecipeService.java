@@ -1,22 +1,24 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.service;
 
-import org.springframework.http.HttpStatus;
-import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeBasicDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface RecipeService {
 
-    RecipeDto getRecipeById(UUID recipeId);
+    RecipeDetailedDto getRecipeById(UUID recipeId);
 
-    List<RecipeDto> getAllPublicRecipes();
+    List<RecipeBasicDto> getAllPublicRecipes();
 
-    List<RecipeDto> getAllRecipes();
+    List<RecipeBasicDto> getAllRecipes();
 
-    RecipeDto createRecipe(RecipeDto recipeDto);
+    RecipeDetailedDto createRecipe(RecipeSimpleDto recipeSimpleDto);
 
-    RecipeDto updateRecipe(RecipeDto recipeDto);
+    RecipeCalculatedParametersDto updateRecipe(RecipeSimpleDto recipeSimpleDto);
 
     void deleteRecipe(UUID id);
 }
