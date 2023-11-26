@@ -19,6 +19,7 @@ import java.util.UUID;
 public class RecipeFacadeAdapter implements RecipeFacade{
     RecipeService recipeService;
     RecipeIngredientService recipeIngredientService;
+
     public RecipeFacadeAdapter(RecipeService recipeService, RecipeIngredientService recipeIngredientService) {
         this.recipeService = recipeService;
         this.recipeIngredientService = recipeIngredientService;

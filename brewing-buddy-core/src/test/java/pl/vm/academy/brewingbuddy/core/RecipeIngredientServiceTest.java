@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.service.IngredientFacade;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
@@ -30,6 +31,8 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeReposito
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeYeastRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeIngredientService;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeIngredientServiceAdapter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeParametersCalculatorAdapter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.service.utils.HopUtilisation;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -60,6 +63,8 @@ public class RecipeIngredientServiceTest {
     private RecipeExtraIngredientRepository recipeExtraIngredientRepository;
     @Mock
     private RecipeYeastRepository recipeYeastRepository;
+    @Mock
+    private IngredientFacade ingredientFacade;
 
     private final RecipeHopMapper recipeHopMapper = new RecipeHopMapper();
     private final RecipeMaltMapper recipeMaltMapper = new RecipeMaltMapper();
@@ -83,6 +88,12 @@ public class RecipeIngredientServiceTest {
 
     private RecipeIngredientService recipeIngredientService;
 
+    private final RecipeParametersCalculatorAdapter recipeParametersCalculatorAdapter = new RecipeParametersCalculatorAdapter(
+            recipeRepository,
+            recipeMaltRepository,
+            ingredientFacade,
+            new HopUtilisation());
+
     @BeforeEach
     void init() {
         recipeIngredientService = new RecipeIngredientServiceAdapter(
@@ -91,7 +102,8 @@ public class RecipeIngredientServiceTest {
                 recipeMaltRepository,
                 recipeExtraIngredientRepository,
                 recipeYeastRepository,
-                recipeCommonMapper);
+                recipeCommonMapper,
+                recipeParametersCalculatorAdapter);
     }
 
     @Nested

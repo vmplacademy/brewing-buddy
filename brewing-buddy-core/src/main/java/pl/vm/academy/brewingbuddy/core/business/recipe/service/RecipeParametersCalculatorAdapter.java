@@ -8,8 +8,11 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeHop;
+import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeMalt;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeMaltRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
+import pl.vm.academy.brewingbuddy.core.business.recipe.service.utils.HopUtilisation;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -22,6 +25,7 @@ public class RecipeParametersCalculatorAdapter implements RecipeParametersCalcul
     private final RecipeRepository recipeRepository;
     private final RecipeMaltRepository recipeMaltRepository;
     private final IngredientFacade ingredientFacade;
+    private final HopUtilisation hopUtilisation;
 
 
     @Override
@@ -123,12 +127,39 @@ public class RecipeParametersCalculatorAdapter implements RecipeParametersCalcul
     }
 
 
-    private void calculateCalculatedIbu(RecipeDetailedDto recipeDetailedDto) {
+    private void calculateCalculatedIbu(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
 
+        if (!CollectionUtils.isEmpty(recipe.getRecipeHops())) {
+
+            BigDecimal ibu = BigDecimal.valueOf(0);
+
+            for (RecipeHop recipeHop : recipe.getRecipeHops()) {
+                ibu.add(recipeHop.getHopAmountInGrams()
+                        .multiply(ingredientFacade.getHopById(recipeHop.getHopId()).alfaAcidInPercentage())
+                        .multiply(hopUtilisation.getHopUtilisation(recipeHop.getBoilingTimeInMinutes().toMinutesPart()))
+                        .divide(recipe.getRecipeCalculatedParameter().getAmountOfHotWort()));
+            }
+            recipe.getRecipeCalculatedParameter().setCalculatedIbu(ibu);
+        }
     }
 
-    private void calculateCalculatedColourEBC(RecipeDetailedDto recipeDetailedDto) {
+    private void calculateCalculatedColourEBC(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
 
+        if (!CollectionUtils.isEmpty(recipe.getRecipeMalts())) {
+            BigDecimal sumEbc = BigDecimal.valueOf(0);
+            BigDecimal overallAmountOfMaltInKg = recipe.getRecipeCalculatedParameter().getOverallAmountOfMaltInKg();
+            for (RecipeMalt recipeMalt : recipe.getRecipeMalts()) {
+                sumEbc.add(overallAmountOfMaltInKg
+                        .multiply(BigDecimal.valueOf(2.20462262184878))
+                        .multiply(ingredientFacade.getMaltById(recipeMalt.getMaltId()).meanColorInEbcScale())
+                        .divide(BigDecimal.valueOf(1.97)));
+            }
+
+            recipe.getRecipeCalculatedParameter().setCalculatedColourEBC(
+                    BigDecimal.valueOf(Math.pow(sumEbc.divide(overallAmountOfMaltInKg.divide(BigDecimal.valueOf(3.78541178))).doubleValue(), 0.6859))
+                            .multiply(BigDecimal.valueOf(1.4922))
+                            .multiply(BigDecimal.valueOf(1.97)));
+        }
     }
 
     private void calculateCalculatedExtractInPercentage(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
@@ -138,8 +169,14 @@ public class RecipeParametersCalculatorAdapter implements RecipeParametersCalcul
         recipe.getRecipeCalculatedParameter().setCalculatedExtractInPercentage(realExtract.divide(wortWeight).divide(BigDecimal.valueOf(100)));
     }
 
-    private void calculateEstimatedAmountOfAlcoholAfterFermentation(RecipeDetailedDto recipeDetailedDto) {
+    private void calculateEstimatedAmountOfAlcoholAfterFermentation(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
+        BigDecimal alcoholInLiters = recipe.getRecipeCalculatedParameter().getRealExtractInGrams()
+                .divide(BigDecimal.valueOf(1000))
+                .multiply(BigDecimal.valueOf(0.6));
 
+        recipe.getRecipeCalculatedParameter().setEstimatedAmountOfAlcoholAfterFermentation(
+                alcoholInLiters
+                        .divide(recipe.getExpectedAmountOfBeerInLiters())
+                        .multiply(BigDecimal.valueOf(100)));
     }
-
 }

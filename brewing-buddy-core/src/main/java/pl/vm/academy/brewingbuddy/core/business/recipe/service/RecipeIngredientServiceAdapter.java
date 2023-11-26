@@ -26,6 +26,7 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     private final RecipeExtraIngredientRepository recipeExtraIngredientRepository;
     private final RecipeYeastRepository recipeYeastRepository;
     private final RecipeCommonMapper recipeCommonMapper;
+    private final RecipeParametersCalculator recipeParametersCalculator;
 
 
     @Override
