@@ -15,46 +15,123 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeReposito
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.utils.HopUtilisation;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
 @RequiredArgsConstructor
 public class RecipeParametersCalculatorAdapter implements RecipeParametersCalculator{
-
-    private final RecipeRepository recipeRepository;
-    private final RecipeMaltRepository recipeMaltRepository;
     private final IngredientFacade ingredientFacade;
     private final HopUtilisation hopUtilisation;
 
 
     @Override
-    public RecipeCalculatedParametersDto calculateParameters(RecipeDetailedDto recipeDetailedDto) {
-        return null;
+    public Recipe calculateParameters(Recipe recipe) {
+
+        if (!requiredParametersWereSet(recipe)) {
+            return recipe;
+        }
+
+        calculateOverallAmountOfMaltInKg (recipe);
+
+        calculateAmountOfHotWort(recipe);
+
+        calculateWaterRequiredForMashingInLiters(recipe);
+
+        calculateWaterRequiredForSpargingInLiters(recipe);
+
+        calculateWaterRequiredForWholeProcessInLiters(recipe);
+
+        calculateAmountOfWaterBeforeBoilingInLiters(recipe);
+
+        calculateTheoreticalExtract(recipe);
+
+        calculateRealExtract(recipe);
+
+        calculateWortWeightInGrams(recipe);
+
+        calculateExtractBeforeBoilingInPercentage(recipe);
+
+        calculateCalculatedIbu(recipe);
+
+        calculateCalculatedColourEBC(recipe);
+
+        calculateCalculatedExtractInPercentage(recipe);
+
+        calculateEstimatedAmountOfAlcoholAfterFermentation(recipe);
+
+        return recipe;
     }
 
-    private void calculateOverallAmountOfMaltInKg (Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
+    private boolean requiredParametersWereSet(Recipe recipe) {
+
+        if (recipe.getExpectedAmountOfBeerInLiters().compareTo(BigDecimal.valueOf(0)) == -1) {
+            return false;
+        }
+
+        if (recipe.getMashingPerformanceInPercentage().compareTo(BigDecimal.valueOf(0)) == -1
+                && recipe.getMashingPerformanceInPercentage().compareTo(BigDecimal.valueOf(100)) == 1 )   {
+            return false;
+        }
+
+        if (BigDecimal.valueOf(recipe.getBoilingProcessTime().toMinutesPart()).compareTo(BigDecimal.valueOf(0)) == -1) {
+            return false;
+        }
+
+        if (recipe.getWaterEvaporationInPercentagePerHour().compareTo(BigDecimal.valueOf(0)) == -1
+                && recipe.getWaterEvaporationInPercentagePerHour().compareTo(BigDecimal.valueOf(100)) == 1 )   {
+            return false;
+        }
+
+        if (recipe.getBoilingProcessLossInPercentage().compareTo(BigDecimal.valueOf(0)) == -1
+                && recipe.getBoilingProcessLossInPercentage().compareTo(BigDecimal.valueOf(100)) == 1 )   {
+            return false;
+        }
+
+        if (recipe.getFermentationProcessLossInPercentage().compareTo(BigDecimal.valueOf(0)) == -1
+                && recipe.getFermentationProcessLossInPercentage().compareTo(BigDecimal.valueOf(100)) == 1 )   {
+            return false;
+        }
+
+        if (recipe.getMashingFactorInLitersPerKg().compareTo(BigDecimal.valueOf(0)) == -1
+                && recipe.getMashingFactorInLitersPerKg().compareTo(BigDecimal.valueOf(100)) == 1 )   {
+            return false;
+        }
+
+        if (recipe.getRecipeMalts().isEmpty() && recipe.getRecipeHops().isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void calculateOverallAmountOfMaltInKg (Recipe recipe) {
         BigDecimal overallAmountOfMalt = BigDecimal.valueOf(0);
 
-        for (RecipeMaltDto recipeMaltDto : recipeDetailedDto.recipeMalts()) {
-            overallAmountOfMalt.add(recipeMaltDto.maltAmountInKilos());
+        for (RecipeMalt recipeMalt : recipe.getRecipeMalts()) {
+            overallAmountOfMalt = overallAmountOfMalt.add(recipeMalt.getMaltAmountInKilos());
         }
         recipe.getRecipeCalculatedParameter().setOverallAmountOfMaltInKg(overallAmountOfMalt);
     }
 
-    private void calculateWaterRequiredForMashingInLiters(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
+    private void calculateWaterRequiredForMashingInLiters(Recipe recipe) {
         BigDecimal overallAmountOfMalt = recipe.getRecipeCalculatedParameter().getOverallAmountOfMaltInKg();
 
         recipe.getRecipeCalculatedParameter()
-                .setWaterRequiredForMashingInLiters(overallAmountOfMalt.multiply(recipeDetailedDto.mashingFactorInLitersPerKg()));
+                .setWaterRequiredForMashingInLiters(overallAmountOfMalt.multiply(recipe.getMashingFactorInLitersPerKg()));
     }
 
-    private void calculateWaterRequiredForSpargingInLiters(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
+    private void calculateWaterRequiredForSpargingInLiters(Recipe recipe) {
         BigDecimal overallAmountOfMalt = recipe.getRecipeCalculatedParameter().getOverallAmountOfMaltInKg();
 
         BigDecimal hotWort =  recipe.getRecipeCalculatedParameter().getAmountOfHotWort();
+
         BigDecimal waterThatLeftAfterFiltrationInLiters = overallAmountOfMalt.multiply(BigDecimal.valueOf(0.7));
-        BigDecimal waterLostDuringBoilingInLiter = hotWort.divide(BigDecimal.valueOf(0.85)).subtract(hotWort);
+
+        BigDecimal waterLostDuringBoilingInLiter = hotWort.divide(BigDecimal.valueOf(1).subtract(recipe.getBoilingProcessLossInPercentage()
+                        .divide(BigDecimal.valueOf(100), 2, RoundingMode.FLOOR)), 2, RoundingMode.FLOOR).subtract(hotWort);
+
         BigDecimal waterForMashing = recipe.getRecipeCalculatedParameter().getWaterRequiredForMashingInLiters();
 
         BigDecimal waterForSparging = hotWort.add(waterThatLeftAfterFiltrationInLiters).add(waterLostDuringBoilingInLiter).subtract(waterForMashing);
@@ -72,7 +149,7 @@ public class RecipeParametersCalculatorAdapter implements RecipeParametersCalcul
                         add(recipe.getRecipeCalculatedParameter().getWaterRequiredForMashingInLiters()));
     }
 
-    private void calculateAmountOfWaterBeforeBoilingInLiters(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
+    private void calculateAmountOfWaterBeforeBoilingInLiters(Recipe recipe) {
         BigDecimal overallAmountOfMalt = recipe.getRecipeCalculatedParameter().getOverallAmountOfMaltInKg();
 
         BigDecimal waterThatLeftAfterFiltrationInLiters = overallAmountOfMalt.multiply(BigDecimal.valueOf(0.7));
@@ -80,103 +157,107 @@ public class RecipeParametersCalculatorAdapter implements RecipeParametersCalcul
         recipe.getRecipeCalculatedParameter().setAmountOfWaterBeforeBoilingInLiters(
                 recipe.getRecipeCalculatedParameter().getWaterRequiredForWholeProcessInLiters().subtract(waterThatLeftAfterFiltrationInLiters));
     }
-    private void calculateTheoreticalExtract (Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
+    private void calculateTheoreticalExtract (Recipe recipe) {
         BigDecimal theoreticalExtractInGrams = BigDecimal.valueOf(0);
 
-        if (!CollectionUtils.isEmpty(recipeDetailedDto.recipeMalts())) {
-            for (RecipeMaltDto recipeMaltDto : recipeDetailedDto.recipeMalts()) {
-                theoreticalExtractInGrams.add(recipeMaltDto.maltAmountInKilos().
-                        multiply(ingredientFacade.getMaltById(recipeMaltDto.maltId()).extractionRateInPercentage().multiply(BigDecimal.valueOf(10))));
+        if (!CollectionUtils.isEmpty(recipe.getRecipeMalts())) {
+            for (RecipeMalt recipeMalt : recipe.getRecipeMalts()) {
+                theoreticalExtractInGrams = theoreticalExtractInGrams.add(recipeMalt.getMaltAmountInKilos().
+                        multiply(ingredientFacade.getMaltById(recipeMalt.getMaltId()).extractionRateInPercentage().multiply(BigDecimal.valueOf(10))));
             }
         }
         recipe.getRecipeCalculatedParameter().setTheoreticalExtractInGrams(theoreticalExtractInGrams);
     }
 
-    private void calculateRealExtract (Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
+    private void calculateRealExtract (Recipe recipe) {
         recipe.getRecipeCalculatedParameter().setRealExtractInGrams(recipe.getRecipeCalculatedParameter().getTheoreticalExtractInGrams().
-                multiply(recipe.getMashingPerformanceInPercentage()));
+                multiply(recipe.getMashingPerformanceInPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.FLOOR)));
     }
 
-    private void calculateAmountOfHotWort(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
-        RecipeCalculatedParameter calcParam = recipe.getRecipeCalculatedParameter();
-
-        calcParam.setAmountOfHotWort(calcParam.getWaterRequiredForWholeProcessInLiters().
-                subtract(calcParam.getOverallAmountOfMaltInKg().multiply(BigDecimal.valueOf(0.7))));
+    private void calculateAmountOfHotWort(Recipe recipe) {
+        recipe.getRecipeCalculatedParameter().setAmountOfHotWort(recipe.getExpectedAmountOfBeerInLiters()
+                .divide(BigDecimal.valueOf(0.96)
+                        .subtract(recipe.getFermentationProcessLossInPercentage()
+                                .divide(BigDecimal.valueOf(100), 2, RoundingMode.FLOOR )), 2, RoundingMode.FLOOR));
     }
 
     private void calculateWortWeightInGrams (Recipe recipe) {
         BigDecimal amountOfHotWort = recipe.getRecipeCalculatedParameter().getAmountOfHotWort();
-        BigDecimal extractInMilliliters = recipe.getRecipeCalculatedParameter().getRealExtractInGrams().multiply(BigDecimal.valueOf(1.587));
+        BigDecimal extractInMilliliters = recipe.getRecipeCalculatedParameter().getRealExtractInGrams().divide(BigDecimal.valueOf(1.587), 2, RoundingMode.FLOOR);
         BigDecimal amountOfWaterInWortInMilliliters = amountOfHotWort.multiply(BigDecimal.valueOf(1000)).subtract(extractInMilliliters);
 
         recipe.getRecipeCalculatedParameter().setWortWeightInGrams(amountOfWaterInWortInMilliliters.add(recipe.getRecipeCalculatedParameter().getRealExtractInGrams()));
     }
 
-    private void calculateExtractBeforeBoilingInPercentage(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
+    private void calculateExtractBeforeBoilingInPercentage(Recipe recipe) {
         BigDecimal extractBeforeBoilingInPercentage;
         BigDecimal amountOfHotWort = recipe.getRecipeCalculatedParameter().getAmountOfHotWort();
         BigDecimal wortWeightInGrams = recipe.getRecipeCalculatedParameter().getWortWeightInGrams();
         // 15%
-        BigDecimal waterEvaporatedDuringMashing = amountOfHotWort.divide(BigDecimal.valueOf(0.85)).subtract(amountOfHotWort);
+        BigDecimal waterEvaporatedDuringMashing = amountOfHotWort.divide(BigDecimal.valueOf(0.85), 2, RoundingMode.FLOOR).subtract(amountOfHotWort);
 
         extractBeforeBoilingInPercentage = recipe.getRecipeCalculatedParameter().getRealExtractInGrams()
-                .divide(wortWeightInGrams.divide(BigDecimal.valueOf(1000)).add(waterEvaporatedDuringMashing))
-                .divide(BigDecimal.valueOf(10));
+                .divide(wortWeightInGrams.divide(BigDecimal.valueOf(1000), 2, RoundingMode.FLOOR).add(waterEvaporatedDuringMashing), 2, RoundingMode.FLOOR)
+                .divide(BigDecimal.valueOf(10), 2, RoundingMode.FLOOR);
 
         recipe.getRecipeCalculatedParameter().setExtractBeforeBoilingInPercentage(extractBeforeBoilingInPercentage);
     }
 
 
-    private void calculateCalculatedIbu(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
+    private void calculateCalculatedIbu(Recipe recipe) {
 
         if (!CollectionUtils.isEmpty(recipe.getRecipeHops())) {
 
             BigDecimal ibu = BigDecimal.valueOf(0);
 
             for (RecipeHop recipeHop : recipe.getRecipeHops()) {
-                ibu.add(recipeHop.getHopAmountInGrams()
+                ibu = ibu.add(recipeHop.getHopAmountInGrams()
                         .multiply(ingredientFacade.getHopById(recipeHop.getHopId()).alfaAcidInPercentage())
-                        .multiply(hopUtilisation.getHopUtilisation(recipeHop.getBoilingTimeInMinutes().toMinutesPart()))
-                        .divide(recipe.getRecipeCalculatedParameter().getAmountOfHotWort()));
+                        .multiply(hopUtilisation.getHopUtilisation((int)recipeHop.getBoilingTimeInMinutes().toMinutes()))
+                        .divide(recipe.getRecipeCalculatedParameter().getAmountOfHotWort(), 2, RoundingMode.FLOOR)
+                        .divide(BigDecimal.valueOf(10), 2, RoundingMode.FLOOR));
             }
             recipe.getRecipeCalculatedParameter().setCalculatedIbu(ibu);
         }
     }
 
-    private void calculateCalculatedColourEBC(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
+    private void calculateCalculatedColourEBC(Recipe recipe) {
 
         if (!CollectionUtils.isEmpty(recipe.getRecipeMalts())) {
             BigDecimal sumEbc = BigDecimal.valueOf(0);
             BigDecimal overallAmountOfMaltInKg = recipe.getRecipeCalculatedParameter().getOverallAmountOfMaltInKg();
             for (RecipeMalt recipeMalt : recipe.getRecipeMalts()) {
-                sumEbc.add(overallAmountOfMaltInKg
+                sumEbc = sumEbc.add(overallAmountOfMaltInKg
                         .multiply(BigDecimal.valueOf(2.20462262184878))
                         .multiply(ingredientFacade.getMaltById(recipeMalt.getMaltId()).meanColorInEbcScale())
-                        .divide(BigDecimal.valueOf(1.97)));
+                        .divide(BigDecimal.valueOf(1.97), 2, RoundingMode.FLOOR));
             }
 
             recipe.getRecipeCalculatedParameter().setCalculatedColourEBC(
-                    BigDecimal.valueOf(Math.pow(sumEbc.divide(overallAmountOfMaltInKg.divide(BigDecimal.valueOf(3.78541178))).doubleValue(), 0.6859))
+                    BigDecimal.valueOf(Math.pow(sumEbc.divide(overallAmountOfMaltInKg
+                                    .divide(BigDecimal.valueOf(3.78541178), 2, RoundingMode.FLOOR), 2, RoundingMode.FLOOR).doubleValue(), 0.6859))
                             .multiply(BigDecimal.valueOf(1.4922))
                             .multiply(BigDecimal.valueOf(1.97)));
         }
     }
 
-    private void calculateCalculatedExtractInPercentage(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
+    private void calculateCalculatedExtractInPercentage(Recipe recipe) {
         BigDecimal realExtract = recipe.getRecipeCalculatedParameter().getRealExtractInGrams();
         BigDecimal wortWeight = recipe.getRecipeCalculatedParameter().getWortWeightInGrams();
 
-        recipe.getRecipeCalculatedParameter().setCalculatedExtractInPercentage(realExtract.divide(wortWeight).divide(BigDecimal.valueOf(100)));
+        recipe.getRecipeCalculatedParameter().setCalculatedExtractInPercentage(realExtract
+                .divide(wortWeight, 2, RoundingMode.FLOOR)
+                .multiply(BigDecimal.valueOf(100)));
     }
 
-    private void calculateEstimatedAmountOfAlcoholAfterFermentation(Recipe recipe, RecipeDetailedDto recipeDetailedDto) {
+    private void calculateEstimatedAmountOfAlcoholAfterFermentation(Recipe recipe) {
         BigDecimal alcoholInLiters = recipe.getRecipeCalculatedParameter().getRealExtractInGrams()
-                .divide(BigDecimal.valueOf(1000))
+                .divide(BigDecimal.valueOf(1000), 2, RoundingMode.FLOOR)
                 .multiply(BigDecimal.valueOf(0.6));
 
         recipe.getRecipeCalculatedParameter().setEstimatedAmountOfAlcoholAfterFermentation(
                 alcoholInLiters
-                        .divide(recipe.getExpectedAmountOfBeerInLiters())
+                        .divide(recipe.getExpectedAmountOfBeerInLiters(), 2, RoundingMode.FLOOR)
                         .multiply(BigDecimal.valueOf(100)));
     }
 }

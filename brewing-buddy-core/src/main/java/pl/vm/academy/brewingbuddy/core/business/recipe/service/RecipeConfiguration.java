@@ -51,8 +51,6 @@ class RecipeConfiguration {
         HopUtilisation hopUtilisation = new HopUtilisation();
 
         RecipeParametersCalculatorAdapter recipeParametersCalculatorAdapter = new RecipeParametersCalculatorAdapter(
-                recipeRepository,
-                recipeMaltRepository,
                 ingredientFacade,
                 hopUtilisation);
 

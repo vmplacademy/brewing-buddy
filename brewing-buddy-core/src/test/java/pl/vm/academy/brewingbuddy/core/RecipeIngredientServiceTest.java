@@ -89,8 +89,6 @@ public class RecipeIngredientServiceTest {
     private RecipeIngredientService recipeIngredientService;
 
     private final RecipeParametersCalculatorAdapter recipeParametersCalculatorAdapter = new RecipeParametersCalculatorAdapter(
-            recipeRepository,
-            recipeMaltRepository,
             ingredientFacade,
             new HopUtilisation());
 
