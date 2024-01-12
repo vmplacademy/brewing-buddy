@@ -10,23 +10,31 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.HopDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.MaltDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.HopMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.MaltMapper;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.YeastMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.model.Hop;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.model.Malt;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.service.IngredientFacade;
-import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCalculatedParametersMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeExtraIngredientMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeHopMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMaltMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeYeastMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeHop;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeMalt;
+import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeParametersCalculator;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeParametersCalculatorAdapter;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeServiceAdapter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.service.builder.RecipeParametersDesignPatternAdapter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.service.decorator.RecipeCalculatorDecorator;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.utils.HopUtilisation;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,22 +42,31 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class RecipeParametersCalculatorTest {
-
+public class RecipeCalculatorDecoratorTest {
     private final HopUtilisation hopUtilisation = new HopUtilisation();
 
     @Mock
     private IngredientFacade ingredientFacade;
 
-    private RecipeParametersCalculator recipeParametersCalculator;
+    @Mock
+    RecipeRepository recipeRepository;
 
-    private MaltMapper maltMapper = new MaltMapper();
+    private RecipeParametersDesignPatternAdapter recipeParametersCalculator;
 
     private HopMapper hopMapper = new HopMapper();
+    private MaltMapper maltMapper = new MaltMapper();
+    private RecipeMapper recipeMapper = new RecipeMapper(
+            new RecipeCalculatedParametersMapper(),
+            new RecipeHopMapper(),
+            new RecipeMaltMapper(),
+            new RecipeExtraIngredientMapper() ,
+            new RecipeYeastMapper());
 
     @BeforeEach
     void init() {
-        recipeParametersCalculator = new RecipeParametersCalculatorAdapter(
+        recipeParametersCalculator = new RecipeParametersDesignPatternAdapter(
+                recipeRepository,
+                recipeMapper,
                 ingredientFacade,
                 hopUtilisation);
     }
@@ -62,51 +79,50 @@ public class RecipeParametersCalculatorTest {
         when(ingredientFacade.getHopById(any(UUID.class))).thenReturn(getHopFromFacade());
 
         //when
-        recipeParametersCalculator.calculateParameters(recipe);
-        RecipeCalculatedParameter calcParam = recipe.getRecipeCalculatedParameter();
+        recipeParametersCalculator.calculateParametersDecorator(recipe);
+        RecipeCalculatedParametersDto calcParam = recipeParametersCalculator.calculateParametersDecorator(recipe);
         //then
 
-        assertThat(calcParam.getOverallAmountOfMaltInKg())
+        assertThat(calcParam.overallAmountOfMaltInKg())
                 .isCloseTo(BigDecimal.valueOf(6.67), Percentage.withPercentage(2));
 
-        assertThat(calcParam.getAmountOfHotWort())
+        assertThat(calcParam.amountOfHotWort())
                 .isCloseTo(BigDecimal.valueOf(24.2), Percentage.withPercentage(1));
 
-        assertThat(calcParam.getWaterRequiredForMashingInLiters())
+        assertThat(calcParam.waterRequiredForMashingInLiters())
                 .isCloseTo(BigDecimal.valueOf(20), Percentage.withPercentage(2));
 
-        assertThat(calcParam.getWaterRequiredForSpargingInLiters())
+        assertThat(calcParam.waterRequiredForSpargingInLiters())
                 .isCloseTo(BigDecimal.valueOf(13.1), Percentage.withPercentage(2));
 
-        assertThat(calcParam.getWaterRequiredForWholeProcessInLiters())
+        assertThat(calcParam.waterRequiredForWholeProcessInLiters())
                 .isCloseTo(BigDecimal.valueOf(33.1), Percentage.withPercentage(2));
 
-        assertThat(calcParam.getAmountOfWaterBeforeBoilingInLiters())
+        assertThat(calcParam.amountOfWaterBeforeBoilingInLiters())
                 .isCloseTo(BigDecimal.valueOf(28.5), Percentage.withPercentage(2));
 
-        assertThat(calcParam.getTheoreticalExtractInGrams())
+        assertThat(calcParam.theoreticalExtractInGrams())
                 .isCloseTo(BigDecimal.valueOf(5503), Percentage.withPercentage(2));
 
-        assertThat(calcParam.getRealExtractInGrams())
+        assertThat(calcParam.realExtractInGrams())
                 .isCloseTo(BigDecimal.valueOf(4402), Percentage.withPercentage(2));
 
-        assertThat(calcParam.getWortWeightInGrams())
+        assertThat(calcParam.wortWeightInGrams())
                 .isCloseTo(BigDecimal.valueOf(25828), Percentage.withPercentage(2));
 
-        assertThat(calcParam.getExtractBeforeBoilingInPercentage())
-               .isCloseTo(BigDecimal.valueOf(14.6), Percentage.withPercentage(2));
+        assertThat(calcParam.extractBeforeBoilingInPercentage())
+                .isCloseTo(BigDecimal.valueOf(14.6), Percentage.withPercentage(2));
 
-        assertThat(calcParam.getCalculatedExtractInPercentage())
+        assertThat(calcParam.calculatedExtractInPercentage())
                 .isCloseTo(BigDecimal.valueOf(17), Percentage.withPercentage(2));
 
-        assertThat(calcParam.getCalculatedIbu())
+        assertThat(calcParam.calculatedIbu())
                 .isCloseTo(BigDecimal.valueOf(10.5), Percentage.withPercentage(2));
 
-        assertThat(calcParam.getEstimatedAmountOfAlcoholAfterFermentation())
+        assertThat(calcParam.estimatedAmountOfAlcoholAfterFermentation())
                 .isCloseTo(BigDecimal.valueOf(7.3), Percentage.withPercentage(2));
 
-
-        assertThat(calcParam.getCalculatedColourEBC())
+        assertThat(calcParam.calculatedColourEBC())
                 .isCloseTo(BigDecimal.valueOf(6.62), Percentage.withPercentage(2));
 
     }

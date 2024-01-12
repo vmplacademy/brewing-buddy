@@ -233,11 +233,12 @@ public class RecipeParametersCalculatorAdapter implements RecipeParametersCalcul
                         .divide(BigDecimal.valueOf(1.97), 2, RoundingMode.FLOOR));
             }
 
-            recipe.getRecipeCalculatedParameter().setCalculatedColourEBC(
-                    BigDecimal.valueOf(Math.pow(sumEbc.divide(overallAmountOfMaltInKg
-                                    .divide(BigDecimal.valueOf(3.78541178), 2, RoundingMode.FLOOR), 2, RoundingMode.FLOOR).doubleValue(), 0.6859))
-                            .multiply(BigDecimal.valueOf(1.4922))
-                            .multiply(BigDecimal.valueOf(1.97)));
+            BigDecimal helpBD = BigDecimal.valueOf(Math.pow(sumEbc
+                    .divide(recipe.getRecipeCalculatedParameter().getAmountOfHotWort()
+                            .divide(BigDecimal.valueOf(3.78541178), RoundingMode.FLOOR),5, RoundingMode.FLOOR).doubleValue(), 0.6859));
+
+            recipe.getRecipeCalculatedParameter().setCalculatedColourEBC(BigDecimal.valueOf(1.97)
+                    .multiply(BigDecimal.valueOf(1.4922)).multiply(helpBD));
         }
     }
 
@@ -251,13 +252,15 @@ public class RecipeParametersCalculatorAdapter implements RecipeParametersCalcul
     }
 
     private void calculateEstimatedAmountOfAlcoholAfterFermentation(Recipe recipe) {
-        BigDecimal alcoholInLiters = recipe.getRecipeCalculatedParameter().getRealExtractInGrams()
-                .divide(BigDecimal.valueOf(1000), 2, RoundingMode.FLOOR)
-                .multiply(BigDecimal.valueOf(0.6));
 
-        recipe.getRecipeCalculatedParameter().setEstimatedAmountOfAlcoholAfterFermentation(
-                alcoholInLiters
-                        .divide(recipe.getExpectedAmountOfBeerInLiters(), 2, RoundingMode.FLOOR)
-                        .multiply(BigDecimal.valueOf(100)));
+        RecipeCalculatedParameter calcParam = recipe.getRecipeCalculatedParameter();
+        BigDecimal fermentationFactor = BigDecimal.valueOf(0.8);
+        BigDecimal startExtract = calcParam.getCalculatedExtractInPercentage();
+        BigDecimal endExtract = startExtract.multiply(BigDecimal.valueOf(1).subtract(fermentationFactor));
+        BigDecimal refermentationFactor = BigDecimal.valueOf(0.4);
+
+        recipe.getRecipeCalculatedParameter().setEstimatedAmountOfAlcoholAfterFermentation((startExtract.subtract(endExtract))
+                .divide(BigDecimal.valueOf(1.938), 2, RoundingMode.FLOOR)
+                .add(refermentationFactor));
     }
 }

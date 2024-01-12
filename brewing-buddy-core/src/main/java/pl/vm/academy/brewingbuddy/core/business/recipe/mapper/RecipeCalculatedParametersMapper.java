@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
 
+import java.math.BigDecimal;
+
 @Component
 public record RecipeCalculatedParametersMapper() {
     public RecipeCalculatedParametersDto mapParametersToDto(RecipeCalculatedParameter recipeCalculatedParameter) {
@@ -20,6 +22,9 @@ public record RecipeCalculatedParametersMapper() {
                 .calculatedExtractInPercentage(recipeCalculatedParameter.getCalculatedExtractInPercentage())
                 .estimatedAmountOfAlcoholAfterFermentation(recipeCalculatedParameter.getEstimatedAmountOfAlcoholAfterFermentation())
                 .overallAmountOfMaltInKg(recipeCalculatedParameter.getOverallAmountOfMaltInKg())
+                .theoreticalExtractInGrams(recipeCalculatedParameter.getTheoreticalExtractInGrams())
+                .realExtractInGrams(recipeCalculatedParameter.getRealExtractInGrams())
+                .wortWeightInGrams(recipeCalculatedParameter.getWortWeightInGrams())
                 .build();
     }
 }

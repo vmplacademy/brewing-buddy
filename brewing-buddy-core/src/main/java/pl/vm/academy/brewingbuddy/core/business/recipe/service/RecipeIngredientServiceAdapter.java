@@ -28,7 +28,6 @@ public class RecipeIngredientServiceAdapter implements RecipeIngredientService {
     private final RecipeCommonMapper recipeCommonMapper;
     private final RecipeParametersCalculator recipeParametersCalculator;
 
-
     @Override
     public RecipeDetailedDto addHopToRecipe(RecipeHopDto recipeHopDto) {
 

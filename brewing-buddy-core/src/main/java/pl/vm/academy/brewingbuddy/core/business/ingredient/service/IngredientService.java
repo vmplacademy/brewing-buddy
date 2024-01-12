@@ -18,5 +18,4 @@ public interface IngredientService {
     public Set<ExtraIngredientDto> getAllExtraIngredients();
     public YeastDto getYeastById(UUID yeastId);
     public Set<YeastDto> getAllYeasts();
-
 }
