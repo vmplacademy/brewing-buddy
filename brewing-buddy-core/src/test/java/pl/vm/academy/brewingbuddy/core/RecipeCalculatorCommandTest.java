@@ -24,8 +24,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeHop;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeMalt;
-import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.builder.RecipeParametersDesignPatternAdapter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.service.command.RecipeCalculatorCommandAdapter;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.utils.HopUtilisation;
 
 import java.math.BigDecimal;
@@ -38,16 +37,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class RecipeCalculatorDecoratorTest {
+class RecipeCalculatorCommandTest {
     private final HopUtilisation hopUtilisation = new HopUtilisation();
 
     @Mock
     private IngredientFacade ingredientFacade;
 
-    @Mock
-    RecipeRepository recipeRepository;
-
-    private RecipeParametersDesignPatternAdapter recipeParametersCalculator;
+    private RecipeCalculatorCommandAdapter recipeParametersCalculator;
 
     private final HopMapper hopMapper = new HopMapper();
     private final MaltMapper maltMapper = new MaltMapper();
@@ -60,8 +56,7 @@ class RecipeCalculatorDecoratorTest {
 
     @BeforeEach
     void init() {
-        recipeParametersCalculator = new RecipeParametersDesignPatternAdapter(
-                recipeRepository,
+        recipeParametersCalculator = new RecipeCalculatorCommandAdapter(
                 recipeMapper,
                 ingredientFacade,
                 hopUtilisation);
@@ -75,8 +70,7 @@ class RecipeCalculatorDecoratorTest {
         when(ingredientFacade.getHopById(any(UUID.class))).thenReturn(getHopFromFacade());
 
         //when
-        recipeParametersCalculator.calculateParametersDecorator(recipe);
-        RecipeCalculatedParametersDto calcParam = recipeParametersCalculator.calculateParametersDecorator(recipe);
+        RecipeCalculatedParametersDto calcParam = recipeParametersCalculator.calculateParametersCommand(recipe);
         //then
 
         assertThat(calcParam.overallAmountOfMaltInKg())

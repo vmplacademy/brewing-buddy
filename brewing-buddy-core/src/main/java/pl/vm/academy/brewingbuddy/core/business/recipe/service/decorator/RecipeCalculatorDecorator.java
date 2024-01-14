@@ -1,7 +1,5 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.service.decorator;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.With;
 import org.springframework.util.CollectionUtils;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.service.IngredientFacade;
@@ -9,10 +7,6 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParam
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeHop;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeMalt;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.utils.HopUtilisation;
 
 import java.math.BigDecimal;
@@ -24,13 +18,6 @@ public record RecipeCalculatorDecorator(
         IngredientFacade ingredientFacade,
         HopUtilisation hopUtilisation
 ) {
-
-
-    public RecipeCalculatorDecorator(RecipeDetailedDto recipe, IngredientFacade ingredientFacade, HopUtilisation hopUtilisation) {
-        this.recipe = recipe;
-        this.ingredientFacade = ingredientFacade;
-        this.hopUtilisation = hopUtilisation;
-    }
 
     public RecipeCalculatorDecorator calculateOverallAmountOfMaltInKg() {
         BigDecimal overallAmountOfMalt = BigDecimal.valueOf(0);
@@ -206,7 +193,7 @@ public record RecipeCalculatorDecorator(
 
             BigDecimal helpBD = BigDecimal.valueOf(Math.pow(sumEbc
                     .divide(recipe.recipeCalculatedParametersDto().amountOfHotWort()
-                            .divide(BigDecimal.valueOf(3.78541178), RoundingMode.FLOOR),5, RoundingMode.FLOOR).doubleValue(), 0.6859));
+                            .divide(BigDecimal.valueOf(3.78541178), RoundingMode.FLOOR), 5, RoundingMode.FLOOR).doubleValue(), 0.6859));
 
             BigDecimal calculatedColourEBC = (BigDecimal.valueOf(1.97)
                     .multiply(BigDecimal.valueOf(1.4922)).multiply(helpBD));
