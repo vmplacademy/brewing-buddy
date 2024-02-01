@@ -10,7 +10,6 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.HopDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.MaltDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.HopMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.MaltMapper;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.YeastMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.model.Hop;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.model.Malt;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.service.IngredientFacade;
@@ -26,10 +25,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedPar
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeHop;
 import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeMalt;
 import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeParametersCalculator;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeParametersCalculatorAdapter;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.builder.RecipeParametersDesignPatternAdapter;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.decorator.RecipeCalculatorDecorator;
 import pl.vm.academy.brewingbuddy.core.business.recipe.service.utils.HopUtilisation;
 
 import java.math.BigDecimal;
@@ -42,7 +38,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class RecipeCalculatorDecoratorTest {
+class RecipeCalculatorDecoratorTest {
     private final HopUtilisation hopUtilisation = new HopUtilisation();
 
     @Mock
@@ -53,9 +49,9 @@ public class RecipeCalculatorDecoratorTest {
 
     private RecipeParametersDesignPatternAdapter recipeParametersCalculator;
 
-    private HopMapper hopMapper = new HopMapper();
-    private MaltMapper maltMapper = new MaltMapper();
-    private RecipeMapper recipeMapper = new RecipeMapper(
+    private final HopMapper hopMapper = new HopMapper();
+    private final MaltMapper maltMapper = new MaltMapper();
+    private final RecipeMapper recipeMapper = new RecipeMapper(
             new RecipeCalculatedParametersMapper(),
             new RecipeHopMapper(),
             new RecipeMaltMapper(),
