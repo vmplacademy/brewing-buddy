@@ -6,5 +6,6 @@ public record RecipeCommonMapper(
         RecipeMaltMapper recipeMaltMapper,
         RecipeExtraIngredientMapper recipeExtraIngredientMapper,
         RecipeYeastMapper recipeYeastMapper,
-        RecipeCalculatedParametersMapper recipeCalculatedParametersMapper) {
+        RecipeCalculatedParametersMapper recipeCalculatedParametersMapper
+) {
 }

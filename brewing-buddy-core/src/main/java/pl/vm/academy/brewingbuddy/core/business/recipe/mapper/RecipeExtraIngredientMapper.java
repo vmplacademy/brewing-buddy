@@ -1,7 +1,7 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.mapper;
 
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeExtraIngredient;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.RecipeExtraIngredient;
 
 import java.util.Collections;
 import java.util.Set;

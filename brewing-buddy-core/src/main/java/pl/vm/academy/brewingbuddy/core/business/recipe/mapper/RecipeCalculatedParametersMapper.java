@@ -2,9 +2,7 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
-
-import java.math.BigDecimal;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.RecipeCalculatedParameter;
 
 @Component
 public record RecipeCalculatedParametersMapper() {

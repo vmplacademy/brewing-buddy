@@ -4,7 +4,7 @@ import org.springframework.util.CollectionUtils;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeBasicDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;

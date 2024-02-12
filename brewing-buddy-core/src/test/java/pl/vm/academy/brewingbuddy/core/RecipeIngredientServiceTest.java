@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.service.IngredientFacade;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
@@ -21,18 +19,11 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeHopMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMaltMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeYeastMapper;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeExtraIngredient;
-import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeExtraIngredientRepository;
-import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeHopRepository;
-import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeMaltRepository;
-import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
-import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeYeastRepository;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeIngredientService;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeIngredientServiceAdapter;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeParametersCalculatorAdapter;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.utils.HopUtilisation;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.Recipe;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.RecipeCalculatedParameter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.repository.RecipeRepository;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.RecipeIngredientService;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.RecipeIngredientServiceAdapter;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -41,9 +32,6 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.InstanceOfAssertFactories.throwable;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -52,20 +40,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class RecipeIngredientServiceTest {
-
     @Mock
     private RecipeRepository recipeRepository;
-    @Mock
-    private RecipeHopRepository recipeHopRepository;
-    @Mock
-    private RecipeMaltRepository recipeMaltRepository;
-    @Mock
-    private RecipeExtraIngredientRepository recipeExtraIngredientRepository;
-    @Mock
-    private RecipeYeastRepository recipeYeastRepository;
-    @Mock
-    private IngredientFacade ingredientFacade;
-
     private final RecipeHopMapper recipeHopMapper = new RecipeHopMapper();
     private final RecipeMaltMapper recipeMaltMapper = new RecipeMaltMapper();
     private final RecipeExtraIngredientMapper recipeExtraIngredientMapper = new RecipeExtraIngredientMapper();
@@ -88,20 +64,12 @@ public class RecipeIngredientServiceTest {
 
     private RecipeIngredientService recipeIngredientService;
 
-    private final RecipeParametersCalculatorAdapter recipeParametersCalculatorAdapter = new RecipeParametersCalculatorAdapter(
-            ingredientFacade,
-            new HopUtilisation());
-
     @BeforeEach
     void init() {
         recipeIngredientService = new RecipeIngredientServiceAdapter(
                 recipeRepository,
-                recipeHopRepository,
-                recipeMaltRepository,
-                recipeExtraIngredientRepository,
-                recipeYeastRepository,
-                recipeCommonMapper,
-                recipeParametersCalculatorAdapter);
+                recipeCommonMapper
+        );
     }
 
     @Nested
@@ -125,7 +93,7 @@ public class RecipeIngredientServiceTest {
             RecipeDetailedDto recipeDetailedDto = recipeIngredientService.addMaltToRecipe(recipeMaltDto);
 
             // then
-            assertThat(recipeDetailedDto.recipeMalts().size()).isEqualTo(1);
+            assertThat(recipeDetailedDto.recipeMalts()).hasSize(1);
             assertThat(recipeDetailedDto.recipeMalts()).contains(recipeMaltDto);
             verify(recipeRepository, times(1)).save(any(Recipe.class));
         }
@@ -171,7 +139,7 @@ public class RecipeIngredientServiceTest {
             RecipeDetailedDto recipeDetailedDto = recipeIngredientService.addHopToRecipe(recipeHopDto);
 
             // then
-            assertThat(recipeDetailedDto.recipeHops().size()).isEqualTo(1);
+            assertThat(recipeDetailedDto.recipeHops()).hasSize(1);
             assertThat(recipeDetailedDto.recipeHops()).contains(recipeHopDto);
             verify(recipeRepository, times(1)).save(any(Recipe.class));
         }
@@ -218,7 +186,7 @@ public class RecipeIngredientServiceTest {
             RecipeDetailedDto recipeDetailedDto = recipeIngredientService.addExtraIngredientToRecipe(recipeExtraIngredientDto);
 
             // then
-            assertThat(recipeDetailedDto.recipeExtraIngredients().size()).isEqualTo(1);
+            assertThat(recipeDetailedDto.recipeExtraIngredients()).hasSize(1);
             assertThat(recipeDetailedDto.recipeExtraIngredients()).contains(recipeExtraIngredientDto);
             verify(recipeRepository, times(1)).save(any(Recipe.class));
         }

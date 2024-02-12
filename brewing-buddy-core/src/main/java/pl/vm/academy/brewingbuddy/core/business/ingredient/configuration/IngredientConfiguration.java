@@ -7,12 +7,12 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.HopMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.IngredientCommonMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.MaltMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.YeastMapper;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.repository.ExtraIngredientRepository;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.repository.HopRepository;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.repository.MaltRepository;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.repository.YeastRepository;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.service.IngredientFacadeAdapter;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.service.IngredientServiceAdapter;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.ExtraIngredientRepository;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.HopRepository;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.MaltRepository;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.YeastRepository;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacadeAdapter;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientServiceAdapter;
 
 @Configuration
 public class IngredientConfiguration {

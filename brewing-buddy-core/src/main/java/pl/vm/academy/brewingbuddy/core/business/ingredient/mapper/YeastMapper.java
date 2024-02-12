@@ -1,7 +1,7 @@
 package pl.vm.academy.brewingbuddy.core.business.ingredient.mapper;
 
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.YeastDto;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.model.Yeast;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Yeast;
 
 import java.util.HashSet;
 import java.util.List;

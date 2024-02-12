@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.HopDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.MaltDto;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.service.IngredientFacade;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacade;
 
 import java.util.Set;
 

@@ -19,7 +19,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeFacade;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.RecipeFacade;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 
 import java.util.List;

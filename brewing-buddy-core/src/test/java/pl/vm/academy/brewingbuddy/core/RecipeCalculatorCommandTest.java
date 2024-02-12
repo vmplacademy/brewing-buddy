@@ -6,13 +6,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.HopDto;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.MaltDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.ExtraIngredientRepository;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.HopRepository;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.MaltRepository;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.YeastRepository;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacadeAdapter;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientServiceAdapter;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ExtraIngredientMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.HopMapper;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.IngredientCommonMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.MaltMapper;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.model.Hop;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.model.Malt;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.service.IngredientFacade;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Hop;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Malt;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacade;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.YeastMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCalculatedParametersMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeExtraIngredientMapper;
@@ -20,33 +27,31 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeHopMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMaltMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeYeastMapper;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeHop;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeMalt;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.command.RecipeCalculatorCommandAdapter;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.utils.HopUtilisation;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.Recipe;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.RecipeCalculatedParameter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.RecipeHop;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.RecipeMalt;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.calculator.command.RecipeCalculatorCommandAdapter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.utils.HopUtilisation;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class RecipeCalculatorCommandTest {
+    private final String MALT_ID = "e3c8ef49-d78e-425e-b3b4-459c44db6456";
+    private final String HOP_ID = "9b4cad8b-cee6-4fb1-a80d-52354c9efd4f";
     private final HopUtilisation hopUtilisation = new HopUtilisation();
-
-    @Mock
-    private IngredientFacade ingredientFacade;
-
     private RecipeCalculatorCommandAdapter recipeParametersCalculator;
-
-    private final HopMapper hopMapper = new HopMapper();
-    private final MaltMapper maltMapper = new MaltMapper();
     private final RecipeMapper recipeMapper = new RecipeMapper(
             new RecipeCalculatedParametersMapper(),
             new RecipeHopMapper(),
@@ -54,8 +59,33 @@ class RecipeCalculatorCommandTest {
             new RecipeExtraIngredientMapper() ,
             new RecipeYeastMapper());
 
+    @Mock
+    private MaltRepository maltRepository;
+    @Mock
+    private HopRepository hopRepository;
+    @Mock
+    private ExtraIngredientRepository extraIngredientRepository;
+    @Mock
+    private YeastRepository yeastRepository;
+
+
     @BeforeEach
     void init() {
+        IngredientServiceAdapter ingredientService = new IngredientServiceAdapter(
+                maltRepository,
+                hopRepository,
+                extraIngredientRepository,
+                yeastRepository,
+                new IngredientCommonMapper(
+                        new MaltMapper(),
+                        new HopMapper(),
+                        new ExtraIngredientMapper(),
+                        new YeastMapper()
+                )
+        );
+
+        IngredientFacade ingredientFacade = new IngredientFacadeAdapter(ingredientService);
+
         recipeParametersCalculator = new RecipeCalculatorCommandAdapter(
                 recipeMapper,
                 ingredientFacade,
@@ -66,8 +96,8 @@ class RecipeCalculatorCommandTest {
     void should_correctly_calculate_recipe() {
         //given
         Recipe recipe = createValidRecipe();
-        when(ingredientFacade.getMaltById(any(UUID.class))).thenReturn(getMaltFromFacade());
-        when(ingredientFacade.getHopById(any(UUID.class))).thenReturn(getHopFromFacade());
+        when(maltRepository.findById(any(UUID.class))).thenReturn(getMaltFromRepository());
+        when(hopRepository.findById(any(UUID.class))).thenReturn(getHopFromRepository());
 
         //when
         RecipeCalculatedParametersDto calcParam = recipeParametersCalculator.calculateParametersCommand(recipe);
@@ -114,10 +144,22 @@ class RecipeCalculatorCommandTest {
 
         assertThat(calcParam.calculatedColourEBC())
                 .isCloseTo(BigDecimal.valueOf(6.62), Percentage.withPercentage(2));
-
     }
 
+    @Test
+    void should_use_repository_expected_amount_of_times() {
+        //given
+        Recipe recipe = createValidRecipe();
+        when(maltRepository.findById(any(UUID.class))).thenReturn(getMaltFromRepository());
+        when(hopRepository.findById(any(UUID.class))).thenReturn(getHopFromRepository());
 
+        //when
+        recipeParametersCalculator.calculateParametersCommand(recipe);
+
+        //then
+        verify(maltRepository, times(2)).findById(UUID.fromString(MALT_ID));
+        verify(hopRepository, times(1)).findById(UUID.fromString(HOP_ID));
+    }
 
     private Recipe createValidRecipe () {
         Recipe recipe = new Recipe();
@@ -154,20 +196,20 @@ class RecipeCalculatorCommandTest {
         return recipe;
     }
 
-    private MaltDto getMaltFromFacade () {
+    private Optional<Malt> getMaltFromRepository () {
         Malt malt = new Malt();
-        malt.setId(UUID.fromString("e3c8ef49-d78e-425e-b3b4-459c44db6456"));
+        malt.setId(UUID.fromString(MALT_ID));
         malt.setName("TestMalt");
         malt.setExtractionRateInPercentage(BigDecimal.valueOf(82.5));
         malt.setMeanColorInEbcScale(BigDecimal.valueOf(2.8));
-        return maltMapper.mapMaltToDto(malt);
+        return Optional.of(malt);
     }
 
-    private HopDto getHopFromFacade () {
+    private Optional<Hop> getHopFromRepository () {
         Hop hop = new Hop();
-        hop.setId(UUID.fromString("9b4cad8b-cee6-4fb1-a80d-52354c9efd4f"));
+        hop.setId(UUID.fromString(HOP_ID));
         hop.setName("TestHop");
         hop.setAlfaAcidInPercentage(BigDecimal.valueOf(8.5));
-        return hopMapper.mapHopToDto(hop);
+        return Optional.of(hop);
     }
 }

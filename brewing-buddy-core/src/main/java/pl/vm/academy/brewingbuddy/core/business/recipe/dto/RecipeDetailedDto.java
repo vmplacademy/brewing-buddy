@@ -3,7 +3,7 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.dto;
 import lombok.Builder;
 
 import lombok.With;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.BeerStyle;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.enums.BeerStyle;
 
 import java.math.BigDecimal;
 import java.time.Duration;

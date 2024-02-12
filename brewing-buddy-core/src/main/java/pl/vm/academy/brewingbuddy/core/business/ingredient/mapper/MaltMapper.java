@@ -1,7 +1,7 @@
 package pl.vm.academy.brewingbuddy.core.business.ingredient.mapper;
 
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.MaltDto;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.model.Malt;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Malt;
 
 import java.util.HashSet;
 import java.util.List;

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.hibernate.validator.constraints.time.DurationMax;
 import org.hibernate.validator.constraints.time.DurationMin;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.BeerStyle;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.enums.BeerStyle;
 
 import java.math.BigDecimal;
 import java.time.Duration;

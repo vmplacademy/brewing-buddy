@@ -1,7 +1,7 @@
 package pl.vm.academy.brewingbuddy.core.business.ingredient.mapper;
 
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ExtraIngredientDto;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.model.ExtraIngredient;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.ExtraIngredient;
 
 import java.util.HashSet;
 import java.util.List;
