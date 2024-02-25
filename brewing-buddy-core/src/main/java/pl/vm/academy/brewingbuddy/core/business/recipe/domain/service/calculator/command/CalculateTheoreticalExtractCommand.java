@@ -8,11 +8,10 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 
 import java.math.BigDecimal;
 
-public record CalculateTheoreticalExtractCommand
-        (
-                IngredientFacade ingredientFacade
-        )
-        implements RecipeCalculatorCommand{
+public record CalculateTheoreticalExtractCommand(
+    IngredientFacade ingredientFacade
+)
+    implements RecipeCalculatorCommand {
     @Override
     public RecipeDetailedDto execute(RecipeDetailedDto recipe) {
         BigDecimal theoreticalExtractInGrams = BigDecimal.valueOf(0);

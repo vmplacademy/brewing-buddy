@@ -17,13 +17,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 public class RecipeFacadeAdapter implements RecipeFacade{
-    RecipeService recipeService;
-    RecipeIngredientService recipeIngredientService;
-
-    public RecipeFacadeAdapter(RecipeService recipeService, RecipeIngredientService recipeIngredientService) {
-        this.recipeService = recipeService;
-        this.recipeIngredientService = recipeIngredientService;
-    }
+    private final RecipeService recipeService;
+    private final RecipeIngredientService recipeIngredientService;
 
     public RecipeDetailedDto createRecipe (RecipeSimpleDto recipeSimpleDto) {
         return recipeService.createRecipe(recipeSimpleDto);

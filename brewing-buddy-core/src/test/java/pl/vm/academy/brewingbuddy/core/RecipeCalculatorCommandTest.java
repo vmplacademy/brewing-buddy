@@ -20,6 +20,7 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Hop;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Malt;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacade;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.YeastMapper;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.calculator.command.RecipeCalculatorCommandInterface;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCalculatedParametersMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeExtraIngredientMapper;
@@ -51,7 +52,7 @@ class RecipeCalculatorCommandTest {
     private final String MALT_ID = "e3c8ef49-d78e-425e-b3b4-459c44db6456";
     private final String HOP_ID = "9b4cad8b-cee6-4fb1-a80d-52354c9efd4f";
     private final HopUtilisation hopUtilisation = new HopUtilisation();
-    private RecipeCalculatorCommandAdapter recipeParametersCalculator;
+    private RecipeCalculatorCommandInterface recipeParametersCalculator;
     private final RecipeMapper recipeMapper = new RecipeMapper(
             new RecipeCalculatedParametersMapper(),
             new RecipeHopMapper(),
@@ -67,7 +68,6 @@ class RecipeCalculatorCommandTest {
     private ExtraIngredientRepository extraIngredientRepository;
     @Mock
     private YeastRepository yeastRepository;
-
 
     @BeforeEach
     void init() {

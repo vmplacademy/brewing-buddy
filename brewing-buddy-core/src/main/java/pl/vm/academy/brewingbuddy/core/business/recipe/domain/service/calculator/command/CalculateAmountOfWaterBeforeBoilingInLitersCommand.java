@@ -1,5 +1,6 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.calculator.command;
 
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.calculator.CalculatorConstants;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 
@@ -11,7 +12,8 @@ public record CalculateAmountOfWaterBeforeBoilingInLitersCommand() implements Re
 
         BigDecimal amountOfWaterBeforeBoilingInLiters
                 = recipe.recipeCalculatedParametersDto().waterRequiredForWholeProcessInLiters()
-                .subtract(recipe.recipeCalculatedParametersDto().overallAmountOfMaltInKg().multiply(BigDecimal.valueOf(0.7)));
+                .subtract(recipe.recipeCalculatedParametersDto().overallAmountOfMaltInKg().multiply(
+                    CalculatorConstants.WATER_PER_KG_AFTER_FILTRATION));
 
         RecipeCalculatedParametersDto recipeCalculatedParametersDto
                 = recipe.recipeCalculatedParametersDto().withAmountOfWaterBeforeBoilingInLiters(amountOfWaterBeforeBoilingInLiters);

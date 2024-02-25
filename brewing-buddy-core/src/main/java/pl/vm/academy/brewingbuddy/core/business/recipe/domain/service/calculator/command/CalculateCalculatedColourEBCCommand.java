@@ -2,6 +2,7 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.calculato
 
 import org.springframework.util.CollectionUtils;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacade;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.calculator.CalculatorConstants;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
@@ -9,35 +10,37 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeMaltDto;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public record CalculateCalculatedColourEBCCommand
-        (
-                IngredientFacade ingredientFacade
-        )
-        implements RecipeCalculatorCommand{
-    @Override
-    public RecipeDetailedDto execute(RecipeDetailedDto recipe) {
-        if (!CollectionUtils.isEmpty(recipe.recipeMalts())) {
-            BigDecimal sumEbc = BigDecimal.valueOf(0);
-            BigDecimal overallAmountOfMaltInKg = recipe.recipeCalculatedParametersDto().overallAmountOfMaltInKg();
-            for (RecipeMaltDto recipeMaltDto : recipe.recipeMalts()) {
-                sumEbc = sumEbc.add(overallAmountOfMaltInKg
-                        .multiply(BigDecimal.valueOf(2.20462262184878))
-                        .multiply(ingredientFacade.getMaltById(recipeMaltDto.maltId()).meanColorInEbcScale())
-                        .divide(BigDecimal.valueOf(1.97), 2, RoundingMode.FLOOR));
-            }
+public record CalculateCalculatedColourEBCCommand(
+    IngredientFacade ingredientFacade
+)
+    implements RecipeCalculatorCommand {
 
-            BigDecimal helpBD = BigDecimal.valueOf(Math.pow(sumEbc
-                    .divide(recipe.recipeCalculatedParametersDto().amountOfHotWort()
-                            .divide(BigDecimal.valueOf(3.78541178), RoundingMode.FLOOR),5, RoundingMode.FLOOR).doubleValue(), 0.6859));
+  @Override
+  public RecipeDetailedDto execute(RecipeDetailedDto recipe) {
+    if (!CollectionUtils.isEmpty(recipe.recipeMalts())) {
+      BigDecimal sumEbc = BigDecimal.valueOf(0);
+      BigDecimal overallAmountOfMaltInKg = recipe.recipeCalculatedParametersDto()
+          .overallAmountOfMaltInKg();
+      for (RecipeMaltDto recipeMaltDto : recipe.recipeMalts()) {
+        sumEbc = sumEbc.add(overallAmountOfMaltInKg
+            .multiply(CalculatorConstants.EBC_COLOUR_CONSTANT)
+            .multiply(ingredientFacade.getMaltById(recipeMaltDto.maltId()).meanColorInEbcScale())
+            .divide(CalculatorConstants.EBC_TO_SRM_RATIO, 2, RoundingMode.FLOOR));
+      }
 
-            BigDecimal calculatedColourEBC = (BigDecimal.valueOf(1.97)
-                    .multiply(BigDecimal.valueOf(1.4922)).multiply(helpBD));
+      BigDecimal helpBD = BigDecimal.valueOf(Math.pow(sumEbc
+          .divide(recipe.recipeCalculatedParametersDto().amountOfHotWort()
+              .divide(CalculatorConstants.GALLON_LITER_FACTOR, RoundingMode.FLOOR), 5, RoundingMode.FLOOR)
+          .doubleValue(), CalculatorConstants.MCU_POW_CONSTANT));
 
-            RecipeCalculatedParametersDto recipeCalculatedParametersDto
-                    = recipe.recipeCalculatedParametersDto().withCalculatedColourEBC(calculatedColourEBC);
+      BigDecimal calculatedColourEBC = (CalculatorConstants.EBC_TO_SRM_RATIO
+          .multiply(CalculatorConstants.MCU_CONSTANT).multiply(helpBD));
 
-            return recipe.withRecipeCalculatedParametersDto(recipeCalculatedParametersDto);
-        }
-        return recipe;
+      RecipeCalculatedParametersDto recipeCalculatedParametersDto
+          = recipe.recipeCalculatedParametersDto().withCalculatedColourEBC(calculatedColourEBC);
+
+      return recipe.withRecipeCalculatedParametersDto(recipeCalculatedParametersDto);
     }
+    return recipe;
+  }
 }

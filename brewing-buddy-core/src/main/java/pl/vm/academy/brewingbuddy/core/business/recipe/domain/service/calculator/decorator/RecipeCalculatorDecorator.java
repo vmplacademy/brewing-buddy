@@ -3,6 +3,7 @@ package pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.calculato
 import lombok.With;
 import org.springframework.util.CollectionUtils;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacade;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.calculator.CalculatorConstants;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
@@ -50,12 +51,13 @@ public record RecipeCalculatorDecorator(
 
         BigDecimal waterThatLeftAfterFiltrationInLiters = overallAmountOfMalt.multiply(BigDecimal.valueOf(0.7));
 
-        BigDecimal waterLostDuringBoilingInLiter = hotWort.divide(BigDecimal.valueOf(1).subtract(recipe.boilingProcessLossInPercentage()
-                .divide(BigDecimal.valueOf(100), 2, RoundingMode.FLOOR)), 2, RoundingMode.FLOOR).subtract(hotWort);
+        BigDecimal waterLostDuringBoilingInLiter = calculateWaterLostDuringBoilingInLiter(hotWort,
+            recipe.boilingProcessLossInPercentage());
 
         BigDecimal waterForMashing = recipe.recipeCalculatedParametersDto().waterRequiredForMashingInLiters();
 
-        BigDecimal waterForSparging = hotWort.add(waterThatLeftAfterFiltrationInLiters).add(waterLostDuringBoilingInLiter).subtract(waterForMashing);
+        BigDecimal waterForSparging = calculateWaterForSparging(hotWort,
+            waterThatLeftAfterFiltrationInLiters, waterLostDuringBoilingInLiter, waterForMashing);
 
         RecipeCalculatedParametersDto recipeCalculatedParametersDto;
 
@@ -65,6 +67,22 @@ public record RecipeCalculatorDecorator(
             recipeCalculatedParametersDto = recipe.recipeCalculatedParametersDto().withWaterRequiredForSpargingInLiters(waterForSparging);
         }
         return this.withRecipe(recipe.withRecipeCalculatedParametersDto(recipeCalculatedParametersDto));
+    }
+
+    private BigDecimal calculateWaterLostDuringBoilingInLiter(BigDecimal hotWort,
+        BigDecimal boilingProcessLossInPercentage) {
+        return hotWort.divide(BigDecimal.valueOf(1).subtract(boilingProcessLossInPercentage
+                .divide(BigDecimal.valueOf(100), 2, RoundingMode.FLOOR)), 2, RoundingMode.FLOOR)
+            .subtract(hotWort);
+    }
+
+    private BigDecimal calculateWaterForSparging(
+        BigDecimal hotWort,
+        BigDecimal waterThatLeftAfterFiltrationInLiters,
+        BigDecimal waterLostDuringBoilingInLiter,
+        BigDecimal waterForMashing) {
+        return hotWort.add(waterThatLeftAfterFiltrationInLiters).add(waterLostDuringBoilingInLiter)
+            .subtract(waterForMashing);
     }
 
     public RecipeCalculatorDecorator calculateWaterRequiredForWholeProcessInLiters() {
@@ -82,7 +100,7 @@ public record RecipeCalculatorDecorator(
 
         BigDecimal amountOfWaterBeforeBoilingInLiters
                 = recipe.recipeCalculatedParametersDto().waterRequiredForWholeProcessInLiters()
-                .subtract(recipe.recipeCalculatedParametersDto().overallAmountOfMaltInKg().multiply(BigDecimal.valueOf(0.7)));
+                .subtract(recipe.recipeCalculatedParametersDto().overallAmountOfMaltInKg().multiply(CalculatorConstants.WATER_PER_KG_AFTER_FILTRATION));
 
         RecipeCalculatedParametersDto recipeCalculatedParametersDto
                 = recipe.recipeCalculatedParametersDto().withAmountOfWaterBeforeBoilingInLiters(amountOfWaterBeforeBoilingInLiters);
@@ -130,7 +148,8 @@ public record RecipeCalculatorDecorator(
 
     public RecipeCalculatorDecorator calculateWortWeightInGrams () {
         BigDecimal amountOfHotWort = recipe.recipeCalculatedParametersDto().amountOfHotWort();
-        BigDecimal extractInMilliliters = recipe.recipeCalculatedParametersDto().realExtractInGrams().divide(BigDecimal.valueOf(1.587), 2, RoundingMode.FLOOR);
+        BigDecimal extractInMilliliters = recipe.recipeCalculatedParametersDto().realExtractInGrams().divide(
+            CalculatorConstants.EXTRACT_GRAMS_MLITERS_RATIO, 2, RoundingMode.FLOOR);
         BigDecimal amountOfWaterInWortInMilliliters = amountOfHotWort.multiply(BigDecimal.valueOf(1000)).subtract(extractInMilliliters);
 
         BigDecimal wortWeight =  amountOfWaterInWortInMilliliters.add(recipe.recipeCalculatedParametersDto().realExtractInGrams());
@@ -186,17 +205,17 @@ public record RecipeCalculatorDecorator(
             BigDecimal overallAmountOfMaltInKg = recipe.recipeCalculatedParametersDto().overallAmountOfMaltInKg();
             for (RecipeMaltDto recipeMaltDto : recipe.recipeMalts()) {
                 sumEbc = sumEbc.add(overallAmountOfMaltInKg
-                        .multiply(BigDecimal.valueOf(2.20462262184878))
+                        .multiply(CalculatorConstants.EBC_COLOUR_CONSTANT)
                         .multiply(ingredientFacade.getMaltById(recipeMaltDto.maltId()).meanColorInEbcScale())
-                        .divide(BigDecimal.valueOf(1.97), 2, RoundingMode.FLOOR));
+                        .divide(CalculatorConstants.EBC_TO_SRM_RATIO, 2, RoundingMode.FLOOR));
             }
 
             BigDecimal helpBD = BigDecimal.valueOf(Math.pow(sumEbc
-                    .divide(recipe.recipeCalculatedParametersDto().amountOfHotWort()
-                            .divide(BigDecimal.valueOf(3.78541178), RoundingMode.FLOOR), 5, RoundingMode.FLOOR).doubleValue(), 0.6859));
+                .divide(recipe.recipeCalculatedParametersDto().amountOfHotWort()
+                    .divide(CalculatorConstants.GALLON_LITER_FACTOR, RoundingMode.FLOOR), 5, RoundingMode.FLOOR).doubleValue(), CalculatorConstants.MCU_POW_CONSTANT));
 
-            BigDecimal calculatedColourEBC = (BigDecimal.valueOf(1.97)
-                    .multiply(BigDecimal.valueOf(1.4922)).multiply(helpBD));
+            BigDecimal calculatedColourEBC = (CalculatorConstants.EBC_TO_SRM_RATIO
+                    .multiply(CalculatorConstants.MCU_CONSTANT).multiply(helpBD));
 
             RecipeCalculatedParametersDto recipeCalculatedParametersDto
                     = recipe.recipeCalculatedParametersDto().withCalculatedColourEBC(calculatedColourEBC);
@@ -223,14 +242,12 @@ public record RecipeCalculatorDecorator(
     public RecipeCalculatorDecorator calculateEstimatedAmountOfAlcoholAfterFermentation() {
 
         RecipeCalculatedParametersDto calcParam = recipe.recipeCalculatedParametersDto();
-        BigDecimal fermentationFactor = BigDecimal.valueOf(0.8);
         BigDecimal startExtract = calcParam.calculatedExtractInPercentage();
-        BigDecimal endExtract = startExtract.multiply(BigDecimal.valueOf(1).subtract(fermentationFactor));
-        BigDecimal refermentationFactor = BigDecimal.valueOf(0.4);
+        BigDecimal endExtract = startExtract.multiply(BigDecimal.valueOf(1).subtract(CalculatorConstants.FERMENTATION_FACTOR));
 
         BigDecimal estimatedAmountOfAlcoholAfterFermentation = ((startExtract.subtract(endExtract))
-                .divide(BigDecimal.valueOf(1.938), 2, RoundingMode.FLOOR)
-                .add(refermentationFactor));
+                .divide(CalculatorConstants.BLG_ABV_FACTOR, 2, RoundingMode.FLOOR)
+                .add(CalculatorConstants.REFERMENTATION_FACTOR));
 
         RecipeCalculatedParametersDto recipeCalculatedParametersDto
                 = recipe.recipeCalculatedParametersDto().withEstimatedAmountOfAlcoholAfterFermentation(estimatedAmountOfAlcoholAfterFermentation);

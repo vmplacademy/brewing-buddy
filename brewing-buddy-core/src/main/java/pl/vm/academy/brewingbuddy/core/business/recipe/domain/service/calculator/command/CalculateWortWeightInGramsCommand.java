@@ -1,5 +1,6 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.calculator.command;
 
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.calculator.CalculatorConstants;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 
@@ -10,8 +11,10 @@ public record CalculateWortWeightInGramsCommand() implements RecipeCalculatorCom
     @Override
     public RecipeDetailedDto execute(RecipeDetailedDto recipe) {
         BigDecimal amountOfHotWort = recipe.recipeCalculatedParametersDto().amountOfHotWort();
-        BigDecimal extractInMilliliters = recipe.recipeCalculatedParametersDto().realExtractInGrams().divide(BigDecimal.valueOf(1.587), 2, RoundingMode.FLOOR);
-        BigDecimal amountOfWaterInWortInMilliliters = amountOfHotWort.multiply(BigDecimal.valueOf(1000)).subtract(extractInMilliliters);
+        BigDecimal extractInMilliliters = recipe.recipeCalculatedParametersDto()
+            .realExtractInGrams().divide(CalculatorConstants.EXTRACT_GRAMS_MLITERS_RATIO, 2, RoundingMode.FLOOR);
+        BigDecimal amountOfWaterInWortInMilliliters = amountOfHotWort.multiply(
+            BigDecimal.valueOf(1000)).subtract(extractInMilliliters);
 
         BigDecimal wortWeight =  amountOfWaterInWortInMilliliters.add(recipe.recipeCalculatedParametersDto().realExtractInGrams());
 

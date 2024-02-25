@@ -14,7 +14,7 @@ public record RecipeCalculatorCommandAdapter(
         RecipeMapper recipeMapper,
         IngredientFacade ingredientFacade,
         HopUtilisation hopUtilisation
-) {
+) implements RecipeCalculatorCommandInterface {
     public RecipeCalculatedParametersDto calculateParametersCommand(Recipe recipe) {
         return new RecipeCalculatorCommandExecutor(
                 List.of(

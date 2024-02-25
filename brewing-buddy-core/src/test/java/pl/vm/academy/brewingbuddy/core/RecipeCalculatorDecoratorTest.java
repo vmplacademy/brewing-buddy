@@ -74,7 +74,6 @@ class RecipeCalculatorDecoratorTest {
 
     private RecipeCalculatorDecoratorAdapter recipeParametersCalculator;
 
-
     @BeforeEach
     void init() {
         IngredientServiceAdapter ingredientService = new IngredientServiceAdapter(

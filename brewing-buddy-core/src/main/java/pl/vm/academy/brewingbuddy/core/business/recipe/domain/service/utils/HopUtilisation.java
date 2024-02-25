@@ -10,21 +10,25 @@ public class HopUtilisation {
 
     private HashMap<Integer, BigDecimal> utilisation;
 
+    private final BigDecimal MAX_HOP_UTILISATION = BigDecimal.valueOf(34);
+    private static final int MIN_MINUTES = 0;
+    private static final int MAX_MINUTES = 75;
+
     public HopUtilisation() {
         init();
     }
 
     public BigDecimal getHopUtilisation (int minutes) {
-        if (minutes < 0) {
+        if (minutes < MIN_MINUTES) {
             return BigDecimal.ZERO;
-        } else if (minutes > 75) {
-            return BigDecimal.valueOf(34.00);
+        } else if (minutes > MAX_MINUTES) {
+            return MAX_HOP_UTILISATION;
         }
         return utilisation.get(minutes);
     }
 
     private void init() {
-        utilisation = new HashMap<Integer, BigDecimal>();
+        utilisation = new HashMap<>();
         utilisation.put(0, BigDecimal.valueOf(5.00));
         utilisation.put(1, BigDecimal.valueOf(5.11));
         utilisation.put(2, BigDecimal.valueOf(5.22));

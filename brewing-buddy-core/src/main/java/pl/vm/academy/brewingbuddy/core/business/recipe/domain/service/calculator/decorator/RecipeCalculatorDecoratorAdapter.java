@@ -1,5 +1,6 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.calculator.decorator;
 
+import java.util.function.Predicate;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacade;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
@@ -16,17 +17,6 @@ public record RecipeCalculatorDecoratorAdapter(
         IngredientFacade ingredientFacade,
         HopUtilisation hopUtilisation
 ) {
-    public RecipeCalculatorDecoratorAdapter(
-            RecipeRepository recipeRepository,
-            RecipeMapper recipeMapper,
-            IngredientFacade ingredientFacade,
-            HopUtilisation hopUtilisation
-    ) {
-        this.recipeRepository = recipeRepository;
-        this.recipeMapper = recipeMapper;
-        this.ingredientFacade = ingredientFacade;
-        this.hopUtilisation = hopUtilisation;
-    }
 
     public RecipeCalculatedParametersDto calculateAllParameters(Recipe recipe) {
 
@@ -56,36 +46,40 @@ public record RecipeCalculatorDecoratorAdapter(
 
     private boolean requiredParametersWereSet(Recipe recipe) {
 
-        if (recipe.getExpectedAmountOfBeerInLiters().compareTo(BigDecimal.valueOf(0)) <= 0) {
+        Predicate<BigDecimal> lesserEqualZero = i -> (i.compareTo(BigDecimal.valueOf(0)) <= 0);
+        Predicate<BigDecimal> greaterEqualOneHundred = i -> (i.compareTo(BigDecimal.valueOf(100)) >= 0);
+        Predicate<BigDecimal> greaterEqualTen = i -> (i.compareTo(BigDecimal.valueOf(10)) >= 0);
+
+        if (lesserEqualZero.test(recipe.getExpectedAmountOfBeerInLiters())) {
             return false;
         }
 
-        if (recipe.getMashingPerformanceInPercentage().compareTo(BigDecimal.valueOf(0)) <= 0
-                || recipe.getMashingPerformanceInPercentage().compareTo(BigDecimal.valueOf(100)) >= 0 )   {
+        if (lesserEqualZero.test(recipe.getMashingPerformanceInPercentage())
+                || greaterEqualOneHundred.test(recipe.getMashingPerformanceInPercentage())) {
             return false;
         }
 
-        if (BigDecimal.valueOf(recipe.getBoilingProcessTime().toMinutes()).compareTo(BigDecimal.valueOf(0)) <= 0) {
+        if (lesserEqualZero.test(BigDecimal.valueOf(recipe.getBoilingProcessTime().toMinutes()))) {
             return false;
         }
 
-        if (recipe.getWaterEvaporationInPercentagePerHour().compareTo(BigDecimal.valueOf(0)) <= 0
-                || recipe.getWaterEvaporationInPercentagePerHour().compareTo(BigDecimal.valueOf(100)) >= 0 )   {
+        if (lesserEqualZero.test(recipe.getWaterEvaporationInPercentagePerHour())
+                || greaterEqualOneHundred.test(recipe.getWaterEvaporationInPercentagePerHour())) {
             return false;
         }
 
-        if (recipe.getBoilingProcessLossInPercentage().compareTo(BigDecimal.valueOf(0)) <= 0
-                || recipe.getBoilingProcessLossInPercentage().compareTo(BigDecimal.valueOf(100)) >= 0 )   {
+        if (lesserEqualZero.test(recipe.getBoilingProcessLossInPercentage())
+                || greaterEqualOneHundred.test(recipe.getBoilingProcessLossInPercentage())) {
             return false;
         }
 
-        if (recipe.getFermentationProcessLossInPercentage().compareTo(BigDecimal.valueOf(0)) <= 0
-                || recipe.getFermentationProcessLossInPercentage().compareTo(BigDecimal.valueOf(100)) >= 0 )   {
+        if (lesserEqualZero.test(recipe.getFermentationProcessLossInPercentage())
+                || greaterEqualOneHundred.test(recipe.getFermentationProcessLossInPercentage())) {
             return false;
         }
 
-        if (recipe.getMashingFactorInLitersPerKg().compareTo(BigDecimal.valueOf(0)) <= 0
-                || recipe.getMashingFactorInLitersPerKg().compareTo(BigDecimal.valueOf(10)) >= 0 )   {
+        if (lesserEqualZero.test(recipe.getMashingFactorInLitersPerKg())
+                || greaterEqualTen.test(recipe.getMashingFactorInLitersPerKg()))   {
             return false;
         }
 

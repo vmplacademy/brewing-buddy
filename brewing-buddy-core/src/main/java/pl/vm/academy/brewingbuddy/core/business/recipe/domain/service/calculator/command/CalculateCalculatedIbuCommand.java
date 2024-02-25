@@ -10,12 +10,11 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeHopDto;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public record CalculateCalculatedIbuCommand
-        (
-                IngredientFacade ingredientFacade,
-                HopUtilisation hopUtilisation
-        )
-        implements RecipeCalculatorCommand {
+public record CalculateCalculatedIbuCommand(
+    IngredientFacade ingredientFacade,
+    HopUtilisation hopUtilisation
+)
+    implements RecipeCalculatorCommand {
     @Override
     public RecipeDetailedDto execute(RecipeDetailedDto recipe) {
         if (!CollectionUtils.isEmpty(recipe.recipeHops())) {

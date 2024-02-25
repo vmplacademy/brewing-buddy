@@ -1,8 +1,10 @@
-package pl.vm.academy.brewingbuddy.core.business.recipe.domain.service;
+package pl.vm.academy.brewingbuddy.core.business.recipe.configuration;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.RecipeFacadeAdapter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.RecipeIngredientServiceAdapter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.RecipeServiceAdapter;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCalculatedParametersMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCommonMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeExtraIngredientMapper;
@@ -13,9 +15,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeYeastMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.domain.repository.RecipeCalculatedParametersRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.domain.repository.RecipeRepository;
 
-
 @Configuration
-@RequiredArgsConstructor
 class RecipeConfiguration {
     @Bean
     RecipeFacadeAdapter recipeFacade(RecipeRepository recipeRepository,
