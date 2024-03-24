@@ -1,11 +1,11 @@
 package pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service;
 
 import lombok.RequiredArgsConstructor;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.dto.ExtraIngredientDto;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.dto.HopDto;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.dto.MaltDto;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.dto.YeastDto;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.mapper.IngredientCommonMapper;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ExtraIngredientDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.HopDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.MaltDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.YeastDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.IngredientCommonMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.ExtraIngredient;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Hop;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Malt;

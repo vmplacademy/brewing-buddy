@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.hibernate.validator.constraints.time.DurationMax;
 import org.hibernate.validator.constraints.time.DurationMin;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.enums.BeerStyle;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.enums.BeerStyle;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -24,6 +24,10 @@ public record RecipeSimpleDto(
         @DecimalMin("1")
         @DecimalMax("1000")
         BigDecimal expectedAmountOfBeerInLiters,
+
+        @DecimalMin("1")
+        @DecimalMax("99")
+        BigDecimal mashingPerformanceInPercentage,
 
         @DurationMin(minutes = 1)
         @DurationMax(minutes = 1000)

@@ -30,18 +30,14 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMaltMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeDetailedDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeYeastMapper;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.Recipe;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeCalculatedParameter;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeHop;
-import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeCalculatedParametersRepository;
-import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeHopRepository;
-import pl.vm.academy.brewingbuddy.core.business.recipe.repository.RecipeRepository;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeIngredientService;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeService;
-import pl.vm.academy.brewingbuddy.core.business.recipe.service.RecipeServiceAdapter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.Recipe;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.RecipeCalculatedParameter;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.repository.RecipeCalculatedParametersRepository;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.repository.RecipeHopRepository;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.repository.RecipeRepository;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.RecipeService;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.RecipeServiceAdapter;
 
-import java.math.BigDecimal;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +45,6 @@ import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
 public class RecipeServiceTest {
-
     @Mock
     private RecipeRepository recipeRepository;
     @Mock
@@ -232,9 +227,7 @@ public class RecipeServiceTest {
     }
 
     private RecipeDetailedDto createRecipeDto(UUID id) {
-        RecipeDetailedDto recipeDetailedDto = RecipeDetailedDto.builder().id(id).build();
-
-        return recipeDetailedDto;
+        return RecipeDetailedDto.builder().id(id).build();
     }
 
     private Recipe createRecipe(UUID id) {

@@ -1,7 +1,7 @@
 package pl.vm.academy.brewingbuddy.core.business.recipe.mapper;
 
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeYeastDto;
-import pl.vm.academy.brewingbuddy.core.business.recipe.model.RecipeYeast;
+import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.RecipeYeast;
 
 public record RecipeYeastMapper() {
     public RecipeYeastDto mapRecipeYeastToDto (RecipeYeast recipeYeast) {

@@ -2,10 +2,10 @@ package pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.dto.ExtraIngredientDto;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.dto.HopDto;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.dto.MaltDto;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.dto.YeastDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ExtraIngredientDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.HopDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.MaltDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.YeastDto;
 
 import java.util.Set;
 import java.util.UUID;
