@@ -18,6 +18,7 @@
 
     <modules>
         <module>brewing-buddy-core</module>
+        <module>brewing-buddy-mail-service</module>
     </modules>
 
     <properties>
