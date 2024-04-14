@@ -1,20 +1,16 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/brewing-buddy
-    username: compose-postgres
-    password: compose-postgres
+    url: jdbc:postgresql://localhost:5432/brewing-buddy-db
+    username: brewing-buddy
+    password: brewing-buddy
     driverClassName: org.postgresql.Driver
   jpa:
     generate-ddl: true
     hibernate:
       ddl-auto: create-drop
-    defer-datasource-initialization: true
     properties:
       hibernate:
-        dialect: PostgreSQLDialect
-  sql:
-    init:
-      mode: always
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   mvc:
     throw-exception-if-no-handler-found: true
 
