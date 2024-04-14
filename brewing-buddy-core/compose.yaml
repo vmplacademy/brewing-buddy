@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  brewing-buddy-app:
+    build:
+      context: .
+    container_name: brewing-buddy-app
+    depends_on:
+      - brewing-buddy-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://brewing-buddy-db:5432/brewing-buddy-db
+      - SPRING_DATASOURCE_USERNAME=brewing-buddy
+      - SPRING_DATASOURCE_PASSWORD=brewing-buddy
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8089
+    ports:
+      - "8089:8089"
+
+  brewing-buddy-db:
+    image: 'postgres:latest'
+    container_name: brewing-buddy-db
+    environment:
+      - POSTGRES_DB=brewing-buddy-db
+      - POSTGRES_USER=brewing-buddy
+      - POSTGRES_PASSWORD=brewing-buddy
+    ports:
+      - "5432:5432"
