@@ -25,3 +25,13 @@ services:
       - POSTGRES_PASSWORD=brewing-buddy
     ports:
       - "5432:5432"
+
+  brewing-buddy-db-test:
+    image: 'postgres:latest'
+    container_name: brewing-buddy-db-test
+    environment:
+      - POSTGRES_DB=brewing-buddy-db-test
+      - POSTGRES_USER=brewing-buddy-test
+      - POSTGRES_PASSWORD=brewing-buddy-test
+    ports:
+      - "5433:5432"
