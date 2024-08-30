@@ -1,12 +1,14 @@
 package pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service;
 
-import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.HopDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.MaltDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.YeastDto;
 
 import java.util.Set;
 import java.util.UUID;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.ExtraIngredientDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.JuiceDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.LactoseDto;
 
 public interface IngredientFacade {
 
@@ -41,6 +43,21 @@ public interface IngredientFacade {
     Set<HopDto> getAllHops();
 
     /**
+     * Returns YeastDto with given ID
+     *
+     * @param yeastId Given extra ingredient ID
+     * @return YeastDto
+     */
+    YeastDto getYeastById(UUID yeastId);
+
+    /**
+     * Returns Set with all yeasts
+     *
+     * @return Set<YeastDto>
+     */
+    Set<YeastDto> getAllYeasts();
+
+    /**
      * Returns ExtraIngredientDto with given ID
      *
      * @param extraIngredientId Given extra ingredient ID
@@ -56,17 +73,18 @@ public interface IngredientFacade {
     Set<ExtraIngredientDto> getAllExtraIngredients();
 
     /**
-     * Returns YeastDto with given ID
+     * Returns Set with all juices
      *
-     * @param yeastId Given extra ingredient ID
-     * @return YeastDto
+     * @return  Set<JuiceDto>
      */
-    YeastDto getYeastById(UUID yeastId);
+    Set<JuiceDto> getAllJuices();
 
     /**
-     * Returns Set with all yeasts
+     * Returns Set with all lactose
      *
-     * @return Set<YeastDto>
+     * @return  Set<LactoseDto>
      */
-    Set<YeastDto> getAllYeasts();
+    Set<LactoseDto> getAllLactose();
+
+
 }

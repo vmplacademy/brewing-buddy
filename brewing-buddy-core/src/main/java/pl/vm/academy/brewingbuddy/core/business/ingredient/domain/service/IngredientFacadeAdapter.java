@@ -2,13 +2,15 @@ package pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.HopDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.MaltDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.YeastDto;
 
 import java.util.Set;
 import java.util.UUID;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.ExtraIngredientDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.JuiceDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.LactoseDto;
 
 @Transactional
 @RequiredArgsConstructor
@@ -44,6 +46,16 @@ public class IngredientFacadeAdapter implements IngredientFacade{
     @Override
     public Set<ExtraIngredientDto> getAllExtraIngredients() {
         return ingredientService.getAllExtraIngredients();
+    }
+
+    @Override
+    public Set<JuiceDto> getAllJuices() {
+        return ingredientService.getAllJuices();
+    }
+
+    @Override
+    public Set<LactoseDto> getAllLactose() {
+        return ingredientService.getAllLactose();
     }
 
     @Override

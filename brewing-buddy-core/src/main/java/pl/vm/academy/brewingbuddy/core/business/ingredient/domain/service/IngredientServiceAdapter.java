@@ -1,12 +1,14 @@
 package pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service;
 
 import lombok.RequiredArgsConstructor;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.HopDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.MaltDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.YeastDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.ExtraIngredientDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.JuiceDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.LactoseDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.IngredientCommonMapper;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.ExtraIngredient;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.extraIngredients.ExtraIngredient;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Hop;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Malt;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Yeast;
@@ -52,13 +54,18 @@ public class IngredientServiceAdapter implements IngredientService{
     }
 
     @Override
-    public ExtraIngredientDto getExtraIngredientById(UUID extraIngredientId) {
-        return ingredientCommonMapper.extraIngredientMapper().mapExtraIngredientToDto(findExtraIngredientById(extraIngredientId));
+    public Set<ExtraIngredientDto> getAllExtraIngredients() {
+        return ingredientCommonMapper.extraIngredientMapper().mapExtraIngredientsToDto(extraIngredientRepository.findAll());
     }
 
     @Override
-    public Set<ExtraIngredientDto> getAllExtraIngredients() {
-        return ingredientCommonMapper.extraIngredientMapper().mapExtraIngredientsToDtos(extraIngredientRepository.findAll());
+    public Set<JuiceDto> getAllJuices() {
+        return ingredientCommonMapper.juiceMapper().mapJuicesToDto(extraIngredientRepository.finaAllJuices());
+    }
+
+    @Override
+    public Set<LactoseDto> getAllLactose() {
+        return ingredientCommonMapper.lactoseMapper().mapJuicesToDto(extraIngredientRepository.finaAllLactose());
     }
 
     @Override
@@ -69,6 +76,11 @@ public class IngredientServiceAdapter implements IngredientService{
     @Override
     public Set<YeastDto> getAllYeasts() {
         return ingredientCommonMapper.yeastMapper().mapYeastsToDtos(yeastRepository.findAll());
+    }
+
+    @Override
+    public ExtraIngredientDto getExtraIngredientById(UUID extraIngredientId) {
+        return null;
     }
 
     private Malt findMaltById (UUID id) {

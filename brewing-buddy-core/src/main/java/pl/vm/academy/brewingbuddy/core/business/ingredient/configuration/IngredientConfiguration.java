@@ -2,7 +2,6 @@ package pl.vm.academy.brewingbuddy.core.business.ingredient.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ExtraIngredientMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.HopMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.IngredientCommonMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.MaltMapper;
@@ -13,6 +12,9 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.Mal
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.YeastRepository;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacadeAdapter;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientServiceAdapter;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ingredient.ExtraIngredientMapper;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ingredient.JuiceMapper;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ingredient.LactoseMapper;
 
 @Configuration
 public class IngredientConfiguration {
@@ -24,13 +26,17 @@ public class IngredientConfiguration {
 
         MaltMapper maltMapper = new MaltMapper();
         HopMapper hopMapper = new HopMapper();
-        ExtraIngredientMapper extraIngredientMapper = new ExtraIngredientMapper();
         YeastMapper yeastMapper = new YeastMapper();
+        ExtraIngredientMapper extraIngredientMapper = new ExtraIngredientMapper();
+        JuiceMapper juiceMapper = new JuiceMapper();
+        LactoseMapper lactoseMapper = new LactoseMapper();
         IngredientCommonMapper ingredientCommonMapper = new IngredientCommonMapper(
                 maltMapper,
                 hopMapper,
+                yeastMapper,
                 extraIngredientMapper,
-                yeastMapper);
+                juiceMapper,
+                lactoseMapper);
 
         IngredientServiceAdapter ingredientServiceAdapter = new IngredientServiceAdapter(
                 maltRepository,

@@ -5,8 +5,8 @@
   "elements": [
     {
       "type": "rectangle",
-      "version": 238,
-      "versionNonce": 796908744,
+      "version": 240,
+      "versionNonce": 1544400259,
       "index": "a0",
       "isDeleted": false,
       "id": "vyMizBh6X0ohNUIzUoRrS",
@@ -42,7 +42,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1722001319488,
+      "updated": 1723358739267,
       "link": null,
       "locked": false
     },

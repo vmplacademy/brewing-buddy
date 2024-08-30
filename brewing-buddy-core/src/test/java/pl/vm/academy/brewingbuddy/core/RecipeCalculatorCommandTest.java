@@ -12,7 +12,6 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.Mal
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.YeastRepository;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacadeAdapter;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientServiceAdapter;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ExtraIngredientMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.HopMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.IngredientCommonMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.MaltMapper;
@@ -20,6 +19,9 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Hop;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Malt;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacade;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.YeastMapper;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ingredient.ExtraIngredientMapper;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ingredient.JuiceMapper;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ingredient.LactoseMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.domain.service.calculator.command.RecipeCalculatorCommandInterface;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCalculatedParametersMapper;
@@ -79,8 +81,10 @@ class RecipeCalculatorCommandTest {
                 new IngredientCommonMapper(
                         new MaltMapper(),
                         new HopMapper(),
+                        new YeastMapper(),
                         new ExtraIngredientMapper(),
-                        new YeastMapper()
+                        new JuiceMapper(),
+                        new LactoseMapper()
                 )
         );
 
