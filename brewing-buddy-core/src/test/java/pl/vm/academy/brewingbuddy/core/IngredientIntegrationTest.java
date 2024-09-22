@@ -5,8 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +21,6 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.Ext
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.ExtraIngredientDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.JuiceDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.LactoseDto;
-import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeBasicDto;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
@@ -47,7 +46,7 @@ class IngredientIntegrationTest extends IntegrationTest{
     String responseBody = result.getResponse().getContentAsString();
 
     ObjectMapper mapper = new ObjectMapper();
-    Set<JuiceDto> juiceDtos = mapper.readValue(responseBody, Set.class);
+    Set<JuiceDto> juiceDtos = mapper.readValue(responseBody, new TypeReference<Set<JuiceDto>>() {});
 
     // then
     assertThat(result.getResponse().getStatus()).isEqualTo(200);
@@ -68,7 +67,7 @@ class IngredientIntegrationTest extends IntegrationTest{
     String responseBody = result.getResponse().getContentAsString();
 
     ObjectMapper mapper = new ObjectMapper();
-    Set<LactoseDto> lactoseDtos = mapper.readValue(responseBody, Set.class);
+    Set<LactoseDto> lactoseDtos = mapper.readValue(responseBody, new TypeReference<Set<LactoseDto>>() {});
 
     // then
     assertThat(result.getResponse().getStatus()).isEqualTo(200);
@@ -89,7 +88,8 @@ class IngredientIntegrationTest extends IntegrationTest{
     String responseBody = result.getResponse().getContentAsString();
 
     ObjectMapper mapper = new ObjectMapper();
-    Set<ExtraIngredientDto> extraIngredientDtos = mapper.readValue(responseBody, Set.class);
+    Set<ExtraIngredientDto> extraIngredientDtos = mapper.readValue(responseBody,
+        new TypeReference<Set<ExtraIngredientDto>>() {});
 
     // then
     assertThat(result.getResponse().getStatus()).isEqualTo(200);

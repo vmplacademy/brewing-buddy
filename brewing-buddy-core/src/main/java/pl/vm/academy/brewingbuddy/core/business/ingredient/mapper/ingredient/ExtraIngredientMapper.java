@@ -20,22 +20,6 @@ public record ExtraIngredientMapper() {
         .build();
   }
 
-  public ExtraIngredient mapExtraIngredientDtoToEntity (ExtraIngredientDto extraIngredientDto) {
-
-    if (extraIngredientDto == null)
-      return null;
-
-    ExtraIngredient extraIngredient = new ExtraIngredient();
-
-    if (extraIngredient.getId() != null)
-      extraIngredient.setId(extraIngredientDto.id());
-
-    extraIngredient.setName(extraIngredient.getName());
-    extraIngredient.setExtraIngredientType(extraIngredientDto.extraIngredientType());
-
-    return extraIngredient;
-  }
-
   public Set<ExtraIngredientDto> mapExtraIngredientsToDto(List<ExtraIngredient> extraIngredients) {
     return extraIngredients.stream().map(this::mapExtraIngredientToDto).collect(Collectors.toSet());
   }
