@@ -1,6 +1,5 @@
 package pl.vm.academy.brewingbuddy.core.business.ingredient.mapper;
 
-
 import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.HopDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.Hop;
 

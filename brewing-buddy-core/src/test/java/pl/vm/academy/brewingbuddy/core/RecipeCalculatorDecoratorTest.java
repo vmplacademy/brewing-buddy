@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ExtraIngredientMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.HopMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.IngredientCommonMapper;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.MaltMapper;
@@ -21,6 +20,9 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.repository.Yea
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacade;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacadeAdapter;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientServiceAdapter;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ingredient.ExtraIngredientMapper;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ingredient.JuiceMapper;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.mapper.ingredient.LactoseMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeCalculatedParametersDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeCalculatedParametersMapper;
 import pl.vm.academy.brewingbuddy.core.business.recipe.mapper.RecipeExtraIngredientMapper;
@@ -84,8 +86,10 @@ class RecipeCalculatorDecoratorTest {
                 new IngredientCommonMapper(
                         new MaltMapper(),
                         new HopMapper(),
+                        new YeastMapper(),
                         new ExtraIngredientMapper(),
-                        new YeastMapper()
+                        new JuiceMapper(),
+                        new LactoseMapper()
                 )
         );
 

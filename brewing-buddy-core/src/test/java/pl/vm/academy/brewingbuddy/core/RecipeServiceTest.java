@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import pl.vm.academy.brewingbuddy.core.errorhandling.RecipeAlreadyExistsException;
 
 @ExtendWith(MockitoExtension.class)
 public class RecipeServiceTest {
@@ -115,7 +116,7 @@ public class RecipeServiceTest {
 
             when(recipeRepository.existsRecipeByRecipeName(any(String.class))).thenReturn(true);
 
-            Exception exception = assertThrows(ResponseStatusException.class, () ->
+            Exception exception = assertThrows(RecipeAlreadyExistsException.class, () ->
                     recipeService.createRecipe(recipeToSave));
 
             String expectedMessage = "Recipe with such name already exists!";

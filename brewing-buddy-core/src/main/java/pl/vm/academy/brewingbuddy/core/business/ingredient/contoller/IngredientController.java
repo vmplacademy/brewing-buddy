@@ -9,6 +9,9 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.MaltDto;
 import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.service.IngredientFacade;
 
 import java.util.Set;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.ExtraIngredientDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.JuiceDto;
+import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.LactoseDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,5 +27,20 @@ public class IngredientController {
     @GetMapping("/hops")
     public Set<HopDto> getAllHop() {
         return ingredientFacade.getAllHops();
+    }
+
+    @GetMapping("/extra-ingredients")
+    public Set<ExtraIngredientDto> getAllExtraIngredients() {
+        return ingredientFacade.getAllExtraIngredients();
+    }
+
+    @GetMapping("/extraIngredients/juices")
+    public Set<JuiceDto> getAllJuices() {
+        return ingredientFacade.getAllJuices();
+    }
+
+    @GetMapping("/extraIngredients/lactose")
+    public Set<LactoseDto> getAllLactose() {
+        return ingredientFacade.getAllLactose();
     }
 }

@@ -6,6 +6,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ExtraIngredientType {
+    JUICE("Juice"),
+    LACTOSE("Lactose"),
     SEASONING("Seasoning"),
     FRUIT("Fruit"),
     CARBONATION("Carbonation");

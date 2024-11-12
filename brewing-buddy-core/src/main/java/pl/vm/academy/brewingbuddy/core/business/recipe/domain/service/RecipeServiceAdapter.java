@@ -14,6 +14,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.domain.repository.RecipeR
 
 import java.util.List;
 import java.util.UUID;
+import pl.vm.academy.brewingbuddy.core.errorhandling.RecipeAlreadyExistsException;
 
 @RequiredArgsConstructor
 public class RecipeServiceAdapter implements RecipeService {
@@ -27,8 +28,12 @@ public class RecipeServiceAdapter implements RecipeService {
     @Override
     public RecipeDetailedDto createRecipe(RecipeSimpleDto recipeSimpleDto) {
 
+        if (recipeSimpleDto == null) {
+            throw new IllegalArgumentException("RecipeSimpleDto cannot be null");
+        }
+
         if (recipeRepository.existsRecipeByRecipeName(recipeSimpleDto.recipeName())) {
-            throw new IllegalStateException("Recipe with such name already exists!");
+            throw new RecipeAlreadyExistsException("Recipe with such name already exists!");
         }
 
         Recipe recipe = recipeMapper.mapRecipeSimpleDtoToEntity(recipeSimpleDto, null);
