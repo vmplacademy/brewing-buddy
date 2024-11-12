@@ -36,7 +36,8 @@ public class IngredientConfiguration {
                 yeastMapper,
                 extraIngredientMapper,
                 juiceMapper,
-                lactoseMapper);
+                lactoseMapper
+        );
 
         IngredientServiceAdapter ingredientServiceAdapter = new IngredientServiceAdapter(
                 maltRepository,

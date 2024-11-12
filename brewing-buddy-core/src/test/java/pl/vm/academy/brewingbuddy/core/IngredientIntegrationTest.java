@@ -30,14 +30,13 @@ class IngredientIntegrationTest extends IntegrationTest{
   private MockMvc mockMvc;
 
   @Autowired
-  ExtraIngredientRepository extraIngredientRepository;
+  private ExtraIngredientRepository extraIngredientRepository;
 
   @Test
   @Sql(value = "/insert_extra_ingredients.sql" , executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
   @Sql(value = "/clear_extra_ingredients.sql" , executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   void should_return_all_juices() throws Exception {
-    // given
-    // when
+    // given & when
     MvcResult result = mockMvc.perform(get("/ingredients/extraIngredients/juices"))
         .andDo(print())
         .andExpect(status().isOk())
@@ -80,7 +79,7 @@ class IngredientIntegrationTest extends IntegrationTest{
   void should_return_all_extra_ingredients() throws Exception {
     // given
     // when
-    MvcResult result = mockMvc.perform(get("/ingredients/extraIngredients"))
+    MvcResult result = mockMvc.perform(get("/ingredients/extra-ingredients"))
         .andDo(print())
         .andExpect(status().isOk())
         .andReturn();

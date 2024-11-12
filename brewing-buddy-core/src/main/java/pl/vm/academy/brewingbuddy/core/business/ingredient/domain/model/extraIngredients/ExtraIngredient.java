@@ -19,11 +19,11 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.enums.Ex
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "extraIngredientType", discriminatorType = DiscriminatorType.STRING)
-@Table(name = "t_extra_ingredient")
 @Data
+@Table(name = "t_extra_ingredient")
 public abstract class ExtraIngredient extends Ingredient {
 
     @Enumerated(EnumType.STRING)
-    @Column(insertable = false, updatable = false)
+    @Column(name = "extraIngredientType", insertable = false, updatable = false)
     private ExtraIngredientType extraIngredientType;
 }

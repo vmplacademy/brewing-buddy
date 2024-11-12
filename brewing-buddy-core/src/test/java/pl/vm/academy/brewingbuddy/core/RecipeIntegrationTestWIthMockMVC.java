@@ -1,37 +1,24 @@
 package pl.vm.academy.brewingbuddy.core;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.enums.BeerStyle;
 import pl.vm.academy.brewingbuddy.core.business.recipe.domain.repository.RecipeCalculatedParametersRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.domain.repository.RecipeRepository;
@@ -41,7 +28,7 @@ import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-public class RecipeIntegrationTestWIthMockMVC extends IntegrationTest {
+class RecipeIntegrationTestWIthMockMVC extends IntegrationTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -55,7 +42,7 @@ public class RecipeIntegrationTestWIthMockMVC extends IntegrationTest {
   @Test
   @Sql(value = "/test_data.sql" , executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
   @Sql(value = "/clear_recipes.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
-  public void should_return_all_recipes() throws Exception {
+  void should_return_all_recipes() throws Exception {
     // given
     // when
     MvcResult result = mockMvc.perform(get("/recipes"))
@@ -70,10 +57,11 @@ public class RecipeIntegrationTestWIthMockMVC extends IntegrationTest {
 
     // then
     assertThat(result.getResponse().getStatus()).isEqualTo(200);
-    assertThat(recipeBasicDtos.size()).isEqualTo(2);
+    assertThat(recipeBasicDtos).hasSize(2);
   }
 
   @Test
+  @Sql(value = "/clear_recipes.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   void should_create_valid_recipe() throws Exception {
     //given
     RecipeSimpleDto recipeSimpleDto = RecipeSimpleDto
@@ -81,7 +69,6 @@ public class RecipeIntegrationTestWIthMockMVC extends IntegrationTest {
         .recipeName("Test Recipe 1")
         .beerStyle(BeerStyle.LAGGER)
         .isPublic(true)
-        //.boilingProcessTime(Duration.ofMinutes(60))
         .build();
 
     //when
@@ -102,8 +89,6 @@ public class RecipeIntegrationTestWIthMockMVC extends IntegrationTest {
     assertThat(result.getResponse().getStatus()).isEqualTo(200);
     assertThat(recipeDetailedDto.recipeName()).isEqualTo("Test Recipe 1");
 
-    recipeCalculatedParametersRepository.deleteAll();
-    recipeRepository.deleteAll();
   }
 
   @Test

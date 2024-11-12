@@ -8,6 +8,6 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.domain.model.enums.Ex
 public record JuiceDto(
     UUID id,
     String name,
-    ExtraIngredientType extraIngredientType,
+    ExtraIngredientType type,
     String juiceFlavor
 ) {}

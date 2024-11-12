@@ -12,14 +12,22 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.Lactos
 
 public interface IngredientService {
     MaltDto getMaltById(UUID maltId);
-    Set<MaltDto> getAllMalts();
-    HopDto getHopById(UUID hopId);
-    Set<HopDto> getAllHops();
-    YeastDto getYeastById(UUID yeastId);
-    Set<YeastDto> getAllYeasts();
-    ExtraIngredientDto getExtraIngredientById(UUID extraIngredientId);
-    Set<ExtraIngredientDto> getAllExtraIngredients();
-    Set<JuiceDto> getAllJuices();
-    Set<LactoseDto> getAllLactose();
 
+    Set<MaltDto> getAllMalts();
+
+    HopDto getHopById(UUID hopId);
+
+    Set<HopDto> getAllHops();
+
+    YeastDto getYeastById(UUID yeastId);
+
+    Set<YeastDto> getAllYeasts();
+
+    ExtraIngredientDto getExtraIngredientById(UUID extraIngredientId);
+
+    Set<ExtraIngredientDto> getAllExtraIngredients();
+
+    Set<JuiceDto> getAllJuices();
+
+    Set<LactoseDto> getAllLactose();
 }

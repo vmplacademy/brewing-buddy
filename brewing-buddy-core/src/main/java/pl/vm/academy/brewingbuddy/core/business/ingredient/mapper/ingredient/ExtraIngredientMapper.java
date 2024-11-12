@@ -16,12 +16,11 @@ public record ExtraIngredientMapper() {
     return ExtraIngredientDto.builder()
         .id(extraIngredient.getId())
         .name(extraIngredient.getName())
-        .extraIngredientType(extraIngredient.getExtraIngredientType())
+        .type(extraIngredient.getExtraIngredientType())
         .build();
   }
 
   public Set<ExtraIngredientDto> mapExtraIngredientsToDto(List<ExtraIngredient> extraIngredients) {
     return extraIngredients.stream().map(this::mapExtraIngredientToDto).collect(Collectors.toSet());
   }
-
 }

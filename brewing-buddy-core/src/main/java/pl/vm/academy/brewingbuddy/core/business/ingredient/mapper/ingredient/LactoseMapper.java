@@ -9,14 +9,15 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.Lactos
 public record LactoseMapper() {
   public LactoseDto mapLactoseToDto (Lactose lactose) {
 
-    if (lactose == null)
+    if (lactose == null) {
       return null;
+    }
 
     return LactoseDto.builder()
         .id(lactose.getId())
         .name(lactose.getName())
-        .extraIngredientType(lactose.getExtraIngredientType())
-        .lactoseBrand(lactose.getLactoseBrand())
+        .type(lactose.getExtraIngredientType())
+        .brand(lactose.getLactoseBrand())
         .build();
   }
 
@@ -31,13 +32,15 @@ public record LactoseMapper() {
       lactose.setId(lactoseDto.id());
 
     lactose.setName(lactoseDto.name());
-    lactose.setExtraIngredientType(lactoseDto.extraIngredientType());
-    lactose.setLactoseBrand(lactoseDto.lactoseBrand());
+    lactose.setExtraIngredientType(lactoseDto.type());
+    lactose.setLactoseBrand(lactoseDto.brand());
 
     return lactose;
   }
 
   public Set<LactoseDto> mapJuicesToDto(List<Lactose> lactose) {
-    return lactose.stream().map(this::mapLactoseToDto).collect(Collectors.toSet());
+    return lactose.stream()
+        .map(this::mapLactoseToDto)
+        .collect(Collectors.toSet());
   }
 }

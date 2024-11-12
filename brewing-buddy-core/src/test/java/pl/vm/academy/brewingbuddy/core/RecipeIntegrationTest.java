@@ -12,38 +12,30 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.RecipeCalculatedParameter;
+import org.springframework.jdbc.core.JdbcTemplate;
 import pl.vm.academy.brewingbuddy.core.business.recipe.domain.model.enums.BeerStyle;
-import pl.vm.academy.brewingbuddy.core.business.recipe.domain.repository.RecipeCalculatedParametersRepository;
-import pl.vm.academy.brewingbuddy.core.business.recipe.domain.repository.RecipeRepository;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeBasicDto;
 import pl.vm.academy.brewingbuddy.core.business.recipe.dto.RecipeSimpleDto;
 
-public class RecipeIntegrationTest extends IntegrationTest {
+class RecipeIntegrationTest extends IntegrationTest {
 
   @LocalServerPort
   private int serverPort;
 
   @Autowired
-  TestRestTemplate testRestTemplate;
+  private TestRestTemplate testRestTemplate;
 
   @Autowired
-  RecipeRepository recipeRepository;
-
-  @Autowired
-  RecipeCalculatedParametersRepository recipeCalculatedParametersRepository;
+  private JdbcTemplate jdbcTemplate;
 
   @Test
-  @Sql(value = "/test_data.sql" , executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-  @Sql(value = "/clear_recipes.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+  //@Sql(value = "/test_data.sql" , executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+  //@Sql(value = "/clear_recipes.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   void should_return_all_recipes() {
     // given
+    setupData();
     final String REQUEST_ADDRESS_RECIPES = "http://localhost:" + serverPort + "/recipes";
-    //TestRestTemplate testRestTemplate = new TestRestTemplate();
     System.out.println("Active app port:");
     System.out.println(serverPort);
 
@@ -61,7 +53,7 @@ public class RecipeIntegrationTest extends IntegrationTest {
 
     // then
     assertThat(recipeResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThat(recipesDto.size()).isEqualTo(2);
+    assertThat(recipesDto).hasSize(2);
   }
 
   @Test
@@ -79,11 +71,12 @@ public class RecipeIntegrationTest extends IntegrationTest {
     List<RecipeBasicDto> recipesDto = recipeResponse.getBody();
     System.out.println(recipesDto);
     assertThat(recipeResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThat(recipesDto.size()).isEqualTo(0);
+    assertThat(recipesDto).isEmpty();
   }
 
   @Test
-  //@Sql(value = "/clear_recipes_and_calculated_param.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+  //@Sql(value = "/test_data.sql" , executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+  //@Sql(value = "/clear_recipes.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   void should_create_valid_recipe() {
     //given
     final String REQUEST_ADDRESS_RECIPES = "http://localhost:" + serverPort + "/recipes";
@@ -108,16 +101,14 @@ public class RecipeIntegrationTest extends IntegrationTest {
     //then
     assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(responseEntity.getBody().recipeName()).isEqualTo("Test Recipe");
-
-    recipeCalculatedParametersRepository.deleteAll();
-    recipeRepository.deleteAll();
   }
 
   @Test
-  @Sql(value = "/test_data.sql" , executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-  @Sql(value = "/clear_recipes.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+  //@Sql(value = "/test_data.sql" , executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+  //@Sql(value = "/clear_recipes.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   void should_throw_an_error_while_creating_recipe_with_existing_name() {
     //given
+    setupData();
     final String REQUEST_ADDRESS_RECIPES = "http://localhost:" + serverPort + "/recipes";
     RecipeSimpleDto recipeSimpleDto = RecipeSimpleDto
         .builder()
@@ -141,13 +132,14 @@ public class RecipeIntegrationTest extends IntegrationTest {
 
     //then
     assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CONFLICT); // already exists
-    assertThat(responseEntity.getBody().toString()).isEqualTo("Recipe with such name already exists!"); // already exists
+    assertThat(responseEntity.getBody()).isEqualTo("Recipe with such name already exists!"); // already exists
   }
   @Test
-  @Sql(value = "/test_data.sql" , executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-  @Sql(value = "/clear_recipes.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+  //@Sql(value = "/test_data.sql" , executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+  //@Sql(value = "/clear_recipes.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   void should_throw_an_error_while_creating_recipe_with_invalid_data() {
     //given
+    setupData();
     final String REQUEST_ADDRESS_RECIPES = "http://localhost:" + serverPort + "/recipes";
     RecipeSimpleDto recipeSimpleDto = RecipeSimpleDto
         .builder()
@@ -166,4 +158,10 @@ public class RecipeIntegrationTest extends IntegrationTest {
     assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     assertThat(responseEntity.getBody()).contains("Validation failed for argument");
   }
+
+  private void setupData () {
+    jdbcTemplate.update("INSERT INTO t_recipe (ID, RECIPE_NAME, IS_PUBLIC) VALUES ('1e28dd04-c26b-4e2e-800d-55d7a7746374', 'Test Recipe 1', TRUE),\n"
+        + "                                                         ('1e28dd04-c26b-4e2e-800d-55d7a7746222', 'Test Recipe 2', TRUE)");
+  }
 }
+

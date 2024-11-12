@@ -28,6 +28,10 @@ public class RecipeServiceAdapter implements RecipeService {
     @Override
     public RecipeDetailedDto createRecipe(RecipeSimpleDto recipeSimpleDto) {
 
+        if (recipeSimpleDto == null) {
+            throw new IllegalArgumentException("RecipeSimpleDto cannot be null");
+        }
+
         if (recipeRepository.existsRecipeByRecipeName(recipeSimpleDto.recipeName())) {
             throw new RecipeAlreadyExistsException("Recipe with such name already exists!");
         }

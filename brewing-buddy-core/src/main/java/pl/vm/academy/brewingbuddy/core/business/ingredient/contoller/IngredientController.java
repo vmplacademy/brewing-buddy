@@ -29,7 +29,7 @@ public class IngredientController {
         return ingredientFacade.getAllHops();
     }
 
-    @GetMapping("/extraIngredients")
+    @GetMapping("/extra-ingredients")
     public Set<ExtraIngredientDto> getAllExtraIngredients() {
         return ingredientFacade.getAllExtraIngredients();
     }

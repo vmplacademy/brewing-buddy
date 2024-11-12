@@ -10,13 +10,14 @@ import pl.vm.academy.brewingbuddy.core.business.ingredient.dto.ingredient.JuiceD
 public record JuiceMapper() {
   public JuiceDto mapJuiceToDto (Juice juice) {
 
-    if (juice == null)
+    if (juice == null) {
       return null;
+    }
 
     return JuiceDto.builder()
         .id(juice.getId())
         .name(juice.getName())
-        .extraIngredientType(juice.getExtraIngredientType())
+        .type(juice.getExtraIngredientType())
         .juiceFlavor(juice.getJuiceFlavor())
         .build();
   }
@@ -32,7 +33,7 @@ public record JuiceMapper() {
       juice.setId(juiceDto.id());
 
     juice.setName(juice.getName());
-    juice.setExtraIngredientType(juiceDto.extraIngredientType());
+    juice.setExtraIngredientType(juiceDto.type());
     juice.setJuiceFlavor(juiceDto.juiceFlavor());
 
     return juice;
